@@ -1,12 +1,19 @@
 .claim-header-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: var(--spacing-gap-l);
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-gap-m);
+}
+
+@media (max-width: 1200px) {
+  .claim-header-metrics {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--spacing-gap-s);
+  }
 }
 
 @media (max-width: 768px) {
   .claim-header-metrics {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-gap-m);
+    gap: var(--spacing-gap-s);
   }
 }

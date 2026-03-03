@@ -49,6 +49,7 @@ html body footer {
   flex: 1;
   padding: var(--spacing-6, 1.5rem);
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--color-pale-aqua, #F2F7F6);
 }
 

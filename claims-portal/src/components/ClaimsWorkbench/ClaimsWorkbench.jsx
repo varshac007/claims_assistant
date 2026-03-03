@@ -393,7 +393,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 showValue
               />
             )}
-            <DxcFlex gap="var(--spacing-gap-xl)">
+            <DxcFlex gap="var(--spacing-gap-m)" wrap="wrap">
               {claim.workflow?.sla?.dueDate && (() => {
                 const dueDate = new Date(claim.workflow.sla.dueDate);
                 const today = new Date();
@@ -775,13 +775,14 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
               {activeTab === 2 && (
                 <DxcFlex direction="column" gap="var(--spacing-gap-l)">
                   {/* Reserve Summary - BLOOM: Enhanced stat cards with left accent borders */}
-                  <DxcFlex gap="32px">
+                  <DxcFlex gap="var(--spacing-gap-m)" wrap="wrap">
                     <DxcContainer
                       padding="var(--spacing-padding-m)"
                       style={{
                         backgroundColor: "var(--color-bg-neutral-lightest)",
                         borderLeft: "4px solid #1B75BB", /* BLOOM: Blue accent */
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        flex: "1 1 180px"
                       }}
                     >
                       <DxcFlex direction="column" gap="var(--spacing-gap-xs)" alignItems="center">
@@ -798,7 +799,8 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       style={{
                         backgroundColor: "var(--color-bg-neutral-lightest)",
                         borderLeft: "4px solid #37A526", /* BLOOM: Green accent */
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        flex: "1 1 180px"
                       }}
                     >
                       <DxcFlex direction="column" gap="var(--spacing-gap-xs)" alignItems="center">
@@ -815,7 +817,8 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       style={{
                         backgroundColor: "var(--color-bg-neutral-lightest)",
                         borderLeft: "4px solid #F6921E", /* BLOOM: Orange accent */
-                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                        flex: "1 1 180px"
                       }}
                     >
                       <DxcFlex direction="column" gap="var(--spacing-gap-xs)" alignItems="center">
@@ -868,9 +871,9 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
 
                   {/* Payment History */}
                   <DxcFlex direction="column" gap="var(--spacing-gap-s)">
-                    <DxcFlex justifyContent="space-between" alignItems="center">
+                    <DxcFlex justifyContent="space-between" alignItems="center" wrap="wrap" gap="var(--spacing-gap-s)">
                       <DxcHeading level={4} text="Payment History" />
-                      <DxcFlex gap="var(--spacing-gap-s)">
+                      <DxcFlex gap="var(--spacing-gap-s)" wrap="wrap">
                         <DxcButton
                           label="Calculate PMI"
                           mode="secondary"
@@ -1018,7 +1021,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                                 {formatCurrency(payment.amount)}
                               </DxcTypography>
                             </DxcFlex>
-                            <DxcFlex gap="var(--spacing-gap-l)" alignItems="center">
+                            <DxcFlex gap="var(--spacing-gap-l)" alignItems="center" wrap="wrap">
                               <DxcFlex direction="column" gap="var(--spacing-gap-xxs)">
                                 <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Payment Type</DxcTypography>
                                 <DxcTypography fontSize="font-scale-03">{payment.type}</DxcTypography>
@@ -1226,26 +1229,24 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                         border={{ color: "var(--border-color-neutral-lighter)", style: "solid", width: "1px" }}
                       >
                         <DxcInset space="var(--spacing-padding-m)">
-                          <DxcFlex justifyContent="space-between" alignItems="center">
-                            <DxcFlex gap="var(--spacing-gap-l)" alignItems="center">
-                              <DxcFlex direction="column" gap="var(--spacing-gap-xxs)">
-                                <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Name</DxcTypography>
-                                <DxcTypography fontSize="16px" fontWeight="font-weight-semibold">{ben.name}</DxcTypography>
-                              </DxcFlex>
-                              <DxcFlex direction="column" gap="var(--spacing-gap-xxs)">
-                                <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Relationship</DxcTypography>
-                                <DxcTypography fontSize="16px">{ben.relationship}</DxcTypography>
-                              </DxcFlex>
-                              <DxcFlex direction="column" gap="var(--spacing-gap-xxs)">
-                                <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Percentage</DxcTypography>
-                                <DxcTypography fontSize="16px">{ben.percentage}</DxcTypography>
-                              </DxcFlex>
-                              <DxcFlex direction="column" gap="var(--spacing-gap-xxs)">
-                                <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Amount</DxcTypography>
-                                <DxcTypography fontSize="20px" fontWeight="font-weight-semibold" color="#000000" /* BLOOM: Data values must be black */>{ben.amount}</DxcTypography>
-                              </DxcFlex>
-                              <DxcBadge label={ben.status} />
+                          <DxcFlex gap="var(--spacing-gap-m)" alignItems="center" wrap="wrap">
+                            <DxcFlex direction="column" gap="var(--spacing-gap-xxs)" style={{ flex: "2 1 160px" }}>
+                              <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Name</DxcTypography>
+                              <DxcTypography fontSize="16px" fontWeight="font-weight-semibold">{ben.name}</DxcTypography>
                             </DxcFlex>
+                            <DxcFlex direction="column" gap="var(--spacing-gap-xxs)" style={{ flex: "1 1 100px" }}>
+                              <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Relationship</DxcTypography>
+                              <DxcTypography fontSize="16px">{ben.relationship}</DxcTypography>
+                            </DxcFlex>
+                            <DxcFlex direction="column" gap="var(--spacing-gap-xxs)" style={{ flex: "1 1 80px" }}>
+                              <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Percentage</DxcTypography>
+                              <DxcTypography fontSize="16px">{ben.percentage}</DxcTypography>
+                            </DxcFlex>
+                            <DxcFlex direction="column" gap="var(--spacing-gap-xxs)" style={{ flex: "1 1 100px" }}>
+                              <DxcTypography fontSize="12px" color="var(--color-fg-neutral-dark)">Amount</DxcTypography>
+                              <DxcTypography fontSize="20px" fontWeight="font-weight-semibold" color="#000000" /* BLOOM: Data values must be black */>{ben.amount}</DxcTypography>
+                            </DxcFlex>
+                            <DxcBadge label={ben.status} />
                           </DxcFlex>
                         </DxcInset>
                       </DxcContainer>

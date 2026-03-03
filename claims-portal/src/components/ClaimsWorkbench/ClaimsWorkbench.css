@@ -2,6 +2,7 @@
   padding: 2rem;
   background-color: #F8F9FA; /* BLOOM: Page background */
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ════════════════════════════════════════
@@ -27,8 +28,8 @@
 .death-modal {
   background: #fff;
   border-radius: 14px;
-  width: 620px;
-  max-width: 95vw;
+  width: 100%;
+  max-width: 620px;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
@@ -143,6 +144,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .death-modal__grid-2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .death-modal__field {

@@ -69,7 +69,7 @@ const ClaimHeader = ({
     >
       <DxcFlex direction="column" gap="var(--spacing-gap-m)">
         {/* Top Row: Claim Info and Actions */}
-        <DxcFlex justifyContent="space-between" alignItems="center">
+        <DxcFlex justifyContent="space-between" alignItems="center" wrap="wrap" gap="var(--spacing-gap-s)">
           {/* Left: Claim Identification */}
           <DxcFlex gap="var(--spacing-gap-m)" alignItems="center">
             {onBack && (
@@ -107,7 +107,7 @@ const ClaimHeader = ({
           </DxcFlex>
 
           {/* Right: Quick Actions */}
-          <DxcFlex gap="var(--spacing-gap-s)">
+          <DxcFlex gap="var(--spacing-gap-s)" wrap="wrap">
             {onAssign && (
               <DxcButton
                 label="Assign"
