@@ -46,3 +46,31 @@
   color: var(--color-fg-neutral-dark);
   font-size: 12px;
 }
+
+/* Table overflow — scrollable on narrow screens */
+.pending-claims-review .benefit-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive padding */
+@media (max-width: 1200px) {
+  .pending-claims-review {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pending-claims-review {
+    padding: 1rem;
+  }
+
+  .pending-claims-review .claim-card {
+    padding: var(--spacing-padding-s);
+  }
+
+  .pending-claims-review .policy-nested-section {
+    margin-left: 12px;
+    padding-left: 8px;
+  }
+}

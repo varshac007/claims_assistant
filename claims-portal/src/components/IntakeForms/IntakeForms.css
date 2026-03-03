@@ -326,18 +326,24 @@
   margin-bottom: 16px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .fnol-layout {
     grid-template-columns: 1fr;
   }
 
   .fnol-sidebar-column {
-    display: none; /* progress sidebar collapses on mobile */
+    display: none; /* progress sidebar collapses on portrait/tablet */
     position: static;
   }
 
   .fnol-mobile-stepper {
-    display: block; /* show compact step indicator on mobile */
+    display: block; /* show compact step indicator */
+  }
+}
+
+@media (max-width: 1100px) {
+  .intake-container {
+    padding: 1.25rem;
   }
 }
 

@@ -387,13 +387,13 @@
   gap: var(--spacing-gap-m);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
   .payment-details-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .payment-details-grid {
     grid-template-columns: 1fr;
   }
@@ -406,14 +406,27 @@
   gap: var(--spacing-gap-m);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1280px) {
   .policy-details-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .policy-details-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Workbench container padding reduction on portrait/narrow screens */
+@media (max-width: 1200px) {
+  .workbench-container {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .workbench-container {
+    padding: 1rem;
   }
 }

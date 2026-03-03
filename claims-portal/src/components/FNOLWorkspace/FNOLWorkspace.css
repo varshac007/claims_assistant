@@ -379,3 +379,27 @@
   color: #000000 !important;
 }
 
+/* Responsive padding */
+@media (max-width: 1200px) {
+  .fnol-workspace {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .fnol-workspace {
+    padding: 1rem;
+  }
+
+  .fnol-workspace .stage-content {
+    min-height: auto;
+    padding: 0.75rem !important;
+  }
+
+  /* Stack source indicator badges vertically */
+  .fnol-workspace .source-indicator {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
