@@ -7,6 +7,7 @@ import './theme/bloom-theme.css'
 import './responsive.css'
 import App from './App.jsx'
 
+// MUI added
 const muiTheme = createTheme({
   palette: {
     primary: { main: '#1B75BB' },
