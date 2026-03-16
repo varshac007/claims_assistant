@@ -8,7 +8,7 @@ This portal provides a comprehensive interface for managing the entire claims li
 
 ## Features Implemented
 
-123### Phase 1A - Intake & Triage
+### Phase 1A - Intake & Triage
 - **Portal FNOL**: First Notice of Loss submission with guided forms
 - **Multi-step Intake Forms**: Step-by-step claim submission process
 - **Document Upload**: Support for death certificates, IDs, and supporting documents
