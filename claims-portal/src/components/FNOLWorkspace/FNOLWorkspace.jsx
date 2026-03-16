@@ -245,7 +245,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
               <div />
             </DxcTabs.Tab>
             <DxcTabs.Tab
-              label="3. Beneficiary Analyzer"
+              label="3. Claimant Analyzer"
               icon="people"
               active={activeStage === 2}
               onClick={() => setActiveStage(2)}
@@ -301,14 +301,6 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                 </DxcFlex>
 
                 <DxcFlex gap="var(--spacing-gap-m)" wrap="wrap">
-                  <div style={{ flex: "1 1 200px" }}>
-                    <DxcDateInput
-                      label="Date of Death"
-                      value={dateOfDeath}
-                      onChange={({ value }) => setDateOfDeath(value)}
-                      placeholder="MM/DD/YYYY"
-                    />
-                  </div>
                   <div style={{ flex: "1 1 250px" }}>
                     <DxcTextInput
                       label="Policy Number (if known)"
@@ -379,45 +371,6 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                   </div>
                 )}
 
-                {/* Death Verification Section */}
-                {deathVerificationRequired && (
-                  <div className="death-verification-section">
-                    <DxcFlex direction="column" gap="var(--spacing-gap-s)">
-                      <DxcHeading level={4} text="Death Verification" />
-                      <DxcTypography fontSize="font-scale-03" color="var(--color-fg-neutral-dark)">
-                        Death verification is required unless a death certificate was provided at FNOL or this was triggered by Electronic Death Match.
-                      </DxcTypography>
-
-                      <DxcFlex gap="var(--spacing-gap-m)" alignItems="center">
-                        <DxcButton
-                          label="Run Automated Death Search"
-                          mode="secondary"
-                          icon="search"
-                          onClick={handleDeathSearch}
-                          disabled={deathSearchStatus === 'searching'}
-                        />
-                        {deathSearchStatus === 'searching' && <DxcSpinner label="Searching..." mode="small" />}
-                        {deathSearchStatus === 'found' && <DxcBadge label="Death Record Found" mode="contextual" color="success" />}
-                        {deathSearchStatus === 'not_found' && <DxcBadge label="No Record Found" mode="contextual" color="warning" />}
-                      </DxcFlex>
-
-                      <DxcFileInput
-                        label="Manually Attach Death Record"
-                        helperText="Upload death certificate or verification document"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        value={deathRecordFiles}
-                        onChange={(files) => setDeathRecordFiles(files)}
-                      />
-                    </DxcFlex>
-                  </div>
-                )}
-
-                {isElectronicDeathMatch && (
-                  <DxcAlert
-                    semantic="info"
-                    message={{ text: "Death verification not required — this FNOL was triggered by Electronic Death Match." }}
-                  />
-                )}
               </DxcFlex>
             )}
 
@@ -426,7 +379,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
               <DxcFlex direction="column" gap="var(--spacing-gap-m)">
                 <DxcHeading level={3} text="Related Policy Search" />
                 <DxcTypography color="var(--color-fg-neutral-dark)">
-                  System auto-searches for all policies impacted by the death event. Policies active as of date of death where the insured was the covered party are auto-associated.
+                  System auto-searches for all policies impacted by the death event claim. Policies active as of date of death claim where the insured was the covered party are auto-associated.
                 </DxcTypography>
 
                 {relatedPolicies.length === 0 && !searching && (
@@ -555,9 +508,9 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
             {/* =================== STAGE 3: BENEFICIARY ANALYZER =================== */}
             {activeStage === 2 && (
               <DxcFlex direction="column" gap="var(--spacing-gap-m)">
-                <DxcHeading level={3} text="Beneficiary Analyzer" />
+                <DxcHeading level={3} text="Claimant Analyzer" />
                 <DxcTypography color="var(--color-fg-neutral-dark)">
-                  Policy-specific beneficiary analysis. Select a policy to analyze its beneficiaries.
+                  Policy-specific beneficiary claimant analysis. Select a policy to analyze its beneficiaries policyholders.
                 </DxcTypography>
 
                 {/* Policy selector */}
@@ -669,7 +622,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                       <DxcFlex direction="column" gap="var(--spacing-gap-xs)">
                         <DxcTypography fontWeight="font-weight-semibold">Included Documents:</DxcTypography>
                         <DxcTypography fontSize="font-scale-03">- Claim Form (per product type)</DxcTypography>
-                        <DxcTypography fontSize="font-scale-03">- Beneficiary Instructions</DxcTypography>
+                        <DxcTypography fontSize="font-scale-03">- Claimant Instructions</DxcTypography>
                         <DxcTypography fontSize="font-scale-03">- Requirements Checklist</DxcTypography>
                         <DxcTypography fontSize="font-scale-03">- Return Envelope / Portal Access</DxcTypography>
                       </DxcFlex>
