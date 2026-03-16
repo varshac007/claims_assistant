@@ -1,0 +1,288 @@
+/* ============================================================================
+   BLOOM INSURANCE — GLOBAL RESPONSIVE STYLES
+   iPad-first: targets 768px–1024px (iPad portrait & landscape)
+   All breakpoints in one place for easy maintenance
+   ============================================================================ */
+
+/* ── 1. VIEWPORT META SAFETY ─────────────────────────────────────────────── */
+/* Ensure no element can cause horizontal scroll */
+*, *::before, *::after {
+  box-sizing: border-box;
+  min-width: 0;       /* Prevents flex/grid children from overflowing */
+}
+
+/* ── 2. HALSTACK APPLICATION LAYOUT ─────────────────────────────────────── */
+/* Force the main content area to not overflow */
+[class*="MainContainer"],
+[class*="Main-"] > div,
+[class*="ApplicationLayout"] main,
+[class*="content-"] {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* ── 3. GLOBAL PAGE CONTAINERS ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Reduce outer page padding on all views */
+  .app-main,
+  [class*="DxcApplicationLayout"] main {
+    padding: 0.75rem !important;
+  }
+
+  /* Workbench inner padding */
+  .workbench-container {
+    padding: 0.75rem !important;
+  }
+
+  /* Reduce inset padding from Halstack DxcInset on tablet */
+  [class*="DxcInset"] {
+    padding: 12px !important;
+  }
+}
+
+/* ── 4. CLAIM HEADER ─────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Header top row: wrap so actions go below claim ID */
+  .claim-header-top-row,
+  [class*="ClaimHeader"] > [class*="DxcFlex"]:first-child {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Metrics bar: 3 columns on iPad */
+  .claim-header-metrics {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .claim-header-metrics {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 5. CLAIMS WORKBENCH DASHBOARD GRIDS ────────────────────────────────── */
+@media (max-width: 1024px) {
+  .dashboard-grid-people,
+  .dashboard-grid-top,
+  .dashboard-grid-middle {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Payment and policy detail grids: 2 cols on iPad */
+  .payment-details-grid,
+  .policy-details-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 6. TABS ─────────────────────────────────────────────────────────────── */
+/* Tabs scroll horizontally instead of overflowing page */
+.workbench-tabs-wrapper {
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+}
+.workbench-tabs-wrapper::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* ── 7. CLAIMS HANDLER DASHBOARD ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .claims-handler-dashboard {
+    padding: 0.75rem !important;
+  }
+
+  /* KPI 4-column grid → 2 columns on iPad */
+  .performance-metrics {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Inventory buckets: auto-fit handles itself, but clamp minimum */
+  .inventory-buckets {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 8. REQUIREMENTS ENGINE ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Left sidebar + content → stacked */
+  .re-layout,
+  [class*="RequirementsEngine"] [style*="280px"] {
+    grid-template-columns: 1fr !important;
+    flex-direction: column !important;
+  }
+
+  /* Sidebar becomes horizontal scrollable list */
+  .re-sidebar,
+  [class*="re-sidebar"] {
+    width: 100% !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid #E8E8E8 !important;
+  }
+}
+
+/* ── 9. DOCUMENT UPLOAD / IDP FIELDS ────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .doc-idp-fields {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* Split-pane document viewer: stack on tablet */
+  [class*="split-pane"],
+  [class*="SplitPane"],
+  [class*="document-split"] {
+    flex-direction: column !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .doc-idp-fields {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 10. INTAKE FORMS ────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .intake-container,
+  [class*="IntakeForm"] {
+    padding: 1rem !important;
+    max-width: 100% !important;
+  }
+
+  /* Form grid: 2 cols max on iPad */
+  [class*="form-grid"],
+  [class*="intake-grid"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 11. FNOL WORKSPACE ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .fnol-workspace,
+  [class*="FNOLWorkspace"] {
+    padding: 0.75rem !important;
+  }
+}
+
+/* ── 12. PENDING CLAIMS / REQUIREMENTS RECEIVED ─────────────────────────── */
+@media (max-width: 1024px) {
+  [class*="PendingClaims"],
+  [class*="RequirementsReceived"] {
+    padding: 0.75rem !important;
+  }
+}
+
+/* ── 13. DASHBOARD (MAIN CLAIMS LIST) ───────────────────────────────────── */
+@media (max-width: 1024px) {
+  .dashboard-container,
+  [class*="Dashboard"] {
+    padding: 0.75rem !important;
+  }
+
+  /* Stats row wraps */
+  .dashboard-stats,
+  [class*="stats-row"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+}
+
+/* ── 14. MODALS ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  [class*="DxcDialog"],
+  .death-modal,
+  .modal {
+    max-width: 95vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* ── 15. POLICY SUMMARY + PARTY MANAGEMENT ──────────────────────────────── */
+@media (max-width: 1024px) {
+  .policy-details-grid,
+  .party-details-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── 16. BENEFICIARY ANALYZER ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  [class*="BeneficiaryAnalyzer"],
+  [class*="beneficiary-grid"] {
+    padding: 0.75rem !important;
+  }
+}
+
+/* ── 17. CLAIMS ANALYST PANEL ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .claims-analyst-card {
+    font-size: 13px !important;
+  }
+  .ca-header {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+}
+
+/* ── 18. HALSTACK DXC COMPONENTS — TABLET OVERRIDES ────────────────────── */
+@media (max-width: 1024px) {
+  /* DxcTable: allow horizontal scroll within table container */
+  [class*="DxcTable"],
+  [class*="Table-"] {
+    overflow-x: auto !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Reduce DxcHeading on tablet */
+  h1 { font-size: 1.5rem !important; }
+  h2 { font-size: 1.25rem !important; }
+  h3 { font-size: 1.125rem !important; }
+
+  /* Large data value numbers */
+  [style*="font-size: 32px"],
+  [style*="fontSize: 32px"] {
+    font-size: 24px !important;
+  }
+}
+
+/* ── 19. SIDENAV — ALWAYS COLLAPSED ON TABLET ───────────────────────────── */
+@media (max-width: 1024px) {
+  /* Keep sidenav icon-only on iPad to maximize content area */
+  [class*="SidenavContainer"],
+  [class*="ezjvsgl3"] {
+    width: 56px !important;
+    min-width: 56px !important;
+    max-width: 56px !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide label text in collapsed sidenav */
+  [class*="SidenavContainer"] [class*="LabelContainer"],
+  [class*="ezjvsgl3"] [class*="LabelContainer"] {
+    display: none !important;
+  }
+}
+
+/* ── 20. TYPOGRAPHY SCALE ───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  body {
+    font-size: 14px !important;
+  }
+}
+
+/* ── 21. BUTTON SIZES ON TABLET ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Reduce min-height override on tablet so buttons don't take too much space */
+  button:not(.ca-send-btn):not(.ca-model-btn):not(.ca-icon-btn):not(.ca-run-btn) {
+    min-height: 40px !important;
+    padding: 8px 16px !important;
+  }
+}
