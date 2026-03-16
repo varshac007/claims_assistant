@@ -1,8 +1,25 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
+import 'material-icons/iconfont/material-icons.css'
 import './index.css'
 import './theme/bloom-theme.css'
+import './responsive.css'
 import App from './App.jsx'
+
+const muiTheme = createTheme({
+  palette: {
+    primary: { main: '#1B75BB' },
+    secondary: { main: '#00ADEE' },
+  },
+  typography: {
+    fontFamily: '"Open Sans", "Segoe UI", Arial, sans-serif',
+  },
+  components: {
+    MuiCssBaseline: { styleOverrides: { body: { backgroundColor: '#F4F6F9' } } },
+    MuiButton: { defaultProps: { disableElevation: true } },
+  },
+})
 
 // Apply Bloom theme class to body
 document.body.classList.add('bloom-theme');
@@ -24,7 +41,10 @@ root.style.setProperty('--color-primary-900', '#061E33');
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline enableColorScheme />
+      <App />
+    </ThemeProvider>
   </StrictMode>,
 )
 // Version 3.0.0 - Fixed ALL DxcContainer unsupported props
