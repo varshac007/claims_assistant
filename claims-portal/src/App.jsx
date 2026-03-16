@@ -8,6 +8,7 @@ import FNOLWorkspace from './components/FNOLWorkspace/FNOLWorkspace';
 import PendingClaimsReview from './components/PendingClaimsReview/PendingClaimsReview';
 import RequirementsReceived from './components/RequirementsReceived/RequirementsReceived';
 import ClaimsHandlerDashboard from './components/ClaimsHandlerDashboard/ClaimsHandlerDashboard';
+import ManagerDashboard from './components/ManagerDashboard/ManagerDashboard';
 import ThemeSettings from './components/ThemeSettings/ThemeSettings';
 
 // Context Providers
@@ -27,6 +28,7 @@ const DEMO_PERSONAS = [
   { id: 'user-sj', name: 'Sarah Johnson', email: 's.johnson@bloom.com', role: 'examiner', title: 'Claims Examiner', permissions: ['view_claims', 'edit_claims', 'approve_payments'] },
   { id: 'user-tb', name: 'Taylor Brooks', email: 't.brooks@bloom.com', role: 'supervisor', title: 'Supervisor', permissions: ['view_claims', 'edit_claims', 'approve_payments', 'manage_team', 'view_reports'] },
   { id: 'user-jc', name: 'Jayden Clarke', email: 'j.clarke@bloom.com', role: 'supervisor', title: 'Supervisor', permissions: ['view_claims', 'edit_claims', 'approve_payments', 'manage_team', 'view_reports'] },
+  { id: 'user-mr', name: 'Morgan Reeves', email: 'm.reeves@bloom.com', role: 'manager', title: 'Claims Risk Manager', permissions: ['view_claims', 'edit_claims', 'approve_payments', 'manage_team', 'view_reports', 'view_risk_dashboard'] },
 ];
 
 /**
@@ -45,28 +47,19 @@ function AppContent() {
   const [actionsMenuOpen, setActionsMenuOpen] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
   const actionsButtonRef = useRef(null);
+  const topAnchorRef = useRef(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [userMenuPos, setUserMenuPos] = useState({ top: 0, right: 0 });
   const userAvatarRef = useRef(null);
 
   // Scroll to top after every view/claim change.
-  // Halstack uses Emotion CSS-in-JS so we can't target its scroll container by class name.
-  // Instead find all scrollable divs by computed style and reset them.
+  // Scroll to top whenever the view or selected claim changes.
+  // scrollIntoView auto-finds the correct scroll container inside DxcApplicationLayout.
   useEffect(() => {
-    const scrollAll = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      document.querySelectorAll('div').forEach(el => {
-        if (el.scrollTop > 0) {
-          const ov = window.getComputedStyle(el).overflowY;
-          if (ov === 'auto' || ov === 'scroll') el.scrollTop = 0;
-        }
-      });
-    };
-    // Double-rAF: first frame React commits the DOM, second frame the browser has laid it out
     const r1 = requestAnimationFrame(() => {
-      const r2 = requestAnimationFrame(scrollAll);
+      const r2 = requestAnimationFrame(() => {
+        topAnchorRef.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+      });
       return () => cancelAnimationFrame(r2);
     });
     return () => cancelAnimationFrame(r1);
@@ -153,7 +146,9 @@ function AppContent() {
   const renderContent = () => {
     switch (currentView) {
       case 'dashboard':
-        return <Dashboard onClaimSelect={handleClaimSelect} />;
+        return user?.role === 'manager'
+          ? <ManagerDashboard onClaimSelect={handleClaimSelect} />
+          : <Dashboard onClaimSelect={handleClaimSelect} />;
       case 'handlerDashboard':
         return <ClaimsHandlerDashboard />;
       case 'workbench':
@@ -551,7 +546,7 @@ function AppContent() {
                                 onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = '#F8F9FA'; e.currentTarget.style.transform = 'translateY(0)'; } }}
                               >
                                 <span className="material-icons" style={{ fontSize: '18px', flexShrink: 0 }}>
-                                  {persona.role === 'supervisor' ? 'supervisor_account' : 'person'}
+                                  {persona.role === 'manager' ? 'manage_accounts' : persona.role === 'supervisor' ? 'supervisor_account' : 'person'}
                                 </span>
                                 <div>
                                   <div style={{ fontWeight: isActive ? '700' : '600' }}>{persona.name}</div>
@@ -583,6 +578,7 @@ function AppContent() {
       }
     >
       <DxcApplicationLayout.Main>
+        <div ref={topAnchorRef} style={{ height: 0, overflow: 'hidden' }} />
         {renderContent()}
       </DxcApplicationLayout.Main>
     </DxcApplicationLayout>

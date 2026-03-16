@@ -12,10 +12,12 @@ import cmaService from '../services/api/cmaService';
 import { handleAPIError } from '../services/utils/errorHandler';
 import eventBus, { EventTypes } from '../services/sync/eventBus';
 import { ClaimStatus } from '../types/claim.types';
+import { useApp } from './AppContext';
 
 const ClaimsContext = createContext(null);
 
 export const ClaimsProvider = ({ children }) => {
+  const { productLine } = useApp();
 
   // Claims List State
   const [claims, setClaims] = useState([]);
@@ -220,6 +222,16 @@ export const ClaimsProvider = ({ children }) => {
   const refreshClaims = useCallback(async () => {
     return fetchClaims();
   }, [fetchClaims]);
+
+  /**
+   * Re-fetch claims when product line switches (L&A ↔ P&C)
+   */
+  useEffect(() => {
+    setClaims([]);
+    setCurrentClaim(null);
+    fetchClaims();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productLine]);
 
   /**
    * Subscribe to Claim Events

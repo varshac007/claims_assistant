@@ -214,8 +214,1144 @@ const generatePCWorkNotes = (claim) => {
 };
 
 // ============================================================
-// 5 Hand-crafted P&C Showcase Claims
+// P&C Guardian Insights Generator
 // ============================================================
+const generatePCGuardianInsights = (claim) => {
+  const createdAt = new Date(claim.createdAt);
+  const daysOpen = claim.workflow?.daysOpen ?? Math.floor((NOW - createdAt) / DAY);
+  const riskScore = claim.aiInsights?.riskScore || 20;
+
+  // ── PC-1: Jennifer Williams — Auto Collision, Fast Track, CLOSED ──
+  if (claim.id === 'pc-claim-1') {
+    return {
+      lastAnalyzed: claim.closedAt || NOW.toISOString(),
+      overallRisk: 'Low',
+      leakageExposure: 0,
+      claimSummary: {
+        narrative: 'Auto collision claim for Jennifer Williams, 2022 Toyota Camry Silver, rear-ended at Main St & Commerce Blvd, Houston TX. Third-party Derek Nash determined at fault. Police report RPT-2026-04821. Repair cost $4,200 minus $500 deductible. Net payment of $3,700 issued via ACH in 5 days. Claim closed — STP exemplary processing. All documentation received at FNOL. No fraud signals. Subrogation recovery against Derek Nash\'s insurer identified.',
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'FNOL received — STP eligibility score 93, auto collision' },
+          { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: 'Policy PA-TX-847291 verified active — $100K limit, $500 deductible confirmed' },
+          { date: new Date(createdAt.getTime() + 8 * 60000).toISOString(), event: 'Routing Engine: STP approved — third-party fault clear, minor damage, no fraud indicators' },
+          { date: new Date(createdAt.getTime() + 1 * DAY).toISOString(), event: 'Police report RPT-2026-04821 received — Derek Nash confirmed at fault' },
+          { date: new Date(createdAt.getTime() + 3 * DAY).toISOString(), event: 'Certified repair estimate $4,200 received and approved' },
+          { date: new Date(createdAt.getTime() + 4 * DAY).toISOString(), event: 'Subrogation opportunity identified — Derek Nash auto insurer' },
+          { date: new Date(createdAt.getTime() + 5 * DAY).toISOString(), event: 'ACH payment $3,700 issued to Jennifer Williams — claim closed' }
+        ],
+        investigationStatus: 'Cleared — Closed',
+        outstandingActions: [],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'PA-TX-847291',
+            'Policy Type': 'Personal Auto',
+            'Coverage Limit': '$100,000',
+            'Deductible': '$500',
+            'Status': 'Active',
+            'Issue Date': '2021-04-01'
+          },
+          claimant: {
+            'Name': 'Jennifer Williams',
+            'Role': 'Policyholder',
+            'Phone': '713-555-0192',
+            'ID Verification': 'Verified (98/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Police Report (RPT-2026-04821)',
+            'Claimant Loss Statement',
+            'Vehicle Damage Photos (3)',
+            'Certified Repair Estimate — $4,200',
+            'Coverage Verification',
+            'Government-Issued Photo ID'
+          ],
+          missing: []
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Third-Party Fault Confirmed', status: 'pass', detail: 'Police report RPT-2026-04821 — Derek Nash at fault' },
+            { label: 'Repair Estimate Received', status: 'pass', detail: '$4,200 from certified shop' },
+            { label: 'Deductible Applied ($500)', status: 'pass' },
+            { label: 'Identity Verified', status: 'pass', detail: 'Score 98/100' },
+            { label: 'No Fraud Indicators', status: 'pass' }
+          ]
+        },
+        riskIndicators: [],
+        payoutReadiness: {
+          status: 'Paid',
+          estimatedAmount: 3700,
+          blockers: []
+        },
+        estimatedExposure: {
+          total: 4200,
+          components: [
+            { label: 'Repair Cost (Toyota Camry)', amount: 4200 },
+            { label: 'Less Deductible', amount: -500 }
+          ],
+          notes: 'Closed — net ACH payment $3,700 issued to Jennifer Williams'
+        }
+      },
+      fraudSignals: { score: 12, signals: [] },
+      leakageIndicators: [],
+      subrogationOpportunities: [
+        {
+          id: 'pc-sub-1-1',
+          opportunityType: 'Third-Party Auto Liability Recovery',
+          description: 'Derek Nash was determined at fault per police report RPT-2026-04821. Carrier paid $3,700 to Jennifer Williams. Subrogation demand of up to $4,200 (full repair cost) may be recoverable from Derek Nash\'s auto liability insurer.',
+          estimatedRecovery: 4200,
+          probability: 'High',
+          recommendedAction: 'Issue subrogation demand letter to Derek Nash\'s auto insurer. Reference police report RPT-2026-04821 and repair estimate.',
+          status: 'Identified'
+        }
+      ],
+      benchmarkData: {
+        cycleTime: {
+          current: 5,
+          industryAvg: 7,
+          carrierAvg: 6,
+          variance: '-17%',
+          status: 'Exceeding'
+        },
+        similarClaims: {
+          count: 1240,
+          avgCycleTime: 7,
+          avgSettlement: 3800,
+          subrogationRate: '42%',
+          fraudRate: '0.8%'
+        },
+        insights: [
+          'Closed 30% faster than carrier average of 6 days for STP auto collision claims — exemplary processing',
+          'STP pathway eliminated manual review — all 6 documentation items received at FNOL',
+          'Subrogation recovery at 42% rate for third-party auto liability claims — demand letter recommended'
+        ]
+      },
+      nextBestActions: [],
+      auditFindings: []
+    };
+  }
+
+  // ── PC-2: Robert Thompson — Homeowners, Standard, UNDER_REVIEW ──
+  if (claim.id === 'pc-claim-2') {
+    const slaDate = new Date(createdAt.getTime() + 30 * DAY);
+    const daysToSla = Math.ceil((slaDate - NOW) / DAY);
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 2 * 3600000).toISOString(),
+      overallRisk: 'Medium',
+      leakageExposure: 2000,
+      claimSummary: {
+        narrative: `Homeowners hailstorm claim for Robert Thompson, 1842 Magnolia Lane Nashville TN 37211. Golf-ball size 2" hail confirmed by NWS caused roof and siding damage. Repair estimate $34,500, deductible $2,500, reserve $32,000. Field adjuster Maria Rodriguez assigned. CAT event — 18 claims in zip 37211 for same storm. 18 days open, ${daysToSla} days remaining on SLA. Contractor final estimate and mortgage company notification outstanding.`,
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'FNOL received — hailstorm damage reported, Nashville TN 37211' },
+          { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: 'Policy HO-TN-523184 verified active — $380K limit, $2,500 deductible' },
+          { date: new Date(createdAt.getTime() + 15 * 60000).toISOString(), event: 'CAT event flag: 18 claims in zip 37211 — NWS storm confirmed' },
+          { date: new Date(createdAt.getTime() + 1 * DAY).toISOString(), event: 'NWS weather corroboration received — 2" hail confirmed for loss date' },
+          { date: new Date(createdAt.getTime() + 2 * DAY).toISOString(), event: 'Field adjuster Maria Rodriguez assigned for property inspection' },
+          { date: new Date(createdAt.getTime() + 3 * DAY).toISOString(), event: 'Preliminary damage photos and claimant statement received' },
+          { date: new Date(createdAt.getTime() + 18 * DAY).toISOString(), event: 'Contractor estimate outstanding — no submission received after 18 days' }
+        ],
+        investigationStatus: 'Active — Awaiting Contractor Estimate',
+        outstandingActions: [
+          'Licensed contractor final estimate',
+          'Mortgage company notification',
+          'Signed contractor work authorization'
+        ],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'HO-TN-523184',
+            'Policy Type': 'Homeowners',
+            'Coverage Limit': '$380,000',
+            'Deductible': '$2,500',
+            'Status': 'Active',
+            'Issue Date': '2018-06-01'
+          },
+          claimant: {
+            'Name': 'Robert Thompson',
+            'Role': 'Policyholder',
+            'Phone': '615-555-0274',
+            'ID Verification': 'Verified (96/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Claimant Loss Statement',
+            'Preliminary Property Damage Photos',
+            'NWS Weather Corroboration',
+            'Coverage Verification'
+          ],
+          missing: [
+            'Licensed Contractor Final Estimate',
+            'Mortgage Company Notification',
+            'Signed Contractor Work Authorization'
+          ]
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Weather Event Corroborated', status: 'pass', detail: 'NWS confirmed 2" hail, Nashville TN 37211' },
+            { label: 'Deductible Confirmed ($2,500)', status: 'pass' },
+            { label: 'Contractor Estimate Received', status: 'warn', detail: 'Pending — field adjuster assigned but estimate not yet received' },
+            { label: 'Mortgage Holder Notified', status: 'warn', detail: 'Notification not confirmed' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'CAT Event — Regional Storm', severity: 'Low', detail: '18 claims in zip 37211 for same storm — NWS corroborated' }
+        ],
+        payoutReadiness: {
+          status: 'Partial',
+          estimatedAmount: 32000,
+          blockers: [
+            'Licensed contractor estimate not received',
+            'Mortgage company notification pending'
+          ]
+        },
+        estimatedExposure: {
+          total: 34500,
+          components: [
+            { label: 'Hail Damage Repair (Roof/Siding)', amount: 34500 },
+            { label: 'Less Deductible', amount: -2500 }
+          ],
+          notes: 'Net reserve $32,000. Contractor final estimate pending — exposure may increase.'
+        }
+      },
+      fraudSignals: { score: 28, signals: [] },
+      leakageIndicators: [
+        {
+          id: 'pc-li-2-1',
+          category: 'Contractor Estimate — Over-Estimate Risk',
+          severity: 'Low',
+          description: 'Preliminary estimate $34,500 submitted by claimant. Licensed contractor final estimate not yet received. Without a certified estimate, there is a risk of over-payment if final scope exceeds initial assessment.',
+          estimatedAmount: 2000,
+          recommendation: 'Obtain certified contractor estimate before approving reserve or payment',
+          status: 'Monitoring'
+        }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: {
+          current: daysOpen,
+          industryAvg: 25,
+          carrierAvg: 22,
+          variance: daysOpen <= 22 ? 'On Track' : `+${Math.round((daysOpen / 22 - 1) * 100)}%`,
+          status: daysOpen <= 22 ? 'On Track' : 'At Risk'
+        },
+        similarClaims: {
+          count: 487,
+          avgCycleTime: 25,
+          avgSettlement: 31500,
+          subrogationRate: '0%',
+          fraudRate: '1.2%'
+        },
+        insights: [
+          `CAT event hail claims in TN average 25 days — currently at ${daysOpen} days, contractor estimate is the critical path item`,
+          'NWS corroboration eliminates weather validation step — standard for CAT-designated events',
+          '18 same-storm claims in zip 37211 — coordinate contractor scheduling to avoid regional backlog'
+        ]
+      },
+      nextBestActions: [
+        {
+          id: 'pc-nba-2-1',
+          priority: 1,
+          action: 'Assign Licensed Contractor for Final Estimate',
+          description: 'Contractor estimate has been outstanding for 18 days. Assign from approved CAT contractor panel for zip 37211. Set 5-business-day deadline.',
+          rationale: 'Estimate is the primary blocker for reserve finalization and payment approval',
+          urgency: 'Immediate',
+          agent: 'Claim Audit Agent',
+          category: 'Documentation'
+        },
+        {
+          id: 'pc-nba-2-2',
+          priority: 2,
+          action: 'Verify Mortgage Holder Notification Requirement',
+          description: 'Confirm mortgage company name and notification requirements. Send joint-payee notification per standard homeowners protocol.',
+          rationale: 'Mortgage holder must be notified and may be co-payee on settlement check per policy terms',
+          urgency: 'This Week',
+          agent: 'Claim Audit Agent',
+          category: 'Compliance'
+        },
+        {
+          id: 'pc-nba-2-3',
+          priority: 3,
+          action: 'Confirm CAT Event Handling with Supervisor',
+          description: 'Verify CAT event handling protocols are applied — extended SLA, approved contractor panel, and CAT reserve guidelines.',
+          rationale: 'CAT event designation may allow SLA extension and requires supervisor sign-off on reserve',
+          urgency: 'This Week',
+          agent: 'Next Best Action Agent',
+          category: 'Compliance'
+        }
+      ],
+      auditFindings: [
+        {
+          id: 'pc-af-2-1',
+          stage: 'Investigation',
+          finding: 'Contractor estimate overdue at 18 days — field adjuster Maria Rodriguez assigned but no estimate received or follow-up documented in claim notes',
+          severity: 'Medium',
+          category: 'Missed Step',
+          detectedAt: new Date(createdAt.getTime() + 14 * DAY).toISOString(),
+          status: 'Open'
+        }
+      ]
+    };
+  }
+
+  // ── PC-3: Michael Chen — Auto Comprehensive (Total Loss / Theft), PENDING_REQUIREMENTS ──
+  if (claim.id === 'pc-claim-3') {
+    const slaDate = new Date(createdAt.getTime() + 14 * DAY);
+    const daysToSla = Math.ceil((slaDate - NOW) / DAY);
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 1 * 3600000).toISOString(),
+      overallRisk: 'Medium',
+      leakageExposure: 1500,
+      claimSummary: {
+        narrative: 'Auto comprehensive total loss claim for Michael Chen, 2020 Tesla Model 3 Midnight Silver (ACV $38,000), stolen overnight from residential driveway in Phoenix AZ. Police report PHX-2026-19472 filed. Total loss processing initiated. Salvage value estimated at $3,500. Net settlement approximately $36,000 ($38,000 ACV minus $1,000 deductible and salvage adjustments). 8 days open, final police report and vehicle title outstanding. No total loss specialist assigned.',
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'FNOL received — vehicle theft reported, Phoenix AZ' },
+          { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: 'Policy PA-AZ-619247 verified active — $50K limit, $1,000 deductible' },
+          { date: new Date(createdAt.getTime() + 8 * 60000).toISOString(), event: 'Initial police report PHX-2026-19472 received' },
+          { date: new Date(createdAt.getTime() + 1 * DAY).toISOString(), event: 'Total loss threshold confirmed — ACV $38,000 exceeds repair threshold' },
+          { date: new Date(createdAt.getTime() + 2 * DAY).toISOString(), event: 'Total loss processing initiated — vehicle registration copy received' },
+          { date: new Date(createdAt.getTime() + 8 * DAY).toISOString(), event: 'Final police report and vehicle title still outstanding — total loss specialist not assigned' }
+        ],
+        investigationStatus: 'Active — Awaiting Final Police Report and Vehicle Title',
+        outstandingActions: [
+          'Final police report (case closure)',
+          'Vehicle title / Certificate of Title',
+          'Lienholder payoff authorization (if applicable)',
+          'AZ DMV Total Loss Notification Form'
+        ],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'PA-AZ-619247',
+            'Policy Type': 'Personal Auto',
+            'Coverage Limit': '$50,000',
+            'Deductible': '$1,000',
+            'Status': 'Active',
+            'Issue Date': '2020-03-15'
+          },
+          claimant: {
+            'Name': 'Michael Chen',
+            'Role': 'Policyholder',
+            'Phone': '602-555-0388',
+            'ID Verification': 'Verified (97/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Initial Police Report (PHX-2026-19472)',
+            'Claimant Loss Statement',
+            'Coverage Verification',
+            'Vehicle Registration Copy'
+          ],
+          missing: [
+            'Final Police Report (Case Closure)',
+            'Vehicle Title / Certificate of Title',
+            'Lienholder Payoff Authorization (if applicable)',
+            'AZ DMV Total Loss Notification Form'
+          ]
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Theft Confirmed (Police Report Filed)', status: 'pass', detail: 'PHX-2026-19472 received' },
+            { label: 'Total Loss Threshold Met', status: 'pass', detail: 'ACV $38,000 exceeds repair threshold' },
+            { label: 'Vehicle Title Received', status: 'fail', detail: 'Pending — required for total loss settlement' },
+            { label: 'Lienholder Coordination', status: 'warn', detail: 'Lienholder status unknown — instructions required' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'Total Loss Processing', severity: 'Medium', detail: 'ACV $38,000 — full vehicle replacement value, Tesla Model 3 parts market variability' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 36000,
+          blockers: [
+            'Final police report (case closure) pending',
+            'Vehicle title not yet received',
+            'Lienholder payoff instructions required'
+          ]
+        },
+        estimatedExposure: {
+          total: 38000,
+          components: [
+            { label: 'ACV — 2020 Tesla Model 3', amount: 38000 },
+            { label: 'Less Deductible ($1,000)', amount: -1000 },
+            { label: 'Less Salvage Offset (est.)', amount: -3500 }
+          ],
+          notes: 'Net settlement ~$33,500. Vehicle title and final police report required before payment.'
+        }
+      },
+      fraudSignals: { score: 35, signals: [] },
+      leakageIndicators: [
+        {
+          id: 'pc-li-3-1',
+          category: 'Salvage Value — Miscalculation Risk',
+          severity: 'Low',
+          description: 'Salvage value estimated at $3,500 for a 2020 Tesla Model 3. Tesla EV parts market is volatile — salvage auction values can vary significantly based on battery condition and market demand. Estimate may be conservative or optimistic.',
+          estimatedAmount: 1500,
+          recommendation: 'Obtain certified salvage appraisal from EV-specialist salvage vendor before finalizing settlement',
+          status: 'Monitoring'
+        }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: {
+          current: daysOpen,
+          industryAvg: 14,
+          carrierAvg: 12,
+          variance: daysOpen <= 12 ? 'On Track' : `+${Math.round((daysOpen / 12 - 1) * 100)}%`,
+          status: daysOpen <= 12 ? 'On Track' : 'At Risk'
+        },
+        similarClaims: {
+          count: 218,
+          avgCycleTime: 14,
+          avgSettlement: 36500,
+          subrogationRate: '0%',
+          fraudRate: '2.8%'
+        },
+        insights: [
+          `Auto theft total loss claims average 14 days — currently ${daysOpen} days, title and police report are on the critical path`,
+          'Tesla Model 3 total loss claims require EV-specialist salvage appraisal — standard shop values may be inaccurate',
+          'AZ DMV total loss notification is required within 10 days of settlement — initiate early'
+        ]
+      },
+      nextBestActions: [
+        {
+          id: 'pc-nba-3-1',
+          priority: 1,
+          action: 'Obtain Final Police Report',
+          description: 'Contact Phoenix PD case officer for PHX-2026-19472 to obtain case closure report or status update. Set 3-business-day follow-up.',
+          rationale: 'Final police report is required to confirm theft was not recovered and to support total loss determination',
+          urgency: 'Immediate',
+          agent: 'Claim Audit Agent',
+          category: 'Documentation'
+        },
+        {
+          id: 'pc-nba-3-2',
+          priority: 2,
+          action: 'Request Vehicle Title from Claimant',
+          description: 'Contact Michael Chen to obtain original vehicle title or Certificate of Title. If lienholder holds title, coordinate directly with lienholder.',
+          rationale: 'Vehicle title is required before any total loss settlement can be issued',
+          urgency: 'Immediate',
+          agent: 'Claim Audit Agent',
+          category: 'Documentation'
+        },
+        {
+          id: 'pc-nba-3-3',
+          priority: 3,
+          action: 'Determine Lienholder Status',
+          description: 'Check policy records and vehicle registration for lienholder information. If a lien exists, initiate payoff coordination with the lienholder.',
+          rationale: 'Lienholder must be paid before or alongside claimant in a total loss settlement',
+          urgency: 'This Week',
+          agent: 'Next Best Action Agent',
+          category: 'Financial'
+        }
+      ],
+      auditFindings: [
+        {
+          id: 'pc-af-3-1',
+          stage: 'Investigation',
+          finding: 'Total loss specialist not yet assigned after 8 days on a theft total loss claim. Standard procedure requires specialist assignment within 3 business days.',
+          severity: 'Medium',
+          category: 'Missed Step',
+          detectedAt: new Date(createdAt.getTime() + 5 * DAY).toISOString(),
+          status: 'Open'
+        }
+      ]
+    };
+  }
+
+  // ── PC-4: James Wilson — Auto Liability, SIU, UNDER_REVIEW ──
+  if (claim.id === 'pc-claim-4') {
+    const slaDate = new Date(createdAt.getTime() + 30 * DAY);
+    const daysToSla = Math.ceil((slaDate - NOW) / DAY);
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 0.5 * 3600000).toISOString(),
+      overallRisk: 'High',
+      leakageExposure: 75000,
+      claimSummary: {
+        narrative: `Auto liability claim for James Wilson, 2019 Ford F-150 Black, Atlanta GA. Three-vehicle accident in light rain — liability contested. Third party Sandra Kim retained attorney within 7 days, alleging neck and back injuries. Third party Thomas Brown also involved — recorded statement outstanding. BI exposure estimated $75,000–$150,000, reserve $120,000. SIU active 22 days. Defense counsel not yet retained. ${daysToSla} days remaining on SLA.`,
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'FNOL received — 3-vehicle accident, liability disputed, Atlanta GA' },
+          { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: 'Policy PA-GA-738156 verified active — $300K limit, $1,000 deductible' },
+          { date: new Date(createdAt.getTime() + 20 * 60000).toISOString(), event: 'SIU referral initiated — conflicting witness statements, liability contested' },
+          { date: new Date(createdAt.getTime() + 3 * DAY).toISOString(), event: 'BI demand letter received — Sandra Kim attorney representation confirmed' },
+          { date: new Date(createdAt.getTime() + 7 * DAY).toISOString(), event: 'Sandra Kim attorney retained within 7 days of loss — soft-tissue BI escalation risk flagged' },
+          { date: new Date(createdAt.getTime() + 10 * DAY).toISOString(), event: 'Accident reconstruction report not yet ordered — liability undetermined' },
+          { date: new Date(createdAt.getTime() + 22 * DAY).toISOString(), event: 'Defense counsel still not retained — 22 days open, SIU investigation ongoing' }
+        ],
+        investigationStatus: 'Active — SIU Investigation, Defense Counsel Required',
+        outstandingActions: [
+          'Retain defense counsel — IMMEDIATE',
+          'Order IME for Sandra Kim',
+          'Obtain SIU investigation report',
+          'Collect recorded statement from Thomas Brown',
+          'Order accident reconstruction report'
+        ],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'PA-GA-738156',
+            'Policy Type': 'Personal Auto',
+            'Coverage Limit': '$300,000',
+            'Deductible': '$1,000',
+            'Status': 'Active',
+            'Issue Date': '2017-08-15'
+          },
+          claimant: {
+            'Name': 'James Wilson',
+            'Role': 'Policyholder',
+            'Phone': '404-555-0517',
+            'ID Verification': 'Verified (94/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Police Report (ATL-2026-00872)',
+            'Claimant Statement',
+            'Initial BI Demand Letter',
+            'Vehicle Damage Photos'
+          ],
+          missing: [
+            'SIU Investigation Report',
+            'Defense Counsel Engagement Letter',
+            'Third-Party Medical Records (Sandra Kim)',
+            'Recorded Statement (Thomas Brown)',
+            'Accident Reconstruction Report'
+          ]
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Liability Determined', status: 'fail', detail: 'Disputed — SIU investigation active' },
+            { label: 'SIU Referral Initiated', status: 'pass' },
+            { label: 'Defense Counsel Retained', status: 'fail', detail: 'Not yet assigned — 22 days open' },
+            { label: 'Third-Party Statements Complete', status: 'fail', detail: 'Thomas Brown recorded statement pending' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'Bodily Injury — Attorney Representation', severity: 'High', detail: 'Sandra Kim — neck/back, treatment ongoing, attorney retained within 7 days' },
+          { label: 'Disputed Liability — SIU Investigation', severity: 'High', detail: 'Conflicting witness statements, 22 days open, no resolution timeline' },
+          { label: 'Third-Party Exposure — $125K Reserve', severity: 'Medium', detail: '2 claimants, attorney demand escalating, defense not retained' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 125000,
+          blockers: [
+            'Liability determination pending SIU investigation',
+            'Defense counsel not yet retained',
+            'Third-party medical records outstanding',
+            'Recorded statements incomplete'
+          ]
+        },
+        estimatedExposure: {
+          total: 150000,
+          components: [
+            { label: 'BI Demand — Sandra Kim (est.)', amount: 100000 },
+            { label: 'Property Damage (multi-vehicle)', amount: 30000 },
+            { label: 'Third-Party Thomas Brown (est.)', amount: 20000 }
+          ],
+          notes: 'Range $75K–$150K. Reserve $120K. Actual exposure depends on liability determination and medical records.'
+        }
+      },
+      fraudSignals: {
+        score: 55,
+        signals: [
+          {
+            id: 'pc-fs-4-1',
+            category: 'Bodily Injury',
+            severity: 'Medium',
+            indicator: 'Early Attorney Retention on Soft Tissue Claim',
+            description: 'Third party Sandra Kim retained counsel within 7 days of loss event and is claiming soft-tissue injuries (neck/back). Early attorney retention on low-speed collisions with soft-tissue claims is a recognized BI inflation pattern.',
+            dataSource: 'SIU Referral Data',
+            confidence: 68,
+            detectedAt: new Date(createdAt.getTime() + 3 * DAY).toISOString(),
+            recommendation: 'SIU to investigate claim timeline and assess BI inflation risk. Do not accept demand without independent medical examination.'
+          }
+        ]
+      },
+      leakageIndicators: [
+        {
+          id: 'pc-li-4-1',
+          category: 'Bodily Injury Exposure — Uncapped',
+          severity: 'High',
+          description: 'Sandra Kim BI demand not yet quantified. Soft-tissue injury with attorney. Reserve of $120,000 may be inadequate if treatment escalates. Each month of delayed settlement increases BI exposure.',
+          estimatedAmount: 75000,
+          recommendation: 'Retain defense counsel and request IME for Sandra Kim immediately',
+          status: 'Open'
+        },
+        {
+          id: 'pc-li-4-2',
+          category: 'Defense Cost Exposure',
+          severity: 'Medium',
+          description: 'Defense counsel not retained after 22 days. Legal costs accruing without representation. Early retention typically reduces total defense spend by 20–35%.',
+          estimatedAmount: 15000,
+          recommendation: 'Retain defense counsel within 48 hours',
+          status: 'Open'
+        }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: {
+          current: daysOpen,
+          industryAvg: 90,
+          carrierAvg: 80,
+          variance: daysOpen <= 30 ? 'Early Stage' : `+${Math.round((daysOpen / 30 - 1) * 100)}%`,
+          status: daysToSla < 5 ? 'At Risk' : 'In Progress'
+        },
+        similarClaims: {
+          count: 94,
+          avgCycleTime: 90,
+          avgSettlement: 87500,
+          subrogationRate: '0%',
+          fraudRate: '12.4%'
+        },
+        insights: [
+          'Contested BI liability claims with attorney representation average 90 days — early defense retention reduces costs by 20–35%',
+          'Soft-tissue BI claims with early attorney retention carry a 12.4% fraud rate — IME is standard procedure',
+          `Defense counsel not retained at day 22 is outside the 5-business-day carrier benchmark — escalate immediately`
+        ]
+      },
+      nextBestActions: [
+        {
+          id: 'pc-nba-4-1',
+          priority: 1,
+          action: 'Retain Defense Counsel — IMMEDIATE',
+          description: 'Assign defense counsel from approved panel immediately. 22 days without representation on a contested BI liability claim with attorney representation is a compliance failure.',
+          rationale: 'Defense counsel is required to protect policyholder interests and manage BI exposure escalation',
+          urgency: 'Immediate',
+          agent: 'Claim Audit Agent',
+          category: 'Legal'
+        },
+        {
+          id: 'pc-nba-4-2',
+          priority: 2,
+          action: 'Request IME for Sandra Kim',
+          description: 'Order an Independent Medical Examination for Sandra Kim immediately. Soft-tissue claims with attorney representation require IME to establish baseline and contest inflated demands.',
+          rationale: 'IME is the primary tool to cap BI exposure on soft-tissue attorney-represented claims',
+          urgency: 'Immediate',
+          agent: 'Fraud Signal Agent',
+          category: 'Investigation'
+        },
+        {
+          id: 'pc-nba-4-3',
+          priority: 3,
+          action: 'Obtain SIU Investigation Timeline',
+          description: 'Contact SIU supervisor for estimated report completion date. Document in claim notes. SIU report is required before any settlement negotiation can proceed.',
+          rationale: 'Liability determination depends on SIU findings — no settlement should proceed without SIU clearance',
+          urgency: 'This Week',
+          agent: 'Fraud Signal Agent',
+          category: 'Investigation'
+        },
+        {
+          id: 'pc-nba-4-4',
+          priority: 4,
+          action: 'Collect Recorded Statement from Thomas Brown',
+          description: 'Contact Thomas Brown (404-555-0134) to schedule recorded statement. Thomas is a key witness for liability determination.',
+          rationale: 'Third-party witness statements are required to resolve disputed liability determination',
+          urgency: 'This Week',
+          agent: 'Claim Audit Agent',
+          category: 'Investigation'
+        }
+      ],
+      auditFindings: [
+        {
+          id: 'pc-af-4-1',
+          stage: 'Investigation',
+          finding: 'Defense counsel not retained after 22 days on a contested liability BI claim with third-party attorney representation. Carrier benchmark requires retention within 5 business days.',
+          severity: 'High',
+          category: 'Missed Step',
+          detectedAt: new Date(createdAt.getTime() + 7 * DAY).toISOString(),
+          status: 'Open'
+        },
+        {
+          id: 'pc-af-4-2',
+          stage: 'Investigation',
+          finding: 'Recorded statement from Thomas Brown not obtained. Third-party claimant is available but has not been contacted for statement after 22 days.',
+          severity: 'Medium',
+          category: 'Incomplete Documentation',
+          detectedAt: new Date(createdAt.getTime() + 10 * DAY).toISOString(),
+          status: 'Open'
+        },
+        {
+          id: 'pc-af-4-3',
+          stage: 'Investigation',
+          finding: 'IME not ordered for BI claimant Sandra Kim despite attorney representation and soft-tissue claims. IME is required per claim handling guidelines for BI claims with legal representation.',
+          severity: 'Medium',
+          category: 'Missed Step',
+          detectedAt: new Date(createdAt.getTime() + 14 * DAY).toISOString(),
+          status: 'Open'
+        }
+      ]
+    };
+  }
+
+  // ── PC-5: Davidson Restaurant Group — Commercial Property, SLA at risk ──
+  if (claim.id === 'pc-claim-5') {
+    const slaDate = new Date(createdAt.getTime() + 30 * DAY);
+    const daysToSla = Math.ceil((slaDate - NOW) / DAY);
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 0.25 * 3600000).toISOString(),
+      overallRisk: 'High',
+      leakageExposure: 15000,
+      claimSummary: {
+        narrative: `Commercial property kitchen fire claim for Davidson Restaurant Group LLC (Davidson Grille, 840 N Michigan Ave Chicago IL). Restaurant closed 26 days — business interruption coverage triggered. Multi-component claim: $195,000 structural repair + $90,000 BI estimate = $285,000 total, reserve $280,000. Fire cause investigation (faulty equipment) ongoing — arson exclusion not yet cleared. Contractor estimate, 12 months revenue records, and BI specialist all outstanding. SLA in ${daysToSla} day(s) — extension not yet requested.`,
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'FNOL received — commercial kitchen fire, Chicago IL, restaurant closed' },
+          { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: 'Policy CP-IL-415892 verified active — $1.2M commercial property, $10K deductible' },
+          { date: new Date(createdAt.getTime() + 2 * DAY).toISOString(), event: 'Fire Department Report CPD-2026-FF-0042 received — faulty equipment attributed' },
+          { date: new Date(createdAt.getTime() + 2 * DAY).toISOString(), event: 'Flag: Fire cause investigation incomplete — arson exclusion not yet cleared' },
+          { date: new Date(createdAt.getTime() + 3 * DAY).toISOString(), event: 'Business interruption coverage triggered — daily revenue loss clock started' },
+          { date: new Date(createdAt.getTime() + 10 * DAY).toISOString(), event: 'SLA alert raised — complex claim, BI specialist and contractor estimate outstanding' },
+          { date: new Date(createdAt.getTime() + 26 * DAY).toISOString(), event: `SLA in ${daysToSla} day(s) — no extension requested, contractor estimate still outstanding` }
+        ],
+        investigationStatus: `Active — SLA Critical, BI Specialist Required, ${daysToSla} Days Remaining`,
+        outstandingActions: [
+          'FILE SLA EXTENSION IMMEDIATELY',
+          'Assign BI specialist and request 12 months revenue records',
+          'Engage licensed contractor for structural estimate',
+          'Obtain fire cause investigation report (arson exclusion)',
+          'Obtain equipment appraisal'
+        ],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'CP-IL-415892',
+            'Policy Type': 'Commercial Property',
+            'Coverage Limit': '$1,200,000',
+            'Deductible': '$10,000',
+            'Status': 'Active',
+            'Issue Date': '2022-01-01'
+          },
+          claimant: {
+            'Name': 'Marcus Davidson',
+            'Role': 'Named Insured / Business Owner',
+            'Phone': '312-555-0748',
+            'ID Verification': 'Verified (95/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Fire Department Report (CPD-2026-FF-0042)',
+            'Claimant Statement',
+            'Preliminary Damage Photos (interior/exterior)',
+            'Business License & Entity Verification'
+          ],
+          missing: [
+            'Licensed Contractor Final Estimate (structural)',
+            '12 Months Revenue Records (for BI calculation)',
+            'Commercial Equipment Appraisal',
+            'Fire Cause Investigation Report (arson/equipment)',
+            'Proof of Ongoing Business Expenses (rent, payroll)'
+          ]
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Peril Covered (Fire)', status: 'pass' },
+            { label: 'Business Interruption Triggered', status: 'pass', detail: 'Restaurant closed 26 days' },
+            { label: 'Deductible Confirmed ($10,000)', status: 'pass' },
+            { label: 'Revenue Documentation Received', status: 'fail', detail: '12 months revenue records not submitted' },
+            { label: 'Fire Cause Determination', status: 'warn', detail: 'Faulty equipment pending formal investigation report' },
+            { label: 'Arson Exclusion Cleared', status: 'warn', detail: 'Fire cause investigation ongoing — not yet confirmed' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'SLA Critical Risk', severity: 'High', detail: `${daysToSla} days remaining — extension not requested` },
+          { label: 'Business Interruption — Revenue Unquantified', severity: 'High', detail: '26 days closed, $90,000 BI estimate unconfirmed, daily accrual ongoing' },
+          { label: 'Multi-Component Claim Complexity', severity: 'Medium', detail: 'Property + BI + equipment — require specialist for each component' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 285000,
+          blockers: [
+            'Licensed contractor estimate not yet received',
+            '12 months revenue records not submitted',
+            'Equipment appraisal outstanding',
+            'SLA extension not requested — imminent breach'
+          ]
+        },
+        estimatedExposure: {
+          total: 300000,
+          components: [
+            { label: 'Structural Repairs (Kitchen Fire)', amount: 195000 },
+            { label: 'Business Interruption (26+ days)', amount: 90000 },
+            { label: 'Equipment Loss (est.)', amount: 15000 }
+          ],
+          notes: 'BI accruing ~$3,462/day. Exposure may exceed $300K without immediate contractor and BI specialist engagement.'
+        }
+      },
+      fraudSignals: {
+        score: 30,
+        signals: [
+          {
+            id: 'pc-fs-5-1',
+            category: 'Documentation',
+            severity: 'Low',
+            indicator: 'Fire Cause Under Investigation — Arson Not Excluded',
+            description: 'Kitchen fire origin attributed to faulty equipment by fire department. However, the formal fire cause investigation has not been completed. Standard practice requires arson exclusion confirmation before settlement on commercial kitchen fires above $100,000.',
+            dataSource: 'Fire Department Report CPD-2026-FF-0042',
+            confidence: 72,
+            detectedAt: new Date(createdAt.getTime() + 2 * DAY).toISOString(),
+            recommendation: 'Obtain final fire marshal investigation report before proceeding to settlement'
+          }
+        ]
+      },
+      leakageIndicators: [
+        {
+          id: 'pc-li-5-1',
+          category: 'Business Interruption — Daily Revenue Loss',
+          severity: 'High',
+          description: 'Restaurant has been closed 26 days. BI coverage pays for actual revenue loss minus saved expenses. Daily revenue estimate ~$3,462 based on claimant-provided figures. Each additional day adds ~$3,462 to liability. Current uncapped exposure: ~$90,000.',
+          estimatedAmount: 90000,
+          recommendation: 'Assign BI specialist and obtain 12 months revenue records immediately to quantify and cap exposure',
+          status: 'Open'
+        },
+        {
+          id: 'pc-li-5-2',
+          category: 'Contractor Estimate — Overrun Risk',
+          severity: 'Medium',
+          description: 'Preliminary structural damage estimate $195,000. Commercial kitchen fire restoration costs are volatile. Without a final certified estimate, the reserve of $280,000 may be insufficient for full restoration including equipment.',
+          estimatedAmount: 15000,
+          recommendation: 'Engage certified restoration contractor within 48 hours',
+          status: 'Monitoring'
+        }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: {
+          current: daysOpen,
+          industryAvg: 45,
+          carrierAvg: 40,
+          variance: daysOpen <= 40 ? 'On Track' : `+${Math.round((daysOpen / 40 - 1) * 100)}%`,
+          status: daysToSla < 5 ? 'At Risk' : 'In Progress'
+        },
+        similarClaims: {
+          count: 63,
+          avgCycleTime: 45,
+          avgSettlement: 268000,
+          subrogationRate: '8%',
+          fraudRate: '4.1%'
+        },
+        insights: [
+          `Commercial restaurant fire claims average 45 days — SLA expires in ${daysToSla} day(s), extension must be filed immediately`,
+          'BI specialist assignment within first 5 days reduces average cycle time by 12 days — 26 days without one is a significant delay',
+          'Commercial kitchen fires with unresolved arson investigations carry a 4.1% fraud rate — fire marshal report is standard protocol'
+        ]
+      },
+      nextBestActions: [
+        {
+          id: 'pc-nba-5-1',
+          priority: 1,
+          action: 'Request SLA Extension — FILE NOW',
+          description: `SLA expires in ${daysToSla} day(s). File extension request with supervisor approval citing complex multi-component commercial claim with BI and structural components. Document in claim notes immediately.`,
+          rationale: 'SLA breach without an approved extension is a regulatory compliance violation',
+          urgency: 'Immediate',
+          agent: 'Compliance Agent',
+          category: 'Compliance'
+        },
+        {
+          id: 'pc-nba-5-2',
+          priority: 2,
+          action: 'Assign BI Specialist and Request Revenue Records',
+          description: 'Assign a Business Interruption specialist to quantify daily revenue loss. Simultaneously request 12 months of revenue records (P&L statements, tax returns, POS reports) from Davidson Restaurant Group.',
+          rationale: 'BI exposure is accruing at ~$3,462/day — each day without quantification increases total liability',
+          urgency: 'Immediate',
+          agent: 'Leakage Detection Agent',
+          category: 'Financial'
+        },
+        {
+          id: 'pc-nba-5-3',
+          priority: 3,
+          action: 'Engage Licensed Contractor for Final Estimate',
+          description: 'Assign a licensed commercial restoration contractor to provide a certified structural damage estimate. Preliminary $195,000 figure must be validated by a certified contractor.',
+          rationale: 'Contractor estimate is required to finalize reserve and approve any structural repair payment',
+          urgency: 'Immediate',
+          agent: 'Claim Audit Agent',
+          category: 'Documentation'
+        },
+        {
+          id: 'pc-nba-5-4',
+          priority: 4,
+          action: 'Obtain Fire Cause Investigation Report',
+          description: 'Contact Chicago Fire Marshal office to request formal fire cause investigation report. Arson exclusion must be cleared before any settlement can be issued.',
+          rationale: 'Policy may exclude arson — settlement without fire cause confirmation is an underwriting risk',
+          urgency: 'This Week',
+          agent: 'Fraud Signal Agent',
+          category: 'Investigation'
+        }
+      ],
+      auditFindings: [
+        {
+          id: 'pc-af-5-1',
+          stage: 'Investigation',
+          finding: `SLA approaching in ${daysToSla} day(s) with no extension request filed — 26 days open on a complex commercial property claim with multiple coverage components`,
+          severity: 'High',
+          category: 'SLA Breach Risk',
+          detectedAt: new Date(NOW.getTime() - 3 * DAY).toISOString(),
+          status: 'Open'
+        },
+        {
+          id: 'pc-af-5-2',
+          stage: 'Investigation',
+          finding: 'BI specialist not assigned after 26 days — revenue records not requested. Business has been closed since loss date with daily revenue loss accruing uncapped.',
+          severity: 'High',
+          category: 'Missed Step',
+          detectedAt: new Date(createdAt.getTime() + 10 * DAY).toISOString(),
+          status: 'Open'
+        },
+        {
+          id: 'pc-af-5-3',
+          stage: 'Investigation',
+          finding: 'Contractor estimate not received after 26 days — no documented follow-up or escalation in claim notes. Reserve of $280,000 is based on preliminary figures only.',
+          severity: 'Medium',
+          category: 'Incomplete Documentation',
+          detectedAt: new Date(createdAt.getTime() + 14 * DAY).toISOString(),
+          status: 'Open'
+        }
+      ]
+    };
+  }
+
+  // ── PC-6: Kim's Flowers & Gifts — Commercial Property IoT, STP, CLOSED ──
+  if (claim.id === 'pc-claim-6') {
+    return {
+      lastAnalyzed: claim.closedAt || NOW.toISOString(),
+      overallRisk: 'Low',
+      leakageExposure: 0,
+      claimSummary: {
+        narrative: "Commercial property frozen pipe claim for Kim's Flowers & Gifts, 1847 Main Street Chicago IL. Kim Lee, policyholder. Winter storm -5°F NOAA confirmed. IoT FloodStop Pro sensors: TEMP-BPF-001 recorded -5°F at 02:30, WATER-BPF-002 activated at 03:45. Emergency mitigation started within 2 hours. Prior claim CLM-2024-012847 — all 4 prevention measures followed. Claim $19,500 ($16,500 repair + $3,000 BI). STP approved in 45 minutes — 94% confidence. ACH payment issued same day. Fastest 5% of BOP pipe burst claims processed this year.",
+        keyEvents: [
+          { date: createdAt.toISOString(), event: 'IoT FloodStop Pro WATER-BPF-002 activated at 03:45 — pipe burst detected' },
+          { date: new Date(createdAt.getTime() + 30 * 60000).toISOString(), event: 'Mobile FNOL submitted — geo-tagged damage photos, Kim Lee' },
+          { date: new Date(createdAt.getTime() + 62 * 60000).toISOString(), event: 'Automated analysis: 5 data sources corroborated — NOAA, IoT, FNOL photos, prior claim history, peer benchmark' },
+          { date: new Date(createdAt.getTime() + 75 * 60000).toISOString(), event: 'STP approved — 94% confidence, all 5 criteria met in 45 minutes' },
+          { date: new Date(createdAt.getTime() + 2 * 3600000).toISOString(), event: 'Emergency contractor estimate $19,500 validated against 127 comparable claims' },
+          { date: new Date(createdAt.getTime() + 2.5 * 3600000).toISOString(), event: 'ACH payment $19,500 issued to Kim\'s Flowers & Gifts — claim closed' }
+        ],
+        investigationStatus: 'Cleared — Closed (STP)',
+        outstandingActions: [],
+        policyClaimantDetails: {
+          policy: {
+            'Policy Number': 'BOP-IL-789456',
+            'Policy Type': 'Business Owners Policy',
+            'Coverage Limit': '$500,000',
+            'Deductible': '$5,000',
+            'Status': 'Active',
+            'Issue Date': '2023-06-01'
+          },
+          claimant: {
+            'Name': 'Kim Lee',
+            'Role': 'Named Insured / Business Owner',
+            'Phone': '503-555-0234',
+            'ID Verification': 'Verified (99/100)'
+          }
+        },
+        documentation: {
+          received: [
+            'Mobile FNOL + Geo-Tagged Damage Photos',
+            'IoT Sensor Logs (TEMP-BPF-001 & WATER-BPF-002)',
+            'NOAA Winter Storm Warning Confirmation',
+            'Emergency Contractor Estimate',
+            'Coverage Verification',
+            'Government-Issued ID'
+          ],
+          missing: []
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Coverage Active at Date of Loss', status: 'pass' },
+            { label: 'Peril Covered (Frozen Pipe)', status: 'pass' },
+            { label: 'IoT Sensor Data Corroborated', status: 'pass', detail: 'TEMP-BPF-001: -5°F at 02:30, WATER-BPF-002: activated 03:45' },
+            { label: 'NOAA Weather Confirmed', status: 'pass', detail: 'Winter Storm Warning — -5°F Chicago IL 60601' },
+            { label: 'Prior Claim Prevention Compliance Verified', status: 'pass', detail: 'All 4 post-CLM-2024-012847 measures completed' },
+            { label: 'Estimate Within Benchmark Range', status: 'pass', detail: 'Validated against 127 comparable BOP pipe burst claims' },
+            { label: 'Identity Verified', status: 'pass', detail: 'Score 99/100 — pre-verified returning customer' }
+          ]
+        },
+        riskIndicators: [],
+        payoutReadiness: {
+          status: 'Paid',
+          estimatedAmount: 19500,
+          blockers: []
+        },
+        estimatedExposure: {
+          total: 19500,
+          components: [
+            { label: 'Structural Repair (Pipe Burst)', amount: 16500 },
+            { label: 'Business Interruption', amount: 3000 }
+          ],
+          notes: "Closed — ACH payment $19,500 issued same day (STP). Fastest 5% of BOP pipe burst claims."
+        }
+      },
+      fraudSignals: { score: 8, signals: [] },
+      leakageIndicators: [],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: {
+          current: 0,
+          industryAvg: 5,
+          carrierAvg: 4,
+          variance: '-100%',
+          status: 'Exceeding'
+        },
+        similarClaims: {
+          count: 89,
+          avgCycleTime: 5,
+          avgSettlement: 18200,
+          subrogationRate: '0%',
+          fraudRate: '0.6%'
+        },
+        insights: [
+          'Closed in 45 minutes — fastest 5% of BOP pipe burst claims processed this year',
+          'IoT sensor validation eliminated need for field adjuster, saving an estimated 2 days of cycle time',
+          'Prior claim prevention compliance (CLM-2024-012847) was a decisive STP qualifier — behavioral pattern indicative of low-risk insured'
+        ]
+      },
+      nextBestActions: [],
+      auditFindings: []
+    };
+  }
+
+  // ── Default: seeded P&C claims ──
+  const overallRisk = riskScore < 30 ? 'Low' : riskScore < 55 ? 'Medium' : 'High';
+  const isSTP = claim.routing?.type === 'fasttrack';
+  const claimAmount = claim.financial?.claimAmount || 0;
+  const isClosed = claim.status === 'closed';
+  const type = claim.type;
+  const isAuto = type === PCClaimType.AUTO_COLLISION || type === PCClaimType.AUTO_COMPREHENSIVE;
+  const isLiability = type === PCClaimType.AUTO_LIABILITY;
+  const isProperty = type === PCClaimType.HOMEOWNERS || type === PCClaimType.COMMERCIAL_PROPERTY;
+  const alerts = claim.aiInsights?.alerts || [];
+
+  let narrativeSuffix = '';
+  if (isAuto) narrativeSuffix = 'Repair estimate and damage documentation are the primary outstanding items.';
+  else if (isLiability) narrativeSuffix = 'Liability determination and third-party statements are outstanding.';
+  else if (isProperty) narrativeSuffix = 'Contractor estimate and coverage verification are the primary outstanding items.';
+  else narrativeSuffix = 'Standard claim processing in progress.';
+
+  return {
+    lastAnalyzed: new Date(NOW.getTime() - Math.floor((daysOpen % 6) + 1) * 3600000).toISOString(),
+    overallRisk,
+    leakageExposure: isClosed ? 0 : (isLiability ? Math.round(claimAmount * 0.2) : 0),
+    claimSummary: {
+      narrative: `${type ? type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : 'P&C'} claim for ${claim.insured?.name || claim.claimant?.name}, filed via claims portal. Policy ${claim.policy?.policyNumber} — ${claim.policy?.type || 'P&C Insurance'} with coverage limit $${(claim.policy?.coverageLimit || claimAmount).toLocaleString()}. Status: ${(claim.status || '').replace(/_/g, ' ')}. Claim is ${daysOpen} days old. ${narrativeSuffix}`,
+      keyEvents: [
+        { date: claim.createdAt, event: 'FNOL submitted via claims portal' },
+        { date: new Date(createdAt.getTime() + 3 * 60000).toISOString(), event: `Policy ${claim.policy?.policyNumber} verified active` },
+        { date: new Date(createdAt.getTime() + 15 * 60000).toISOString(), event: isSTP ? 'STP routing approved — claim fast-tracked' : 'Standard routing assigned — adjuster queue' }
+      ],
+      investigationStatus: isClosed ? 'Cleared — Closed' : 'Active',
+      outstandingActions: isClosed ? [] : ['Complete open requirements', 'Advance claim through adjuster review'],
+      policyClaimantDetails: {
+        policy: {
+          'Policy Number': claim.policy?.policyNumber || '—',
+          'Policy Type': claim.policy?.type || '—',
+          'Coverage Limit': claim.policy?.coverageLimit ? `$${claim.policy.coverageLimit.toLocaleString()}` : '—',
+          'Deductible': claim.policy?.deductible ? `$${claim.policy.deductible.toLocaleString()}` : '—',
+          'Status': claim.policy?.status || 'Active',
+          'Issue Date': claim.policy?.issueDate || '—'
+        },
+        claimant: {
+          'Name': claim.claimant?.name || claim.insured?.name || '—',
+          'Role': claim.claimant?.relationship || 'Policyholder',
+          'Phone': claim.claimant?.contactInfo?.phone || '—',
+          'ID Verification': 'Verified'
+        }
+      },
+      documentation: {
+        received: ['Claimant Loss Statement', 'Coverage Verification', ...(isAuto ? ['Vehicle Damage Photos', 'Repair Estimate'] : isProperty ? ['Property Damage Photos'] : [])],
+        missing: isClosed ? [] : (isAuto ? ['Police Report'] : isProperty ? ['Licensed Contractor Estimate'] : ['Outstanding Documentation'])
+      },
+      eligibilityValidation: {
+        checks: [
+          { label: 'Coverage Active at Date of Loss', status: 'pass' },
+          { label: 'Claim Type Covered', status: 'pass' },
+          { label: 'Identity Verified', status: isSTP ? 'pass' : 'warn', detail: isSTP ? undefined : 'Verification in progress' }
+        ]
+      },
+      riskIndicators: alerts.length > 0 ? alerts.map(a => ({ label: a.title || 'Risk Indicator', severity: a.severity || 'Low', detail: a.message || '' })) : [],
+      payoutReadiness: {
+        status: isClosed ? 'Paid' : (isSTP ? 'Ready' : 'Blocked'),
+        estimatedAmount: isClosed ? (claim.financial?.amountPaid || claimAmount) : Math.max(0, claimAmount - (claim.policy?.deductible || 0)),
+        blockers: isClosed ? [] : (isSTP ? [] : ['Outstanding documentation required', 'Adjuster review in progress'])
+      },
+      estimatedExposure: {
+        total: claimAmount,
+        components: [
+          { label: 'Claim Reserve', amount: claim.financial?.reserve || claimAmount },
+          ...(claim.policy?.deductible ? [{ label: 'Less Deductible', amount: -(claim.policy.deductible) }] : [])
+        ],
+        notes: isClosed ? 'Claim closed — payment issued.' : null
+      }
+    },
+    fraudSignals: {
+      score: riskScore,
+      signals: alerts.map((a, i) => ({
+        id: `pc-fs-${claim.id}-${i}`,
+        category: a.category || 'General',
+        severity: a.severity || 'Low',
+        indicator: a.title || 'Risk Indicator',
+        description: a.description || a.message || '',
+        dataSource: 'Internal',
+        confidence: a.confidence || 70,
+        detectedAt: a.timestamp || claim.createdAt,
+        recommendation: a.recommendation || 'Review'
+      }))
+    },
+    leakageIndicators: (!isClosed && isLiability && claimAmount > 0) ? [
+      {
+        id: `pc-li-${claim.id}-1`,
+        category: 'Liability Exposure',
+        severity: overallRisk === 'High' ? 'High' : 'Medium',
+        description: `Liability claim with reserve $${(claim.financial?.reserve || 0).toLocaleString()}. Third-party exposure may escalate if liability is not determined promptly.`,
+        estimatedAmount: Math.round(claimAmount * 0.2),
+        recommendation: 'Prioritize liability determination and retain defense counsel if applicable',
+        status: 'Monitoring'
+      }
+    ] : [],
+    subrogationOpportunities: (isSTP && claim.lossEvent?.faultDetermination === 'Third-party at fault') ? [
+      {
+        id: `pc-sub-${claim.id}-1`,
+        opportunityType: 'Third-Party Auto Liability',
+        description: 'Third-party determined at fault. Subrogation recovery may be available against the at-fault party\'s insurer.',
+        estimatedRecovery: Math.round(claimAmount * 0.85),
+        probability: 'Medium',
+        recommendedAction: 'Issue subrogation demand letter to third-party insurer on file',
+        status: 'Identified'
+      }
+    ] : [],
+    benchmarkData: {
+      cycleTime: {
+        current: daysOpen,
+        industryAvg: isSTP ? 7 : (isProperty ? 25 : 14),
+        carrierAvg: isSTP ? 6 : (isProperty ? 22 : 12),
+        variance: 'In Range',
+        status: isClosed ? 'Closed' : 'On Track'
+      },
+      similarClaims: {
+        count: 120,
+        avgCycleTime: isSTP ? 6 : (isProperty ? 22 : 12),
+        avgSettlement: Math.round(claimAmount * 0.95),
+        subrogationRate: isAuto ? '28%' : '5%',
+        fraudRate: isLiability ? '8%' : '1.5%'
+      },
+      insights: [
+        `Claim is tracking within normal range for ${isSTP ? 'STP' : 'standard'} ${type ? type.replace(/_/g, ' ') : 'P&C'} processing`
+      ]
+    },
+    nextBestActions: isClosed ? [] : [
+      {
+        id: `pc-nba-${claim.id}-1`,
+        priority: 1,
+        action: 'Review and Advance Outstanding Requirements',
+        description: 'Complete all pending requirements to advance claim through the processing workflow',
+        rationale: 'Outstanding requirements are the primary blocker for claim progression',
+        urgency: 'This Week',
+        agent: 'Next Best Action Agent',
+        category: 'Documentation'
+      }
+    ],
+    auditFindings: []
+  };
+};
 const createPCShowcaseClaims = () => {
   const claims = [];
 
@@ -256,6 +1392,7 @@ const createPCShowcaseClaims = () => {
     claim.requirements = generatePCRequirements(claim);
     claim.timeline = generatePCTimeline(claim);
     claim.workNotes = generatePCWorkNotes(claim);
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -295,6 +1432,7 @@ const createPCShowcaseClaims = () => {
     claim.requirements = generatePCRequirements(claim);
     claim.timeline = generatePCTimeline(claim);
     claim.workNotes = generatePCWorkNotes(claim);
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -333,6 +1471,7 @@ const createPCShowcaseClaims = () => {
     claim.requirements = generatePCRequirements(claim);
     claim.timeline = generatePCTimeline(claim);
     claim.workNotes = generatePCWorkNotes(claim);
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -376,6 +1515,7 @@ const createPCShowcaseClaims = () => {
     claim.requirements = generatePCRequirements(claim);
     claim.timeline = generatePCTimeline(claim);
     claim.workNotes = generatePCWorkNotes(claim);
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -418,6 +1558,7 @@ const createPCShowcaseClaims = () => {
     claim.requirements = generatePCRequirements(claim);
     claim.timeline = generatePCTimeline(claim);
     claim.workNotes = generatePCWorkNotes(claim);
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -477,7 +1618,7 @@ const createPCShowcaseClaims = () => {
             category: 'Pattern Analysis',
             title: 'Prior Claim History Supports Authenticity — Prevention Compliance Verified',
             message: 'Insured completed all 4 prevention measures recommended after prior claim CLM-2024-012847.',
-            description: 'Prior claim CLM-2024-012847 (January 2024, frozen pipe, $15,000) reviewed and cross-referenced. Post-claim adjuster recommended 4 prevention measures. All 4 independently verified: FloodStop Pro water sensor installed March 2024 (hardware registration confirmed), exposed basement pipes insulated (contractor invoice on file), Smart Business Monitoring enrollment active (telematics data accessible), winterization checklist completed and submitted October 2025. Proactive compliance behavior is statistically inconsistent with fraudulent intent and supports STP Criterion 4.',
+            description: 'Prior claim CLM-2024-012847 (January 2024, frozen pipe, $15,000) reviewed and cross-referenced. Post-claim adjuster recommended 4 prevention measures. All 4 independently verified: FloodStop Pro water sensor installed March 2024 (hardware registration confirmed), exposed basement pipes insulated (contractor invoice on file), Business Monitoring enrollment active (telematics data accessible), winterization checklist completed and submitted October 2025. Proactive compliance behavior is statistically inconsistent with fraudulent intent and supports STP Criterion 4.',
             recommendation: 'Prior claim compliance strengthens authenticity. Pattern consistent with a responsible insured who took prevention seriously.',
             confidence: 98,
             timestamp: createdDate.toISOString()
@@ -510,7 +1651,7 @@ const createPCShowcaseClaims = () => {
           stpCriteria: [
             { criterion: 'Storm Alert Sent', met: true, details: 'Winter storm alert sent to insured 48 hours before incident' },
             { criterion: 'Risk Documentation', met: true, details: 'Property photos documented vulnerable pipe locations from prior claim', priorClaimRef: 'CLM-2024-012847' },
-            { criterion: 'Smart Monitoring', met: true, details: 'FloodStop Pro water sensor detected leak at 3:45 AM', sensorVerified: true },
+            { criterion: 'IoT Monitoring', met: true, details: 'FloodStop Pro water sensor detected leak at 3:45 AM', sensorVerified: true },
             { criterion: 'Prevention Compliance', met: true, details: 'All recommended measures followed post prior claim — insulation, sensor install, winterization checklist', complianceScore: 100 },
             { criterion: 'Rapid Response', met: true, details: 'Emergency mitigation began within 2 hours of detection', responseTime: '1 hour 45 minutes' }
           ]
@@ -589,6 +1730,7 @@ const createPCShowcaseClaims = () => {
       { sys_id: 'wn-pc-claim-6-2', element: 'work_notes', element_id: 'pc-demo-sys-id-6', name: 'x_dxcis_claims_a_0_claims_fnol', value: 'Prior claim CLM-2024-012847 reviewed. Insured followed all prevention recommendations: FloodStop Pro sensor installed, exposed pipes insulated, winterization checklist completed. Prevention compliance 100%. STP criteria 2 and 4 confirmed.', sys_created_on: new Date(createdDate.getTime() + 1.5 * 3600000).toISOString().replace('T', ' ').substring(0, 19), sys_created_by: 'digital.agent' },
       { sys_id: 'wn-pc-claim-6-1', element: 'work_notes', element_id: 'pc-demo-sys-id-6', name: 'x_dxcis_claims_a_0_claims_fnol', value: 'FNOL received via mobile app with damage photos. IoT data: TEMP-BPF-001 recorded -5°F at 02:30, WATER-BPF-002 activated at 03:45 (water leak), HUMID-BPF-003 spike at 04:00. NOAA confirms Winter Storm Warning for Chicago IL. STP evaluation initiated.', sys_created_on: new Date(createdDate.getTime() + 0.5 * 3600000).toISOString().replace('T', ' ').substring(0, 19), sys_created_by: 'digital.agent' }
     ];
+    claim.guardianInsights = generatePCGuardianInsights(claim);
     claims.push(claim);
   }
 
@@ -675,6 +1817,7 @@ const generateSeededPCClaim = (index, isFT) => {
   claim.requirements = generatePCRequirements(claim);
   claim.timeline = generatePCTimeline(claim);
   claim.workNotes = generatePCWorkNotes(claim);
+  claim.guardianInsights = generatePCGuardianInsights(claim);
   return claim;
 };
 
@@ -688,7 +1831,9 @@ export const generatePCDemoClaims = () => {
   for (let i = 7; i <= 16; i++) {
     seededClaims.push(generateSeededPCClaim(i, ftIndices.includes(i)));
   }
-  return [...showcaseClaims, ...seededClaims];
+  const all = [...showcaseClaims, ...seededClaims];
+  all.forEach(c => { c.guardianInsights = generatePCGuardianInsights(c); });
+  return all;
 };
 
 let cachedPCDemoData = null;

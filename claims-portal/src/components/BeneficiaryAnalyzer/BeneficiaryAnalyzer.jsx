@@ -479,7 +479,7 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
           status: 'ALIVE',
           lastVerified: '2024-01-20',
           confidence: 0.99,
-          source: 'LexisNexis Death Verification'
+          source: 'LexisNexis Claimant Verification'
         }
       };
 
@@ -521,7 +521,7 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
               Beneficiary Analysis in Progress
             </DxcTypography>
             <DxcTypography fontSize="font-scale-01" color="var(--color-fg-neutral-strong)" textAlign="center">
-              AI is extracting and comparing beneficiary data from DMS documents and PAS records.
+              Extracting and comparing beneficiary data from DMS documents and PAS records.
             </DxcTypography>
             <DxcTypography fontSize="font-scale-01" color="var(--color-fg-neutral-stronger)" textAlign="center">
               This may take up to 60 seconds. Please wait...
@@ -1071,7 +1071,7 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
                                 <DxcFlex gap="8px" alignItems="center">
                                   <span className="material-icons" style={{ fontSize: '18px', color: '#1565C0' }}>psychology</span>
                                   <DxcTypography fontSize="font-scale-02" fontWeight="font-weight-bold" color="#1565C0">
-                                    AI Analysis
+                                    Analysis
                                   </DxcTypography>
                                 </DxcFlex>
                                 <DxcTypography fontSize="font-scale-02" color="#1F2937" style={{ lineHeight: '1.5' }}>
@@ -1090,13 +1090,6 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
                                 onClick={(e) => { e.stopPropagation(); handleLexisNexisLookup(extractedBen.id, 'address'); }}
                               />
                               <DxcButton
-                                label="Death Check"
-                                mode="secondary"
-                                size="medium"
-                                icon="person_search"
-                                onClick={(e) => { e.stopPropagation(); handleLexisNexisLookup(extractedBen.id, 'deceased'); }}
-                              />
-                              <DxcButton
                                 label="View Document"
                                 mode="tertiary"
                                 size="medium"
@@ -1113,13 +1106,6 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
                                     semantic="info"
                                     title="Address Verified"
                                     message={{ text: `${lexisNexisResults[extractedBen.id].address.street}, ${lexisNexisResults[extractedBen.id].address.city}, ${lexisNexisResults[extractedBen.id].address.state}` }}
-                                  />
-                                )}
-                                {lexisNexisResults[extractedBen.id].deceased && (
-                                  <DxcAlert
-                                    semantic={lexisNexisResults[extractedBen.id].deceased.status === 'ALIVE' ? 'success' : 'error'}
-                                    title="Death Verification"
-                                    message={{ text: lexisNexisResults[extractedBen.id].deceased.status }}
                                   />
                                 )}
                               </DxcFlex>

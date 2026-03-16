@@ -33,28 +33,6 @@
   text-decoration: underline;
 }
 
-/* Decision state modifiers */
-
-.related-policy-card--confirmed {
-  border-color: var(--color-border-success-strong);
-  background-color: var(--color-bg-success-lightest, #f0fdf4);
-}
-
-.related-policy-card--confirmed:hover {
-  border-color: var(--color-border-success-strong);
-}
-
-.related-policy-card--denied {
-  border-color: var(--color-border-neutral-medium);
-  opacity: 0.55;
-}
-
-.related-policy-card--denied:hover {
-  border-color: var(--color-border-neutral-medium);
-  box-shadow: none;
-  transform: none;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .related-policy-details-grid {

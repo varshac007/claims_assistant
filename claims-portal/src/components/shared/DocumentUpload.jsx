@@ -441,7 +441,7 @@ const DocumentUpload = ({
       <div className="du-staged du-staged-form" style={{ textAlign: 'center', padding: '40px 24px' }}>
         <div style={{ fontSize: 40, marginBottom: 8 }}>📄</div>
         <div style={{ fontWeight: 700, marginBottom: 4 }}>{fileName}</div>
-        <div style={{ fontSize: 11, color: '#888' }}>Document uploaded to claim.<br />AI extraction in progress.</div>
+        <div style={{ fontSize: 11, color: '#888' }}>Document uploaded to claim.<br />Extraction in progress.</div>
       </div>
     );
   };
@@ -483,7 +483,7 @@ const DocumentUpload = ({
         <div className="du-split__fields">
           <div className="du-split__fields-hdr">
             <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#0067b3' }}>smart_toy</span>
-            <span className="du-split__fields-title">AI Extracted Fields</span>
+            <span className="du-split__fields-title">Extracted Fields</span>
             {sections.intent && <span className="du-split__badge du-split__badge--intent">{sections.intent.replace(/_/g, ' ')}</span>}
             {sections.classification && <span className="du-split__badge du-split__badge--class">{sections.classification}</span>}
             {isPending && !idpData && <span className="du-split__badge du-split__badge--processing">⏳ Processing…</span>}
@@ -583,7 +583,7 @@ const DocumentUpload = ({
         {/* Header bar */}
         <div className="doc-idp-header">
           <span className="material-symbols-outlined">smart_toy</span>
-          <span className="doc-idp-header-title">AI Extracted Fields</span>
+          <span className="doc-idp-header-title">Extracted Fields</span>
           {intent && <span className="doc-idp-intent">{intent.replace(/_/g, ' ')}</span>}
           {idpData.documents?.[0]?.classification && (
             <span className="doc-idp-classification">{idpData.documents[0].classification}</span>

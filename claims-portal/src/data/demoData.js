@@ -186,6 +186,631 @@ const NOW = new Date();
 const DAY = 86400000;
 
 // ============================================================
+// Claim Guardian Intelligence Generator
+// ============================================================
+const generateGuardianInsights = (claim) => {
+  const daysOpen = Math.floor((NOW - new Date(claim.createdAt)) / DAY);
+  const isSTP = claim.routing?.type === RoutingType.STP;
+  const riskScore = claim.aiInsights?.riskScore || 20;
+  const claimAmount = claim.financial?.claimAmount || 0;
+  const pmiRate = claim.financial?.pmiRate || 0.08;
+  const dailyPMI = Math.round((claimAmount * pmiRate) / 365);
+  const pmiAccrual = Math.round(claimAmount * pmiRate * daysOpen / 365);
+
+  // ── claim-1: Elizabeth Jones — UNDER_REVIEW, beneficiary change ──
+  if (claim.id === 'claim-1') {
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 2 * 3600000).toISOString(),
+      overallRisk: 'Medium', leakageExposure: pmiAccrual,
+      claimSummary: {
+        narrative: `Death claim filed by Elizabeth Jones (spouse) for Robert Jones, age 67, who died of natural causes in Springfield, IL on ${claim.deathEvent.dateOfDeath}. Policy POL-847291 is a $150,000 Term Life policy issued May 2018. Claim is under standard review. A beneficiary designation change made 8 months prior to death has been flagged for enhanced verification. SLA has ${claim.workflow?.sla?.daysRemaining || 10} days remaining.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received via beneficiary portal' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 5 * 60000).toISOString(), event: 'Policy POL-847291 verified in-force at date of death' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 10 * 60000).toISOString(), event: 'Death verification — LexisNexis 3-point match (score 88)' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), event: 'Risk alert: Beneficiary designation change detected 8 months before death' }
+        ],
+        investigationStatus: 'Active — Beneficiary Change Review',
+        outstandingActions: ['Beneficiary government ID verification', 'Beneficiary change rationale documentation', 'IRS W-9 form', 'Payment election form'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-847291', 'Policy Type': 'Term Life', 'Face Amount': '$150,000', 'Status': 'In Force', 'Issue Date': 'May 2018', 'Issue State': 'IL' },
+          claimant: { 'Name': 'Elizabeth Jones', 'Relationship': 'Spouse', 'Phone': '312-555-0147', 'ID Verification': 'Pending (LexisNexis score 82)' }
+        },
+        documentation: {
+          received: ['Death Certificate', 'Claimant Statement (FNOL)', 'Policy In-Force Confirmation', 'LexisNexis Verification (score 88)'],
+          missing: ['Government-Issued Photo ID (Elizabeth Jones)', 'Beneficiary Change Authorization Form', 'IRS W-9 Form', 'Payment Election Form']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear (>2 years)', status: 'pass' },
+            { label: 'Death Verification (LexisNexis 88)', status: 'pass' },
+            { label: 'Beneficiary Identity Verified', status: 'fail', detail: 'Government ID pending' },
+            { label: 'Beneficiary Change Review Complete', status: 'warn', detail: '8 months before death — in progress' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'Beneficiary Change Proximity', severity: 'Medium', detail: '8 months before death — within 12-month review window' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 150000,
+          blockers: ['Beneficiary identity verification pending', 'Beneficiary change documentation not received', 'W-9 and payment election outstanding']
+        }
+      },
+      fraudSignals: {
+        score: 45,
+        signals: [{ id: 'fs-1-1', category: 'Policy Pattern', severity: 'Medium', indicator: 'Beneficiary Designation Change Proximity to Death', description: 'Primary beneficiary was changed 8 months before date of death. Changes within 12 months of death trigger enhanced review under ISO ClaimSearch guidelines. Original beneficiary has not been notified.', dataSource: 'Internal Policy Admin', confidence: 72, detectedAt: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), recommendation: 'Obtain signed beneficiary change authorization form and confirm relationship documentation' }]
+      },
+      leakageIndicators: [
+        { id: 'li-1-1', category: 'PMI Accrual Exposure', severity: 'Low', description: `IL Post-Mortem Interest accruing at 8% p.a. on $150,000. Each processing day adds $${dailyPMI} to total liability. Current exposure: $${pmiAccrual.toLocaleString()}.`, estimatedAmount: pmiAccrual, recommendation: 'Prioritize beneficiary verification to reduce PMI exposure', status: 'Monitoring' }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 18, carrierAvg: 15, variance: `+${Math.max(0, Math.round((daysOpen / 15 - 1) * 100))}%`, status: daysOpen > 18 ? 'At Risk' : 'On Track' },
+        reserveAccuracy: { currentReserve: 135000, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 847, avgCycleTime: 18, avgSettlement: 148500, subrogationRate: '0%', fraudRate: '2.1%' },
+        insights: [
+          `Claim is running ${daysOpen > 15 ? Math.round((daysOpen / 15 - 1) * 100) + '% above' : 'within'} carrier average of 15 days for similar standard Term Life claims`,
+          'Beneficiary change cases resolve 3.5 days slower on average vs. standard claims',
+          'Reserve at 90% of face value — consistent with carrier benchmark for under-review claims'
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-1-1', priority: 1, action: 'Complete Beneficiary Identity Verification', description: `Government-issued photo ID for Elizabeth Jones has been pending for ${daysOpen} days. Send reminder with secure upload link.`, rationale: `Identity verification is blocking payment approval; SLA at ${claim.workflow?.sla?.daysRemaining || 10} days remaining`, urgency: 'This Week', agent: 'Claim Audit Agent', category: 'Documentation' },
+        { id: 'nba-1-2', priority: 2, action: 'Issue Beneficiary Change Documentation Request', description: 'Request signed beneficiary change authorization form and prior beneficiary notification records from Policy Admin', rationale: 'Change 8 months before death requires documented review per underwriting guidelines', urgency: 'This Week', agent: 'Fraud Signal Agent', category: 'Investigation' },
+        { id: 'nba-1-3', priority: 3, action: 'Collect W-9 and Payment Election Form', description: 'Send consolidated documentation request to claimant for both outstanding items', rationale: 'Required before payment can be issued', urgency: 'This Week', agent: 'Next Best Action Agent', category: 'Documentation' }
+      ],
+      auditFindings: [
+        { id: 'af-1-1', stage: 'Investigation', finding: `Beneficiary identity verification in pending status for ${daysOpen} days — no follow-up contact logged after initial outreach`, severity: 'Medium', category: 'Incomplete Documentation', detectedAt: new Date(NOW.getTime() - 10 * DAY).toISOString(), status: 'Open' },
+        { id: 'af-1-2', stage: 'Investigation', finding: 'Beneficiary change risk flagged but no formal documentation request issued to claimant or policy records team', severity: 'Medium', category: 'Missed Step', detectedAt: new Date(NOW.getTime() - 5 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── claim-2: Harold Mitchell — CLOSED, STP ──
+  if (claim.id === 'claim-2') {
+    return {
+      lastAnalyzed: claim.closedAt || NOW.toISOString(),
+      overallRisk: 'Low', leakageExposure: 0,
+      claimSummary: {
+        narrative: `Death claim for Harold Mitchell, age 73, closed via STP in 7 days. Spouse Margaret Mitchell received full benefit of $100,000 plus $${(claim.financial?.interestAmount || 0).toLocaleString()} PMI interest via ACH. All documentation auto-verified. No anomalies detected. GL posted and 1099 generated.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — STP eligibility score 92' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), event: 'All documents auto-verified via IDP — death certificate and claimant statement' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 3 * DAY).toISOString(), event: 'W-9 and payment election completed by claimant' },
+          { date: claim.closedAt, event: 'ACH payment of $100,000 + interest issued and confirmed' }
+        ],
+        investigationStatus: 'Cleared — Closed', outstandingActions: [],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-523184', 'Policy Type': 'Term Life', 'Face Amount': '$100,000', 'Status': 'In Force', 'Issue Date': 'Mar 2016', 'Issue State': 'FL' },
+          claimant: { 'Name': 'Margaret Mitchell', 'Relationship': 'Spouse', 'Phone': '813-555-0291', 'ID Verification': 'Verified (score 96)' }
+        },
+        documentation: {
+          received: ['Death Certificate', 'Claimant Statement', 'IRS W-9 Form', 'Payment Election Form (ACH)', 'LexisNexis Verification (score 96)', 'GL Posting & 1099 Generated'],
+          missing: []
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear', status: 'pass' },
+            { label: 'Death Verification (LexisNexis 96)', status: 'pass' },
+            { label: 'Beneficiary Identity Verified', status: 'pass' },
+            { label: 'STP Score 92 — All Criteria Met', status: 'pass' }
+          ]
+        },
+        riskIndicators: [],
+        payoutReadiness: { status: 'Paid', estimatedAmount: 100000, blockers: [] }
+      },
+      fraudSignals: { score: 15, signals: [] },
+      leakageIndicators: [],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: { current: 7, industryAvg: 12, carrierAvg: 10, variance: '-30%', status: 'Exceeding' },
+        reserveAccuracy: { currentReserve: 0, benchmarkRatio: 'N/A', status: 'Closed' },
+        similarClaims: { count: 1204, avgCycleTime: 12, avgSettlement: 100000, subrogationRate: '0%', fraudRate: '0.4%' },
+        insights: [
+          'Closed 30% faster than carrier STP average of 10 days — exemplary processing',
+          'PMI liability minimized: settled day 7, saving ~$192 vs. carrier average settlement timeline',
+          'ACH payment reduced settlement time by 2 days vs. check issuance average'
+        ]
+      },
+      nextBestActions: [],
+      auditFindings: []
+    };
+  }
+
+  // ── claim-3: Thomas Garcia — NEW, STP, MVA ──
+  if (claim.id === 'claim-3') {
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 1 * 3600000).toISOString(),
+      overallRisk: 'Low', leakageExposure: 0,
+      claimSummary: {
+        narrative: `Death claim filed by Maria Garcia (spouse) for Thomas Garcia, age 55, who died in a motor vehicle accident in Dallas, TX on ${claim.deathEvent.dateOfDeath}. Policy POL-619247 is a $175,000 Term Life policy issued January 2020. STP eligibility score 91. A potential third-party subrogation opportunity has been identified — police report pending to confirm at-fault driver. Claim is ${daysOpen} days old.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — STP eligibility score 91 (MVA death)' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 15 * 60000).toISOString(), event: 'Routing Engine: STP approved — requirements auto-generated' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), event: 'Subrogation flag raised: MVA death — third-party liability possible' }
+        ],
+        investigationStatus: 'Active — STP Processing',
+        outstandingActions: ['Police/accident report', 'IRS W-9', 'Payment election form', 'Subrogation hold placement'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-619247', 'Policy Type': 'Term Life', 'Face Amount': '$175,000', 'Status': 'In Force', 'Issue Date': 'Jan 2020', 'Issue State': 'TX' },
+          claimant: { 'Name': 'Maria Garcia', 'Relationship': 'Spouse', 'Phone': '214-555-0382', 'ID Verification': 'Verified (score 95)' }
+        },
+        documentation: {
+          received: ['Death Certificate', 'Claimant Statement', 'Policy In-Force Confirmation', 'LexisNexis Verification (score 94)'],
+          missing: ['Police / Accident Report (Dallas PD)', 'Subrogation Hold Notice', 'IRS W-9 Form', 'Payment Election Form']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear (>2 years)', status: 'pass' },
+            { label: 'Death Verification (LexisNexis 94)', status: 'pass' },
+            { label: 'Beneficiary Identity Verified', status: 'pass' },
+            { label: 'Subrogation Hold Placed (MVA)', status: 'fail', detail: 'Must be placed before payment' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'Third-Party Liability (MVA Death)', severity: 'Medium', detail: 'Police report pending — fault not yet confirmed' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 175000,
+          blockers: ['Subrogation hold required before payment (MVA claim)', 'Police report not yet received', 'W-9 and payment election outstanding']
+        }
+      },
+      fraudSignals: { score: 22, signals: [] },
+      leakageIndicators: [],
+      subrogationOpportunities: [
+        { id: 'sub-3-1', opportunityType: 'Third-Party Auto Liability', description: "Insured died in a motor vehicle accident. If a third-party driver was at fault, the carrier may be entitled to subrogation recovery against the at-fault party's auto liability insurer. Police report and accident reconstruction needed to assess fault.", estimatedRecovery: Math.round(175000 * 0.60), probability: 'Medium', recommendedAction: 'Request Dallas PD accident report. If third-party liability confirmed, initiate subrogation referral before payment is issued.', status: 'Identified' }
+      ],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 8, carrierAvg: 7, variance: daysOpen <= 7 ? 'On Track' : `+${Math.round((daysOpen / 7 - 1) * 100)}%`, status: daysOpen <= 7 ? 'On Track' : 'At Risk' },
+        reserveAccuracy: { currentReserve: 157500, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 312, avgCycleTime: 8, avgSettlement: 172000, subrogationRate: '38%', fraudRate: '1.8%' },
+        insights: [
+          'MVA death claims have a 38% subrogation recovery rate — investigation is strongly recommended',
+          'Average settlement for similar MVA Term Life claims: $172,000 vs. this claim\'s $175,000 face value',
+          'STP pathway typically resolves MVA claims in 8 days assuming police report received within 3 days'
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-3-1', priority: 1, action: 'Place Subrogation Hold Before Payment', description: 'File subrogation hold and initiate third-party liability assessment before issuing any payment. Preserves recovery rights.', rationale: 'MVA claims have 38% subrogation rate; payment before investigation may waive recovery rights', urgency: 'Immediate', agent: 'Subrogation Opportunity Agent', category: 'Recovery' },
+        { id: 'nba-3-2', priority: 2, action: 'Obtain Dallas PD Accident Report', description: `Request Dallas Police Department accident report for MVA on ${claim.deathEvent.dateOfDeath} to determine fault assignment`, rationale: 'Required to confirm third-party liability and support subrogation assessment', urgency: 'This Week', agent: 'Claim Audit Agent', category: 'Documentation' },
+        { id: 'nba-3-3', priority: 3, action: 'Collect W-9 and Payment Election from Maria Garcia', description: 'While subrogation is assessed, proceed with collecting tax form and payment method selection', rationale: 'STP documents are complete except for W-9 and payment election', urgency: 'This Week', agent: 'Next Best Action Agent', category: 'Documentation' }
+      ],
+      auditFindings: [
+        { id: 'af-3-1', stage: 'FNOL', finding: 'MVA death claim entered STP pathway without subrogation hold being placed. Standard procedure requires subrogation review before payment on accidental death claims.', severity: 'Medium', category: 'Missed Step', detectedAt: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── claim-4: William Davis — APPROVED, Hurricane disaster ──
+  if (claim.id === 'claim-4') {
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 3 * 3600000).toISOString(),
+      overallRisk: 'Low', leakageExposure: 0,
+      claimSummary: {
+        narrative: `Death claim for William Davis, age 60, who died from hurricane-related injuries in Miami, FL. Policy POL-738156 is a $200,000 Term Life policy. Claim was approved after ${daysOpen} days with disaster event provisions applicable. Disaster provision documentation is incomplete. Payment scheduling is the final outstanding action.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — disaster event flag set (Hurricane-related)' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 5 * DAY).toISOString(), event: 'Coroner report received confirming hurricane-related injuries' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 18 * DAY).toISOString(), event: 'Claim approved — payment scheduling pending' }
+        ],
+        investigationStatus: 'Cleared — Approved, Awaiting Payment',
+        outstandingActions: ['Schedule ACH payment to Susan Davis', 'Complete disaster provisions documentation', 'Verify FEMA duplicate benefit eligibility'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-738156', 'Policy Type': 'Term Life', 'Face Amount': '$200,000', 'Status': 'In Force', 'Issue Date': 'Sep 2019', 'Issue State': 'FL' },
+          claimant: { 'Name': 'Susan Davis', 'Relationship': 'Spouse', 'Phone': '305-555-0419', 'ID Verification': 'Verified (score 93)' }
+        },
+        documentation: {
+          received: ['Coroner Report (hurricane-related)', 'Claimant Statement', 'Policy In-Force Confirmation', 'Hurricane Event Documentation', 'LexisNexis Verification (score 85)'],
+          missing: ['FEMA Registration Cross-Reference', 'Disaster Provisions Checklist (incomplete)', 'Payment Scheduling Confirmation']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear', status: 'pass' },
+            { label: 'Death Verification', status: 'pass', detail: 'Hurricane-related injuries confirmed' },
+            { label: 'Beneficiary Identity Verified', status: 'pass' },
+            { label: 'Disaster Provisions Applied', status: 'warn', detail: 'Checklist incomplete' },
+            { label: 'FEMA Duplicate Benefit Check', status: 'warn', detail: 'Cross-reference not yet completed' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'FEMA Benefit Overlap Risk', severity: 'Low', detail: 'FL disaster claims — FEMA cross-reference required' }
+        ],
+        payoutReadiness: {
+          status: 'Partial',
+          estimatedAmount: 200000,
+          blockers: ['FEMA duplicate benefit check pending', 'Disaster provisions documentation incomplete']
+        }
+      },
+      fraudSignals: {
+        score: 38,
+        signals: [{ id: 'fs-4-1', category: 'Documentation', severity: 'Low', indicator: 'Disaster Provisions Checklist Incomplete', description: 'Claim was approved as disaster-related but the disaster provisions document checklist has not been formally completed. Documentation gap, not a fraud indicator, but required before closure.', dataSource: 'Internal Audit', confidence: 95, detectedAt: new Date(new Date(claim.createdAt).getTime() + 3 * DAY).toISOString(), recommendation: 'Complete disaster provisions documentation before claim closure' }]
+      },
+      leakageIndicators: [
+        { id: 'li-4-1', category: 'Potential Duplicate Benefit — FEMA', severity: 'Medium', description: 'Hurricane-related death may qualify for FEMA disaster assistance. Cross-reference required to prevent duplicate government benefit overlap with insurance proceeds.', estimatedAmount: 0, recommendation: 'Verify FEMA registration under insured or claimant name before issuing payment', status: 'Open' }
+      ],
+      subrogationOpportunities: [
+        { id: 'sub-4-1', opportunityType: 'Government Disaster Program Overlap', description: 'If FEMA or state disaster relief has already compensated the claimant for the same loss, the insurer may have a coordination of benefits right. Low probability but verification is required.', estimatedRecovery: 0, probability: 'Low', recommendedAction: 'Verify FEMA registration and any disaster relief payments received by claimant before closing', status: 'Identified' }
+      ],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 25, carrierAvg: 22, variance: 'On Track', status: 'On Track' },
+        reserveAccuracy: { currentReserve: 180000, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 89, avgCycleTime: 25, avgSettlement: 198000, subrogationRate: '8%', fraudRate: '3.2%' },
+        insights: [
+          `Disaster claims average 25 days to resolution — this claim at ${daysOpen} days is tracking well`,
+          'Disaster claims have a slightly elevated fraud rate of 3.2% vs. 1.8% for standard claims',
+          'Hurricane claims in FL have an 8% government benefit overlap rate — FEMA verification is standard procedure'
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-4-1', priority: 1, action: 'Schedule ACH Payment to Susan Davis', description: 'Claim approved. Issue $200,000 ACH payment to Susan Davis. Confirm banking details and generate payment confirmation letter.', rationale: 'Approval is complete; payment is the only remaining financial action', urgency: 'Immediate', agent: 'Next Best Action Agent', category: 'Payment' },
+        { id: 'nba-4-2', priority: 2, action: 'Verify FEMA Registration Before Payment', description: 'Check FEMA disaster relief database for William Davis or Susan Davis to rule out duplicate benefit coordination', rationale: 'Disaster claims require FEMA cross-reference per operational guidelines before closure', urgency: 'This Week', agent: 'Leakage Detection Agent', category: 'Compliance' },
+        { id: 'nba-4-3', priority: 3, action: 'Complete Disaster Provisions Documentation', description: 'Formally document disaster provision application in claim file for audit trail and state regulatory reporting', rationale: 'Incomplete documentation will fail claim file audit', urgency: 'This Week', agent: 'Compliance Agent', category: 'Compliance' }
+      ],
+      auditFindings: [
+        { id: 'af-4-1', stage: 'Coverage', finding: 'Disaster provisions checklist not completed despite claim being flagged as disaster-related at FNOL and approved', severity: 'Low', category: 'Incomplete Documentation', detectedAt: new Date(new Date(claim.createdAt).getTime() + 15 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── claim-5: Richard Moore — UNDER_REVIEW, pending investigation, policy loan ──
+  if (claim.id === 'claim-5') {
+    const loanBalance = 12500;
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 0.5 * 3600000).toISOString(),
+      overallRisk: 'High', leakageExposure: pmiAccrual + loanBalance,
+      claimSummary: {
+        narrative: `Death claim filed by Patricia Moore (spouse) for Richard Moore, age 65, who died under investigation in Brooklyn, NY. Manner of death has not been finalized by the medical examiner. Policy POL-415892 is a $125,000 Term Life policy with a $12,500 outstanding loan balance. SLA expires in ${claim.workflow?.sla?.daysRemaining ?? 3} day(s) — extension request is required immediately. Payment is on hold pending investigation outcome.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — manner of death listed as Pending/Under Investigation' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 2 * DAY).toISOString(), event: 'Medical Examiner investigation confirmed ongoing — no completion timeline given' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 20 * DAY).toISOString(), event: 'Policy loan balance verified: $12,500 outstanding — deduction required at settlement' },
+          { date: new Date(NOW.getTime() - 2 * DAY).toISOString(), event: 'SLA risk alert: fewer than 3 days remaining — extension not yet filed' }
+        ],
+        investigationStatus: 'Active — Medical Examiner Investigation Pending',
+        outstandingActions: ['FILE SLA EXTENSION IMMEDIATELY', 'Obtain final ME report', 'Configure $12,500 loan deduction in payment module', 'W-9 and payment election from Patricia Moore'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-415892', 'Policy Type': 'Term Life', 'Face Amount': '$125,000', 'Loan Balance': '$12,500', 'Net Benefit': '$112,500', 'Issue Date': 'Jun 2015', 'Issue State': 'NY' },
+          claimant: { 'Name': 'Patricia Moore', 'Relationship': 'Spouse', 'Phone': '718-555-0563', 'ID Verification': 'Pending (score 79)' }
+        },
+        documentation: {
+          received: ['Hospital Record', 'Claimant Statement (FNOL)', 'Policy In-Force Confirmation'],
+          missing: ['Final Medical Examiner Report', 'Beneficiary Government-Issued ID', 'SLA Extension Form (URGENT)', 'IRS W-9 Form', 'Payment Election Form']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear', status: 'pass' },
+            { label: 'Cause of Death Determined', status: 'fail', detail: 'ME investigation ongoing — no completion date' },
+            { label: 'Beneficiary Identity Verified', status: 'fail', detail: 'Government ID pending' },
+            { label: 'Policy Loan Deduction Configured ($12,500)', status: 'fail', detail: 'Not yet set in payment module' },
+            { label: 'SLA Extension Filed', status: 'fail', detail: 'EXPIRES IN 3 DAYS — urgent' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'ME Investigation — No Timeline', severity: 'High', detail: '27 days, no completion date given' },
+          { label: 'SLA Breach Imminent', severity: 'High', detail: 'Extension not filed — 3 days remaining' },
+          { label: '$12,500 Loan Overpayment Risk', severity: 'High', detail: 'Deduction not pre-configured' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 112500,
+          blockers: ['ME investigation not complete', 'SLA extension not filed — imminent breach', 'Beneficiary verification pending', '$12,500 loan deduction not configured in payment module']
+        }
+      },
+      fraudSignals: {
+        score: 58,
+        signals: [
+          { id: 'fs-5-1', category: 'Investigation', severity: 'High', indicator: 'Manner of Death Under Investigation — 27 Days', description: `Medical Examiner investigation has been ongoing for ${daysOpen} days without a finding. The extended investigation period may indicate a complex or contested cause of death. Policy exclusion clauses for specific manners of death should be reviewed now.`, dataSource: 'Internal Claim File', confidence: 95, detectedAt: claim.createdAt, recommendation: 'Refer to SIU for preliminary parallel review. Review policy exclusion language before investigation concludes.' },
+          { id: 'fs-5-2', category: 'Documentation', severity: 'Medium', indicator: 'Beneficiary Verification Pending — Extended Duration', description: `Primary beneficiary identity verification has not been completed after ${daysOpen} days. Combined with pending investigation, this warrants enhanced scrutiny.`, dataSource: 'Internal', confidence: 65, detectedAt: new Date(new Date(claim.createdAt).getTime() + 7 * DAY).toISOString(), recommendation: 'Conduct independent beneficiary identity verification regardless of investigation outcome' }
+        ]
+      },
+      leakageIndicators: [
+        { id: 'li-5-1', category: 'Policy Loan Deduction — Overpayment Risk', severity: 'High', description: `Outstanding policy loan of $12,500 must be deducted from $125,000 face amount at settlement. Net benefit is $112,500. Failure to apply deduction would result in $12,500 direct overpayment.`, estimatedAmount: loanBalance, recommendation: 'Pre-configure net benefit as $112,500 in payment module immediately', status: 'Open' },
+        { id: 'li-5-2', category: 'PMI Accrual — Open-Ended Investigation', severity: 'Medium', description: `NY PMI accruing at 8% p.a. on $125,000 ($${dailyPMI}/day). Uncertain investigation timeline creates open-ended liability. Current exposure: $${pmiAccrual.toLocaleString()}.`, estimatedAmount: pmiAccrual, recommendation: 'Request ME office timeline. Document PMI exposure in reserve.', status: 'Monitoring' }
+      ],
+      subrogationOpportunities: [
+        { id: 'sub-5-1', opportunityType: 'Third-Party Liability (Investigation Dependent)', description: 'If the investigation determines death involved a third-party act (assault, negligence), subrogation recovery rights may apply. Monitor investigation outcome.', estimatedRecovery: 0, probability: 'Low', recommendedAction: 'Place conditional subrogation hold. Activate full referral if investigation confirms third-party fault.', status: 'Identified' }
+      ],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 35, carrierAvg: 32, variance: 'In Range', status: 'On Track' },
+        reserveAccuracy: { currentReserve: 112500, benchmarkRatio: '90% of net benefit', status: 'Adequate' },
+        similarClaims: { count: 47, avgCycleTime: 42, avgSettlement: 112000, subrogationRate: '12%', fraudRate: '8.5%' },
+        insights: [
+          `Investigation-pending claims average 42 days — this claim at ${daysOpen} days is within normal range`,
+          'Similar investigation claims carry an elevated fraud rate of 8.5% — SIU referral is recommended',
+          `Policy loan deduction of $12,500 must be applied at settlement — net benefit is $112,500 not $125,000`
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-5-1', priority: 1, action: 'File SLA Extension — URGENT', description: `SLA expires in ${claim.workflow?.sla?.daysRemaining ?? 3} day(s). File extension with supervisor approval citing active ME investigation. Document in claim notes immediately.`, rationale: 'SLA breach without an approved extension is a regulatory compliance violation', urgency: 'Immediate', agent: 'Compliance Agent', category: 'Compliance' },
+        { id: 'nba-5-2', priority: 2, action: 'Refer to SIU for Preliminary Review', description: 'Given fraud score of 58 and ME investigation exceeding 25 days, refer to Special Investigations Unit for parallel review', rationale: 'Investigation-pending claims exceeding 25 days breach the SIU referral threshold', urgency: 'Immediate', agent: 'Fraud Signal Agent', category: 'Investigation' },
+        { id: 'nba-5-3', priority: 3, action: 'Pre-Configure $12,500 Loan Deduction in Payment Module', description: 'Set net benefit to $112,500 in payment workflow now to prevent overpayment when claim reaches approval stage', rationale: 'Prevents $12,500 overpayment — highest-value leakage item on this claim', urgency: 'This Week', agent: 'Leakage Detection Agent', category: 'Financial' },
+        { id: 'nba-5-4', priority: 4, action: 'Contact NY Medical Examiner for Timeline', description: 'Escalate to ME office supervisor requesting estimated report completion date. Document response in claim notes.', rationale: 'ME report is the sole outstanding item preventing claim resolution', urgency: 'This Week', agent: 'Claim Audit Agent', category: 'Investigation' }
+      ],
+      auditFindings: [
+        { id: 'af-5-1', stage: 'Investigation', finding: `Claim under review for ${daysOpen} days with active ME investigation — SLA extension has not been filed`, severity: 'High', category: 'SLA Breach Risk', detectedAt: new Date(NOW.getTime() - 3 * DAY).toISOString(), status: 'Open' },
+        { id: 'af-5-2', stage: 'Payment', finding: 'Policy loan deduction of $12,500 has not been pre-configured in payment module — overpayment risk at approval stage', severity: 'High', category: 'Missed Step', detectedAt: new Date(NOW.getTime() - 7 * DAY).toISOString(), status: 'Open' },
+        { id: 'af-5-3', stage: 'Investigation', finding: `Beneficiary identity verification not completed after ${daysOpen} days`, severity: 'Medium', category: 'Incomplete Documentation', detectedAt: new Date(NOW.getTime() - 15 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── claim-sw: Sam Wright — NEW, STP, Cardiac ──
+  if (claim.id === 'claim-sw') {
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 1 * 3600000).toISOString(),
+      overallRisk: 'Low', leakageExposure: 0,
+      claimSummary: {
+        narrative: `Death claim filed by Jennifer Wright (spouse) for Sam Wright, age 56, who died of cardiac arrest in Los Angeles, CA. Policy POL-290471 is a $250,000 Term Life policy issued July 2019. STP eligibility score 93 — all automated verification checks passed. W-9 and payment election are the only outstanding items. Claim is ${daysOpen} days old, tracking ahead of the STP benchmark of 7 days.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — STP eligibility score 93' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 15 * 60000).toISOString(), event: 'All auto-verification checks passed — death, policy, beneficiary match confirmed' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), event: 'Requirements generated — W-9 and payment election outstanding' }
+        ],
+        investigationStatus: 'Cleared — STP Processing',
+        outstandingActions: ['IRS W-9 form from Jennifer Wright', 'Payment election form (ACH preferred)'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-290471', 'Policy Type': 'Term Life', 'Face Amount': '$250,000', 'Status': 'In Force', 'Issue Date': 'Jul 2019', 'Issue State': 'CA' },
+          claimant: { 'Name': 'Jennifer Wright', 'Relationship': 'Spouse', 'Phone': '415-555-0273', 'ID Verification': 'Verified (score 97)' }
+        },
+        documentation: {
+          received: ['Death Certificate', 'Claimant Statement', 'Policy In-Force Confirmation', 'LexisNexis Verification (score 96)', 'All STP Auto-Verification Checks'],
+          missing: ['IRS W-9 Form', 'Payment Election Form (ACH)']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear (>2 years)', status: 'pass' },
+            { label: 'Death Verification (LexisNexis 96)', status: 'pass' },
+            { label: 'Beneficiary Identity Verified', status: 'pass' },
+            { label: 'STP Score 93 — All Criteria Met', status: 'pass' }
+          ]
+        },
+        riskIndicators: [],
+        payoutReadiness: {
+          status: 'Partial',
+          estimatedAmount: 250000,
+          blockers: ['W-9 form pending from Jennifer Wright', 'Payment election form not yet received']
+        }
+      },
+      fraudSignals: { score: 18, signals: [] },
+      leakageIndicators: [],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 7, carrierAvg: 7, variance: daysOpen <= 7 ? 'On Track' : `+${Math.round((daysOpen / 7 - 1) * 100)}%`, status: 'On Track' },
+        reserveAccuracy: { currentReserve: 225000, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 2187, avgCycleTime: 7, avgSettlement: 249000, subrogationRate: '0%', fraudRate: '0.5%' },
+        insights: [
+          `STP claims average 7 days to closure — currently at ${daysOpen} day(s), tracking on schedule`,
+          'CA post-mortem interest at 10% p.a.: collecting W-9 and payment election promptly avoids unnecessary accrual',
+          'Cardiac arrest claims carry the lowest fraud rate (0.5%) across all STP claim types'
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-sw-1', priority: 1, action: 'Send W-9 and Payment Election Request to Jennifer Wright', description: 'Email consolidated document request with IRS W-9 and ACH payment election form via secure upload portal', rationale: 'These are the only two items outstanding before payment can be issued', urgency: 'Immediate', agent: 'Next Best Action Agent', category: 'Documentation' },
+        { id: 'nba-sw-2', priority: 2, action: 'Queue for Payment Approval on Document Receipt', description: 'Pre-stage payment approval workflow so payment is issued within 24 hours of W-9 and payment election receipt', rationale: 'All STP criteria satisfied — payment should be immediate upon document receipt', urgency: 'This Week', agent: 'Claim Audit Agent', category: 'Payment' }
+      ],
+      auditFindings: []
+    };
+  }
+
+  // ── claim-ah: Aiden Hakim — UNDER_REVIEW, address discrepancy ──
+  if (claim.id === 'claim-ah') {
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 1.5 * 3600000).toISOString(),
+      overallRisk: 'Medium', leakageExposure: pmiAccrual,
+      claimSummary: {
+        narrative: `Death claim filed by Layla Hakim (spouse) for Aiden Hakim, age 53, who died of Hypertensive Heart Disease in New York, NY. Policy POL-382156 is a $350,000 Whole Life policy issued November 2017. A discrepancy between the FNOL-submitted address and the Policy Admin address has been flagged for identity verification. PMI is accruing at $${dailyPMI}/day on $350,000. Claim is ${daysOpen} days old.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — address discrepancy flagged during verification' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 1 * DAY).toISOString(), event: 'Risk alert: FNOL beneficiary address does not match Policy Admin records' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 3 * DAY).toISOString(), event: 'Initial review complete — government ID request sent to beneficiary' }
+        ],
+        investigationStatus: 'Active — Address & Identity Verification',
+        outstandingActions: ['Government-issued ID with current address', 'USPS address validation of submitted address', 'Beneficiary identity verification', 'W-9 and payment election forms'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-382156', 'Policy Type': 'Whole Life', 'Face Amount': '$350,000', 'Status': 'In Force', 'Issue Date': 'Nov 2017', 'Issue State': 'NY' },
+          claimant: { 'Name': 'Layla Hakim', 'Relationship': 'Spouse', 'Phone': '(on file)', 'ID Verification': 'Pending — Address Mismatch' }
+        },
+        documentation: {
+          received: ['Claimant Statement (FNOL)', 'Policy In-Force Confirmation', 'Initial FNOL Submission'],
+          missing: ['Government-Issued Photo ID (current address)', 'USPS Address Delivery Validation', 'Beneficiary Identity Verification', 'IRS W-9 Form', 'Payment Election Form']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Contestability Period Clear', status: 'pass' },
+            { label: 'Death Verification', status: 'pass' },
+            { label: 'FNOL Address Matches Policy Admin', status: 'fail', detail: 'Mismatch detected at FNOL' },
+            { label: 'Beneficiary Identity Verified', status: 'fail', detail: 'Pending government ID with current address' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'Address Discrepancy', severity: 'Medium', detail: 'FNOL address does not match Policy Admin records' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 350000,
+          blockers: ['Address discrepancy not yet resolved', 'Beneficiary identity verification pending', 'W-9 and payment election forms outstanding']
+        }
+      },
+      fraudSignals: {
+        score: 46,
+        signals: [{ id: 'fs-ah-1', category: 'Claimant Behavior', severity: 'Medium', indicator: 'FNOL Address Does Not Match Policy Admin Records', description: "Layla Hakim's address submitted in the FNOL differs from the address on file in Policy Admin. Address mismatches are flagged as a potential identity spoofing indicator under LexisNexis Fraud Score guidelines. Claimant verification score is 81.", dataSource: 'Policy Admin / LexisNexis', confidence: 78, detectedAt: new Date(new Date(claim.createdAt).getTime() + 0.5 * DAY).toISOString(), recommendation: 'Request current government-issued photo ID. Cross-check submitted address with USPS Delivery Point Validation.' }]
+      },
+      leakageIndicators: [
+        { id: 'li-ah-1', category: 'PMI Accrual — Verification Delay', severity: 'Medium', description: `NY PMI accruing at 8% p.a. on $350,000 ($${dailyPMI}/day). Address verification delay is extending exposure. Current accrual: $${pmiAccrual.toLocaleString()} at ${daysOpen} days.`, estimatedAmount: pmiAccrual, recommendation: 'Expedite address and identity verification to reduce ongoing PMI exposure', status: 'Monitoring' }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 15, carrierAvg: 15, variance: daysOpen <= 15 ? 'On Track' : `+${Math.round((daysOpen / 15 - 1) * 100)}%`, status: daysOpen <= 15 ? 'On Track' : 'At Risk' },
+        reserveAccuracy: { currentReserve: 315000, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 634, avgCycleTime: 15, avgSettlement: 347000, subrogationRate: '0%', fraudRate: '3.4%' },
+        insights: [
+          'Address mismatch cases take on average 4 additional days vs. standard whole life claims',
+          `PMI on $350,000 at NY rate: $${dailyPMI}/day — verification delay is a meaningful cost driver`,
+          'Whole life claims with address discrepancies carry a 3.4% fraud rate — elevated monitoring is standard'
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-ah-1', priority: 1, action: 'Request Current Government-Issued Photo ID from Layla Hakim', description: "Contact via phone and secure portal — request driver's license or passport showing current address for cross-validation", rationale: 'Address discrepancy is the primary blocker for identity verification and payment processing', urgency: 'Immediate', agent: 'Fraud Signal Agent', category: 'Investigation' },
+        { id: 'nba-ah-2', priority: 2, action: 'Run USPS Address Validation on Submitted Address', description: 'Validate FNOL address against USPS Delivery Point Validation database to assess address legitimacy before escalating', rationale: 'Low-cost automated step to triage address discrepancy before manual investigation', urgency: 'Immediate', agent: 'Fraud Signal Agent', category: 'Investigation' },
+        { id: 'nba-ah-3', priority: 3, action: 'Send Identity Verification Letter to Policy Admin Address', description: 'Send formal verification request to the address on file in Policy Admin to confirm beneficiary access via dual channel', rationale: 'Dual-channel verification reduces risk of address fraud', urgency: 'This Week', agent: 'Claim Audit Agent', category: 'Documentation' }
+      ],
+      auditFindings: [
+        { id: 'af-ah-1', stage: 'Investigation', finding: `Address discrepancy flagged at FNOL — identity verification formal request not documented after ${daysOpen} days`, severity: 'Medium', category: 'Missed Step', detectedAt: new Date(NOW.getTime() - 8 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── claim-ec: Ethan Carter — UNDER_REVIEW, complex estate ──
+  if (claim.id === 'claim-ec') {
+    const ecPMI = Math.round(500000 * 0.08 * daysOpen / 365);
+    const ecDailyPMI = Math.round(500000 * 0.08 / 365);
+    return {
+      lastAnalyzed: new Date(NOW.getTime() - 0.25 * 3600000).toISOString(),
+      overallRisk: 'Medium', leakageExposure: ecPMI,
+      claimSummary: {
+        narrative: `Complex death claim for Ethan Carter, age 58, who died of a myocardial infarction in Austin, TX on January 15, 2026. Policy POL-571390 is a $500,000 Universal Life policy with 4 named beneficiaries across 3 entity types: individual (40%), irrevocable trust (35%), estate (15%), and corporation (10%). Two NIGO documents are blocking progress — APS and trustee resolution. ${daysOpen} days open, SLA at ${claim.workflow?.sla?.daysRemaining ?? 15} days. PMI accruing at $${ecDailyPMI}/day.`,
+        keyEvents: [
+          { date: claim.createdAt, event: 'FNOL received — complex estate multi-entity workflow initiated' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 5 * DAY).toISOString(), event: 'Entity documentation packages issued to all 4 beneficiaries simultaneously' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 10 * DAY).toISOString(), event: 'NIGO: Trustee resolution returned — notarization missing' },
+          { date: new Date(new Date(claim.createdAt).getTime() + 10 * DAY).toISOString(), event: 'NIGO: APS from Dr. Foster returned — scan quality below 300 dpi' }
+        ],
+        investigationStatus: 'Active — 2 NIGO Items, Entity Documentation Pending',
+        outstandingActions: ['Resubmit APS (Dr. Foster, 300 dpi minimum)', 'Resubmit notarized trustee resolution (Benjamin Clark)', 'Trust agreement and EIN documents', 'Estate letters testamentary and EIN', 'Corporate resolution and TX SOS verification'],
+        policyClaimantDetails: {
+          policy: { 'Policy Number': 'POL-571390', 'Policy Type': 'Universal Life', 'Face Amount': '$500,000', 'Status': 'In Force', 'Issue Date': 'On File', 'Issue State': 'TX' },
+          claimant: { 'Name': 'Multi-entity (4 beneficiaries)', 'Breakdown': '40% individual / 35% trust / 15% estate / 10% corp', 'Primary Contact': 'Mia Robinson (estate admin)', 'ID Verification': 'Individual verified; entities pending' }
+        },
+        documentation: {
+          received: ['FNOL & Death Certificate', 'Individual Claimant Statement', 'LexisNexis Verification', 'Entity Documentation Packages (all 4 issued)'],
+          missing: ['APS — Dr. Emily Foster (300 dpi resubmit)', 'Notarized Trustee Resolution (Benjamin Clark)', 'Trust Agreement & Trust EIN', 'Letters Testamentary & Estate EIN', 'Corporate Resolution & TX SOS Verification']
+        },
+        eligibilityValidation: {
+          checks: [
+            { label: 'Policy In-Force at Date of Death', status: 'pass' },
+            { label: 'Death Verification', status: 'pass', detail: 'MI confirmed — Austin TX' },
+            { label: 'Individual Beneficiary Verified', status: 'pass' },
+            { label: 'APS Received (UL policy)', status: 'fail', detail: 'NIGO — scan quality below 300 dpi' },
+            { label: 'Trust Documentation Complete', status: 'fail', detail: 'NIGO — notarization missing on trustee resolution' },
+            { label: 'Estate Documentation Received', status: 'warn', detail: 'Letters testamentary in progress' },
+            { label: 'Corporate Documentation Received', status: 'warn', detail: 'Request not yet issued' }
+          ]
+        },
+        riskIndicators: [
+          { label: 'NIGO — APS Scan Quality', severity: 'High', detail: 'Dr. Foster — resubmit at 300 dpi minimum' },
+          { label: 'NIGO — Trustee Resolution', severity: 'Medium', detail: 'Benjamin Clark — notarization missing' },
+          { label: 'Multi-Entity Complexity', severity: 'Low', detail: '4 entity types — trust, estate, corp, individual' }
+        ],
+        payoutReadiness: {
+          status: 'Blocked',
+          estimatedAmount: 500000,
+          blockers: ['APS NIGO — resubmission required from Dr. Foster', 'Notarized trustee resolution pending (Benjamin Clark)', 'Corporate documentation request not yet issued', 'Estate letters testamentary in progress']
+        }
+      },
+      fraudSignals: {
+        score: 52,
+        signals: [{ id: 'fs-ec-1', category: 'Documentation', severity: 'Low', indicator: 'Complex Multi-Entity Beneficiary Structure', description: 'Multiple non-individual beneficiaries (trust, estate, corporation) create elevated documentation complexity. While not a direct fraud indicator, complex ownership structures warrant standard entity verification protocols.', dataSource: 'Internal', confidence: 60, detectedAt: claim.createdAt, recommendation: 'Apply standard entity documentation protocols. Monitor for unusual ownership transfer patterns post-payment.' }]
+      },
+      leakageIndicators: [
+        { id: 'li-ec-1', category: 'PMI Accrual — NIGO Delay', severity: 'High', description: `Two unresolved NIGO items are causing processing delays. At $${ecDailyPMI}/day on $500,000 Universal Life, each additional day adds $${ecDailyPMI} to PMI liability. Current exposure: $${ecPMI.toLocaleString()} at ${daysOpen} days.`, estimatedAmount: ecPMI, recommendation: 'Immediately resubmit APS and chase notarized trustee resolution to unblock critical path', status: 'Open' },
+        { id: 'li-ec-2', category: 'TX Small Estate Threshold — Cost Reduction', severity: 'Low', description: "Estate of Ethan Carter's 15% share ($75,000) is at the TX small estate affidavit threshold. Using the small estate process avoids full probate, reducing legal fees by an estimated $2,500.", estimatedAmount: 2500, recommendation: 'Advise estate administrator Mia Robinson on TX small estate affidavit option', status: 'Monitoring' }
+      ],
+      subrogationOpportunities: [],
+      benchmarkData: {
+        cycleTime: { current: daysOpen, industryAvg: 45, carrierAvg: 42, variance: daysOpen <= 42 ? `On Track` : `+${Math.round((daysOpen / 42 - 1) * 100)}%`, status: daysOpen <= 42 ? 'On Track' : 'At Risk' },
+        reserveAccuracy: { currentReserve: 450000, benchmarkRatio: '90%', status: 'Adequate' },
+        similarClaims: { count: 23, avgCycleTime: 48, avgSettlement: 487000, subrogationRate: '0%', fraudRate: '2.2%' },
+        insights: [
+          `Complex multi-entity estate claims average 48 days — this claim at ${daysOpen} days is within normal range`,
+          'Trustee resolution NIGO adds an average of 8 days to complex estate claim timelines',
+          `PMI on $500K UL at TX rate: $${ecDailyPMI}/day — NIGO resolution directly reduces financial leakage`
+        ]
+      },
+      nextBestActions: [
+        { id: 'nba-ec-1', priority: 1, action: 'Resubmit APS Request to Dr. Emily Foster', description: "Contact Dr. Foster's office at Austin Medical Center (512-555-0892). Request APS resubmission at 300 dpi minimum via secure fax or upload portal.", rationale: 'APS NIGO has been outstanding for ~10 days and is on the critical path for UL policy medical review', urgency: 'Immediate', agent: 'Claim Audit Agent', category: 'Documentation' },
+        { id: 'nba-ec-2', priority: 2, action: 'Chase Benjamin Clark for Notarized Trustee Resolution', description: 'Contact trustee (512-555-0380) — resolution was returned for missing notarization. Provide notarization requirements and a 5-business-day deadline.', rationale: 'Trust holds 35% ($175,000) of claim — trustee verification is the highest-value critical path item', urgency: 'Immediate', agent: 'Claim Audit Agent', category: 'Documentation' },
+        { id: 'nba-ec-3', priority: 3, action: 'Issue Parallel Documentation Requests to Estate and Corporation', description: 'Send simultaneous requests to estate administrator Mia Robinson and Carter & Sons Construction LLC (Lucas Wright). Do not wait for trust resolution before starting.', rationale: 'Parallel collection reduces total cycle time by an estimated 12–15 days vs. sequential processing', urgency: 'This Week', agent: 'Next Best Action Agent', category: 'Documentation' },
+        { id: 'nba-ec-4', priority: 4, action: 'Advise Estate Administrator on TX Small Estate Process', description: 'Inform Mia Robinson that the $75,000 estate share qualifies for TX small estate affidavit, potentially avoiding full probate court', rationale: 'Reduces estate legal overhead and accelerates estate documentation timeline', urgency: 'This Week', agent: 'Leakage Detection Agent', category: 'Financial' }
+      ],
+      auditFindings: [
+        { id: 'af-ec-1', stage: 'Investigation', finding: 'APS from Dr. Foster returned NIGO ~10 days ago — no resubmission or documented follow-up in claim notes', severity: 'High', category: 'Missed Step', detectedAt: new Date(NOW.getTime() - 10 * DAY).toISOString(), status: 'Open' },
+        { id: 'af-ec-2', stage: 'Investigation', finding: 'Trustee resolution NIGO — no escalation contact made to Benjamin Clark since initial document return', severity: 'Medium', category: 'Incomplete Documentation', detectedAt: new Date(NOW.getTime() - 7 * DAY).toISOString(), status: 'Open' },
+        { id: 'af-ec-3', stage: 'FNOL', finding: 'Corporate beneficiary (Carter & Sons Construction LLC) documentation request not yet issued despite 30 days from claim creation', severity: 'Medium', category: 'Missed Step', detectedAt: new Date(NOW.getTime() - 5 * DAY).toISOString(), status: 'Open' }
+      ]
+    };
+  }
+
+  // ── Default: contextual insights for all other claims ──
+  const overallRisk = riskScore < 30 ? 'Low' : riskScore < 55 ? 'Medium' : 'High';
+  const alerts = claim.aiInsights?.alerts || [];
+  return {
+    lastAnalyzed: new Date(NOW.getTime() - Math.floor(daysOpen % 6 + 1) * 3600000).toISOString(),
+    overallRisk,
+    leakageExposure: claim.status === ClaimStatus.CLOSED ? 0 : pmiAccrual,
+    claimSummary: {
+      narrative: `Death claim for ${claim.insured?.name}${claim.insured?.age ? `, age ${claim.insured.age}` : ''}, filed by ${claim.claimant?.name} (${claim.claimant?.relationship || 'Beneficiary'}). Policy ${claim.policy?.policyNumber} — ${claim.policy?.type || 'Life Insurance'} with face amount $${(claimAmount).toLocaleString()}. Status: ${(claim.status || '').replace(/_/g, ' ')}. Claim is ${daysOpen} days old.`,
+      keyEvents: [
+        { date: claim.createdAt, event: 'FNOL submitted via beneficiary portal' },
+        { date: new Date(new Date(claim.createdAt).getTime() + 5 * 60000).toISOString(), event: 'Policy verified in-force at date of death' },
+        { date: new Date(new Date(claim.createdAt).getTime() + 10 * 60000).toISOString(), event: 'Death verification completed via LexisNexis' }
+      ],
+      investigationStatus: claim.status === ClaimStatus.CLOSED ? 'Cleared — Closed' : 'Active',
+      outstandingActions: claim.status !== ClaimStatus.CLOSED ? ['Complete open requirements', 'Verify beneficiary identity'] : [],
+      policyClaimantDetails: {
+        policy: { 'Policy Number': claim.policy?.policyNumber || '—', 'Policy Type': claim.policy?.type || 'Life Insurance', 'Face Amount': `$${(claimAmount).toLocaleString()}`, 'Status': claim.policy?.status || 'In Force', 'Issue Date': claim.policy?.issueDate || '—' },
+        claimant: { 'Name': claim.claimant?.name || '—', 'Relationship': claim.claimant?.relationship || 'Beneficiary', 'Phone': claim.claimant?.contactInfo?.phone || '—', 'ID Verification': isSTP ? 'Verified' : 'Pending' }
+      },
+      documentation: {
+        received: ['Death Certificate', 'Claimant Statement', 'Policy In-Force Verification'],
+        missing: claim.status === ClaimStatus.CLOSED ? [] : ['Outstanding requirements pending']
+      },
+      eligibilityValidation: {
+        checks: [
+          { label: 'Policy In-Force at Date of Death', status: 'pass' },
+          { label: 'Death Verification', status: 'pass' },
+          { label: 'Beneficiary Verified', status: isSTP ? 'pass' : 'warn', detail: isSTP ? undefined : 'Verification in progress' }
+        ]
+      },
+      riskIndicators: alerts.map(a => ({ label: a.title || 'Risk Indicator', severity: a.severity || 'Low', detail: a.message || '' })),
+      payoutReadiness: {
+        status: claim.status === ClaimStatus.CLOSED ? 'Paid' : (isSTP ? 'Partial' : 'Blocked'),
+        estimatedAmount: claimAmount,
+        blockers: claim.status === ClaimStatus.CLOSED ? [] : ['Outstanding requirements must be completed']
+      }
+    },
+    fraudSignals: {
+      score: riskScore,
+      signals: alerts.map((a, i) => ({ id: `fs-${claim.id}-${i}`, category: a.category || 'General', severity: a.severity || 'Low', indicator: a.title || 'Risk Indicator', description: a.description || a.message || '', dataSource: 'Internal', confidence: a.confidence || 70, detectedAt: a.timestamp || claim.createdAt, recommendation: a.recommendation || 'Review' }))
+    },
+    leakageIndicators: (claim.status !== ClaimStatus.CLOSED && pmiAccrual > 0) ? [
+      { id: `li-${claim.id}-1`, category: 'PMI Accrual', severity: 'Low', description: `PMI accruing at ${(pmiRate * 100).toFixed(0)}% p.a. on $${claimAmount.toLocaleString()}. Estimated exposure: $${pmiAccrual.toLocaleString()}.`, estimatedAmount: pmiAccrual, recommendation: 'Expedite processing to reduce interest liability', status: 'Monitoring' }
+    ] : [],
+    subrogationOpportunities: claim.deathEvent?.mannerOfDeath === 'Accident' ? [
+      { id: `sub-${claim.id}-1`, opportunityType: 'Accidental Death — Third-Party Liability', description: 'Accidental death claim. Third-party liability assessment recommended to identify potential subrogation recovery.', estimatedRecovery: 0, probability: 'Low', recommendedAction: 'Review accident circumstances for third-party liability before issuing payment', status: 'Identified' }
+    ] : [],
+    benchmarkData: {
+      cycleTime: { current: daysOpen, industryAvg: isSTP ? 10 : 20, carrierAvg: isSTP ? 8 : 18, variance: 'In Range', status: 'On Track' },
+      reserveAccuracy: { currentReserve: claim.financial?.reserve || 0, benchmarkRatio: '90%', status: claim.status === ClaimStatus.CLOSED ? 'Closed' : 'Adequate' },
+      similarClaims: { count: 150, avgCycleTime: isSTP ? 8 : 18, avgSettlement: Math.round(claimAmount * 0.99), subrogationRate: '2%', fraudRate: '1.5%' },
+      insights: [`Claim is tracking within normal range for ${isSTP ? 'STP' : 'standard'} ${claim.policy?.type || 'life'} processing`]
+    },
+    nextBestActions: claim.status === ClaimStatus.CLOSED ? [] : [
+      { id: `nba-${claim.id}-1`, priority: 1, action: 'Review and Advance Outstanding Requirements', description: 'Complete all pending requirements to advance claim through the processing workflow', rationale: 'Outstanding requirements are the primary blocker for claim progression', urgency: 'This Week', agent: 'Next Best Action Agent', category: 'Documentation' }
+    ],
+    auditFindings: []
+  };
+};
+
+// ============================================================
 // 5 Hand-crafted showcase claims
 // ============================================================
 const createShowcaseClaims = () => {
@@ -604,7 +1229,9 @@ export const generateDemoClaims = () => {
   for (let i = 6; i <= 20; i++) {
     seededClaims.push(generateSeededClaim(i, stpIndices.includes(i)));
   }
-  return [...showcaseClaims, ...seededClaims];
+  const all = [...showcaseClaims, ...seededClaims];
+  all.forEach(c => { c.guardianInsights = generateGuardianInsights(c); });
+  return all;
 };
 
 export const generateDemoPolicies = (claims) => {
