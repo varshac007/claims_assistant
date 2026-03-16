@@ -1,3 +1,4 @@
+// Entry point for the Claims Portal application
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
@@ -7,7 +8,6 @@ import './theme/bloom-theme.css'
 import './responsive.css'
 import App from './App.jsx'
 
-// MUI added
 const muiTheme = createTheme({
   palette: {
     primary: { main: '#1B75BB' },
