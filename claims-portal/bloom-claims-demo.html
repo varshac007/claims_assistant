@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bloom Claims Assistant — Sales Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@700;900&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:   #1B75BB;
+    --blue-dk:#145F99;
+    --blue-lt:#EBF4FC;
+    --orange: #F6921E;
+    --green:  #37A526;
+    --red:    #D02E2E;
+    --gray:   #58595B;
+    --light:  #F5F5F5;
+    --white:  #FFFFFF;
+    --dark:   #1A1A2E;
+  }
+
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #111; font-family: 'Roboto', sans-serif; }
+
+  /* ── Slide container ── */
+  .deck { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ── Shared layout helpers ── */
+  .s-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px 64px; }
+  .s-body.row { flex-direction: row; align-items: center; gap: 48px; }
+  .s-col { flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+  /* ── Slide header band ── */
+  .s-header {
+    background: var(--blue); color: #fff;
+    padding: 18px 64px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .s-header .tag { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; }
+  .s-header .logo { font-family: 'Roboto Slab', serif; font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
+
+  /* ── Typography ── */
+  .h1 { font-family: 'Roboto Slab', serif; font-size: clamp(36px, 5vw, 58px); font-weight: 900; line-height: 1.1; }
+  .h2 { font-family: 'Roboto Slab', serif; font-size: clamp(26px, 3.5vw, 40px); font-weight: 700; line-height: 1.15; }
+  .h3 { font-family: 'Roboto Slab', serif; font-size: clamp(18px, 2.2vw, 26px); font-weight: 700; line-height: 1.2; }
+  .h4 { font-size: 18px; font-weight: 700; line-height: 1.3; }
+  .body-lg { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--gray); }
+  .body { font-size: 15px; font-weight: 400; line-height: 1.55; color: var(--gray); }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .blue { color: var(--blue); }
+  .orange { color: var(--orange); }
+  .green { color: var(--green); }
+  .white { color: #fff; }
+  .dark { color: #1a1a2e; }
+  .gray { color: var(--gray); }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff; border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  .card.blue-bg { background: var(--blue); color: #fff; }
+  .card.blue-lt { background: var(--blue-lt); }
+  .card.orange-bg { background: var(--orange); color: #fff; }
+  .card.dark-bg { background: var(--dark); color: #fff; }
+
+  /* ── Pill badges ── */
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  }
+  .pill.blue  { background: var(--blue-lt); color: var(--blue); }
+  .pill.orange { background: #FFF3E0; color: var(--orange); }
+  .pill.green { background: #E8F5E3; color: var(--green); }
+  .pill.red   { background: #FDECEA; color: var(--red); }
+  .pill.gray  { background: var(--light); color: var(--gray); }
+
+  /* ── Stat blocks ── */
+  .stat-row { display: flex; gap: 20px; flex-wrap: wrap; }
+  .stat-box {
+    flex: 1; min-width: 110px;
+    background: #fff; border-radius: 10px;
+    padding: 18px 16px; text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border-top: 4px solid var(--blue);
+  }
+  .stat-box .num { font-family: 'Roboto Slab', serif; font-size: clamp(28px, 3.5vw, 42px); font-weight: 900; color: var(--blue); line-height: 1; }
+  .stat-box .lbl { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+  .stat-box.orange-accent { border-top-color: var(--orange); }
+  .stat-box.orange-accent .num { color: var(--orange); }
+  .stat-box.green-accent { border-top-color: var(--green); }
+  .stat-box.green-accent .num { color: var(--green); }
+  .stat-box.red-accent { border-top-color: var(--red); }
+  .stat-box.red-accent .num { color: var(--red); }
+
+  /* ── Feature list ── */
+  .feat-list { display: flex; flex-direction: column; gap: 12px; }
+  .feat-item { display: flex; gap: 12px; align-items: flex-start; }
+  .feat-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--blue-lt); color: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .feat-icon.orange { background: #FFF3E0; color: var(--orange); }
+  .feat-icon.green  { background: #E8F5E3; color: var(--green); }
+  .feat-icon.red    { background: #FDECEA; color: var(--red); }
+  .feat-icon.purple { background: #F3E5F5; color: #7B1FA2; }
+  .feat-text .title { font-size: 14px; font-weight: 700; color: #000; margin-bottom: 2px; }
+  .feat-text .desc  { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+  /* ── Two-col grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+  /* ── Divider ── */
+  .divider { width: 60px; height: 4px; background: var(--orange); border-radius: 2px; margin: 8px 0 16px; }
+
+  /* ── Nav bar ── */
+  .nav {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(26,26,46,0.92); backdrop-filter: blur(8px);
+    border-radius: 50px; padding: 10px 24px; z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+  }
+  .nav button {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.65); font-size: 20px;
+    padding: 4px 8px; border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .nav .counter { font-size: 13px; color: rgba(255,255,255,0.7); font-weight: 600; min-width: 50px; text-align: center; }
+
+  /* ── Progress dots ── */
+  .dots { display: flex; gap: 6px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; cursor: pointer; }
+  .dot.on { background: var(--orange); width: 18px; border-radius: 3px; }
+
+  /* ── Print / PDF ── */
+  @media print {
+    html, body { overflow: visible; background: #fff; }
+    .nav { display: none !important; }
+    .slide { position: relative !important; opacity: 1 !important; pointer-events: all !important; page-break-after: always; break-after: page; width: 100%; height: 100vh; }
+  }
+
+  /* ─────────── SLIDE SPECIFIC STYLES ─────────── */
+
+  /* S1: Cover */
+  #s1 { background: linear-gradient(135deg, #0D2B52 0%, #1B75BB 60%, #2196F3 100%); }
+  #s1 .s-body { align-items: flex-start; justify-content: center; }
+  #s1 .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
+  #s1 .tagline { font-size: 20px; font-weight: 400; color: rgba(255,255,255,0.82); max-width: 600px; margin-top: 14px; line-height: 1.5; }
+  #s1 .badge-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+  #s1 .badge { padding: 8px 16px; border-radius: 20px; background: rgba(255,255,255,0.15); color: #fff; font-size: 13px; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); }
+  #s1 .corner-art { position: absolute; right: 60px; top: 50%; transform: translateY(-50%); opacity: 0.12; }
+  #s1 .logo-lockup { position: absolute; top: 28px; right: 64px; display: flex; align-items: center; gap: 14px; }
+  #s1 .logo-lockup .brand { font-family: 'Roboto Slab', serif; font-size: 22px; font-weight: 900; color: #fff; }
+  #s1 .logo-lockup .by-dxc { font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* S2: Problem */
+  #s2 { background: #FAFAFA; }
+  .pain-card { background: #fff; border-radius: 10px; padding: 18px; border-left: 4px solid var(--red); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .pain-card .pc-title { font-size: 14px; font-weight: 700; color: #000; }
+  .pain-card .pc-desc { font-size: 12px; color: var(--gray); margin-top: 4px; line-height: 1.4; }
+
+  /* S3: Solution */
+  #s3 { background: var(--dark); }
+  .pillar { background: rgba(255,255,255,0.07); border-radius: 12px; padding: 20px 18px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+  .pillar .p-icon { font-size: 32px; margin-bottom: 10px; }
+  .pillar .p-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .pillar .p-desc  { font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+
+  /* S4: Dashboards */
+  #s4 { background: var(--light); }
+  .role-card { background: #fff; border-radius: 12px; padding: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-top: 5px solid var(--blue); }
+  .role-card.sup { border-top-color: var(--orange); }
+  .role-card.mgr { border-top-color: #7B1FA2; }
+  .role-card .rc-name { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 4px; }
+  .role-card.sup .rc-name { color: var(--orange); }
+  .role-card.mgr .rc-name { color: #7B1FA2; }
+  .role-card .rc-title { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 10px; }
+  .role-card ul { padding-left: 16px; display: flex; flex-direction: column; gap: 5px; }
+  .role-card li { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+  /* S5: AI */
+  #s5 { background: linear-gradient(160deg, #E3F2FD 0%, #fff 50%, #FFF3E0 100%); }
+  .ai-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.09); }
+  .ai-num { font-family: 'Roboto Slab', serif; font-size: 36px; font-weight: 900; color: var(--blue); }
+  .risk-bar { height: 8px; border-radius: 4px; background: #E8E9EA; overflow: hidden; margin: 6px 0; }
+  .risk-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #37A526, #F6921E, #D02E2E); }
+
+  /* S6: STP */
+  #s6 { background: var(--dark); }
+  .lifecycle { display: flex; align-items: center; gap: 0; margin: 12px 0; }
+  .lc-step { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 8px 14px; font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; }
+  .lc-step.highlight { background: var(--orange); border-color: var(--orange); }
+  .lc-arrow { color: rgba(255,255,255,0.35); font-size: 16px; padding: 0 4px; }
+  .stp-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 700; }
+
+  /* S7: IDP */
+  #s7 { background: var(--light); }
+  .doc-row { display: flex; align-items: center; gap: 12px; padding: 10px; background: #fff; border-radius: 8px; margin-bottom: 8px; }
+  .doc-icon { width: 36px; height: 36px; background: var(--blue-lt); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--blue); font-size: 18px; flex-shrink: 0; }
+  .conf-pill { margin-left: auto; background: #E8F5E3; color: var(--green); font-size: 11px; font-weight: 700; border-radius: 12px; padding: 3px 10px; }
+  .conf-pill.med { background: #FFF3E0; color: var(--orange); }
+
+  /* S8: Guardian */
+  #s8 { background: #0D2B52; }
+  .guardian-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 18px; }
+  .gua-icon-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .gua-icon { width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+
+  /* S9: Integrations */
+  #s9 { background: var(--light); }
+  .int-card { background: #fff; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .int-logo { font-size: 28px; margin-bottom: 10px; }
+  .int-name { font-size: 14px; font-weight: 700; color: #000; margin-bottom: 4px; }
+  .int-desc { font-size: 11px; color: var(--gray); line-height: 1.4; }
+
+  /* S10: Metrics/ROI */
+  #s10 { background: var(--blue); }
+  .roi-stat { text-align: center; padding: 24px 20px; background: rgba(255,255,255,0.1); border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); }
+  .roi-stat .big { font-family: 'Roboto Slab', serif; font-size: clamp(32px, 4.5vw, 52px); font-weight: 900; color: #fff; line-height: 1; }
+  .roi-stat .sub { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); margin-top: 8px; text-transform: uppercase; letter-spacing: 0.07em; }
+
+  /* S11: Why DXC */
+  #s11 { background: #FAFAFA; }
+  .why-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: #fff; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
+  .why-num { font-family: 'Roboto Slab', serif; font-size: 28px; font-weight: 900; color: var(--blue); opacity: 0.25; line-height: 1; flex-shrink: 0; width: 36px; }
+  .why-text .wt { font-size: 14px; font-weight: 700; color: #000; }
+  .why-text .wd { font-size: 12px; color: var(--gray); margin-top: 3px; line-height: 1.4; }
+
+  /* S12: CTA */
+  #s12 { background: linear-gradient(135deg, #0D2B52 0%, #1B75BB 100%); }
+  .cta-step { display: flex; gap: 16px; align-items: center; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 16px 20px; }
+  .cta-num { font-family: 'Roboto Slab', serif; font-size: 28px; font-weight: 900; color: var(--orange); line-height: 1; flex-shrink: 0; width: 36px; }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 1 — COVER
+════════════════════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+  <div class="logo-lockup">
+    <div>
+      <div class="brand">🌸 Bloom</div>
+      <div class="by-dxc">by DXC Technology</div>
+    </div>
+  </div>
+  <!-- Background art -->
+  <svg class="corner-art" width="540" height="540" viewBox="0 0 540 540">
+    <circle cx="270" cy="270" r="260" fill="white" />
+    <circle cx="270" cy="270" r="200" fill="none" stroke="white" stroke-width="2" />
+    <circle cx="270" cy="270" r="140" fill="none" stroke="white" stroke-width="2" />
+    <circle cx="270" cy="270" r="80" fill="none" stroke="white" stroke-width="2" />
+    <line x1="10" y1="270" x2="530" y2="270" stroke="white" stroke-width="1" />
+    <line x1="270" y1="10" x2="270" y2="530" stroke="white" stroke-width="1" />
+    <line x1="86" y1="86" x2="454" y2="454" stroke="white" stroke-width="1" />
+    <line x1="454" y1="86" x2="86" y2="454" stroke="white" stroke-width="1" />
+  </svg>
+  <div class="s-body" style="max-width:700px;">
+    <div class="eyebrow">DXC Technology · Claims Management</div>
+    <div class="h1 white" style="font-size: clamp(40px,6vw,66px);">Bloom Claims<br/>Assistant</div>
+    <div class="tagline">AI-Powered Life &amp; Annuity Claims Management — Process faster, detect smarter, settle confidently.</div>
+    <div class="badge-row">
+      <div class="badge">🤖 AI-Driven Intelligence</div>
+      <div class="badge">⚡ STP Auto-Approval</div>
+      <div class="badge">🔒 Fraud Detection</div>
+      <div class="badge">📄 Document IDP</div>
+      <div class="badge">🔗 ServiceNow Native</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 2 — THE PROBLEM
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="s-header">
+    <span class="tag">The Challenge</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body">
+    <div class="h2 dark">Claims Processing Is <span class="blue">Broken</span></div>
+    <div class="divider"></div>
+    <div class="grid-3" style="margin-top: 8px;">
+      <div class="pain-card">
+        <div class="pc-title">⏱ Slow Cycle Times</div>
+        <div class="pc-desc">Industry average 20–30 days per claim. Manual reviews bottleneck payment timelines and frustrate beneficiaries.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pc-title">🔍 Reactive Fraud Detection</div>
+        <div class="pc-desc">Fraud caught after-the-fact. Anomalies buried in paperwork, no AI scoring, no proactive alerts until it's too late.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pc-title">📋 Manual Document Review</div>
+        <div class="pc-desc">Examiners manually key data from death certificates, W-9s, and claim forms—prone to errors and duplication.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pc-title">🏚 Siloed Systems</div>
+        <div class="pc-desc">Policy admin, claims system, tax engine, and document management are disconnected—requiring constant re-keying.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pc-title">📊 No Risk Visibility</div>
+        <div class="pc-desc">Managers lack real-time insight into portfolio risk, SLA exposure, and examiner performance until month-end reports.</div>
+      </div>
+      <div class="pain-card">
+        <div class="pc-title">💸 Payment Leakage</div>
+        <div class="pc-desc">Over-settlements, unrecovered subrogation, and missed related policies cost carriers millions annually.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 3 — OUR SOLUTION
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="s-header">
+    <span class="tag">Our Solution</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background: var(--dark);">
+    <div class="h2 white">One Platform. <span style="color: var(--orange);">End-to-End.</span></div>
+    <div style="width: 60px; height: 4px; background: var(--orange); border-radius: 2px; margin: 10px 0 22px;"></div>
+    <div class="body-lg white" style="max-width:640px; opacity:0.85; margin-bottom: 28px;">Bloom Claims Assistant unifies the entire claims lifecycle—from FNOL to payment—with AI intelligence built into every step.</div>
+    <div class="grid-3" style="gap: 14px; max-width: 900px;">
+      <div class="pillar">
+        <div class="p-icon">🤖</div>
+        <div class="p-title">AI Claims Intelligence</div>
+        <div class="p-desc">Risk scoring, anomaly detection, next best actions, and analyst chat on every claim</div>
+      </div>
+      <div class="pillar">
+        <div class="p-icon">⚡</div>
+        <div class="p-title">STP Automation</div>
+        <div class="p-desc">40% of claims auto-approved in 7–10 days with zero manual touchpoints</div>
+      </div>
+      <div class="pillar">
+        <div class="p-icon">📄</div>
+        <div class="p-title">Document IDP</div>
+        <div class="p-desc">Auto-classify, extract, and validate documents with confidence scoring per field</div>
+      </div>
+      <div class="pillar">
+        <div class="p-icon">🛡</div>
+        <div class="p-title">Claim Guardian</div>
+        <div class="p-desc">Leakage detection, investment recovery, audit findings, and compliance tracking</div>
+      </div>
+      <div class="pillar">
+        <div class="p-icon">📊</div>
+        <div class="p-title">Role-Based Analytics</div>
+        <div class="p-desc">Tailored dashboards for examiners, supervisors, and risk managers</div>
+      </div>
+      <div class="pillar">
+        <div class="p-icon">🔗</div>
+        <div class="p-title">ServiceNow Native</div>
+        <div class="p-desc">OAuth 2.0 bi-directional sync — FNOL, work notes, findings — all in real time</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 4 — ROLE-BASED DASHBOARDS
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="s-header">
+    <span class="tag">Role-Based Dashboards</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background: var(--light);">
+    <div class="h2 dark">Every Role Gets <span class="blue">Exactly</span> What They Need</div>
+    <div class="divider"></div>
+    <div class="grid-3" style="gap: 20px; margin-top: 8px; align-items: start;">
+      <div class="role-card">
+        <div class="rc-name">Claims Examiner</div>
+        <div class="rc-title">Sarah Johnson</div>
+        <ul>
+          <li>Open &amp; closed claims inventory</li>
+          <li>Workflow bucket navigation (9 buckets)</li>
+          <li>Multi-attribute filtering &amp; search</li>
+          <li>Claims workbench with 12-tab detail view</li>
+          <li>STP vs. manual routing indicator</li>
+          <li>Requirements tracker &amp; document upload</li>
+          <li>AI Insights panel &amp; risk score per claim</li>
+        </ul>
+      </div>
+      <div class="role-card sup">
+        <div class="rc-name">Supervisor</div>
+        <div class="rc-title">Taylor Brooks</div>
+        <ul>
+          <li>Team inventory overview with metrics</li>
+          <li>KPI cards: cycle time, approval rate, STP %</li>
+          <li>Claims handler performance leaderboard</li>
+          <li>Inventory by phase &amp; workflow bucket</li>
+          <li>SLA monitoring &amp; at-risk flags</li>
+          <li>Quality review &amp; approval decisions</li>
+          <li>Exception approval (SIU routing)</li>
+        </ul>
+      </div>
+      <div class="role-card mgr">
+        <div class="rc-name">Risk Manager</div>
+        <div class="rc-title">Morgan Reeves</div>
+        <ul>
+          <li>Enterprise KPI overview (YTD, amounts, rates)</li>
+          <li>Monthly claims &amp; payment trend charts</li>
+          <li>4×4 Impact × Probability Risk Matrix</li>
+          <li>Coverage Gaps analysis with exposure</li>
+          <li>Risk Heatmap (risk level × claim value)</li>
+          <li>Portfolio disposition breakdown</li>
+          <li>Fraud clusters &amp; SLA breach visibility</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 5 — AI INTELLIGENCE
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="s-header">
+    <span class="tag">AI-Powered Intelligence</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body row" style="background: linear-gradient(160deg,#E3F2FD 0%,#fff 60%,#FFF3E0 100%);">
+    <div class="s-col" style="flex: 1.1;">
+      <div class="h2 dark">Intelligence Built Into <span class="blue">Every Claim</span></div>
+      <div class="divider"></div>
+      <div class="feat-list">
+        <div class="feat-item">
+          <div class="feat-icon">🎯</div>
+          <div class="feat-text">
+            <div class="title">Risk Scoring Engine (0–100)</div>
+            <div class="desc">Analyzes anomalies, beneficiary verification, death records, document authenticity, and policy flags. Color-coded Low / Medium / High / Critical.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon orange">🚨</div>
+          <div class="feat-text">
+            <div class="title">Anomaly Detection</div>
+            <div class="desc">Proactively flags beneficiary mismatches, address discrepancies, timing irregularities, duplicate patterns, and unusual amounts vs. peer cohort.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon green">⚡</div>
+          <div class="feat-text">
+            <div class="title">Next Best Actions Engine</div>
+            <div class="desc">Prioritized recommendations ranked by urgency (Immediate / This Week / This Month) with AI rationale for each suggested action.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon purple">💬</div>
+          <div class="feat-text">
+            <div class="title">Claims Analyst Chat (GPT-4o)</div>
+            <div class="desc">Ask any question about a claim—"Why is this flagged?", "What docs are missing?"—and get structured AI explanations instantly.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-col" style="flex: 0.9; gap: 14px;">
+      <div class="ai-card">
+        <div class="label gray" style="margin-bottom:8px;">AI Risk Score</div>
+        <div style="display:flex; align-items:baseline; gap:8px;">
+          <div class="ai-num">73</div>
+          <span class="pill orange">High Risk</span>
+        </div>
+        <div class="risk-bar"><div class="risk-fill" style="width:73%"></div></div>
+        <div style="font-size:11px; color:var(--gray);">3 High · 2 Medium · 1 Low alerts detected</div>
+      </div>
+      <div class="ai-card">
+        <div class="label gray" style="margin-bottom:8px;">Similar Claims Cohort</div>
+        <div class="grid-2" style="gap:10px;">
+          <div><div style="font-size:11px;color:var(--gray);">Avg Cycle</div><div style="font-size:20px;font-weight:700;color:var(--blue);">18 days</div></div>
+          <div><div style="font-size:11px;color:var(--gray);">Fraud Rate</div><div style="font-size:20px;font-weight:700;color:var(--red);">4.2%</div></div>
+          <div><div style="font-size:11px;color:var(--gray);">Avg Settlement</div><div style="font-size:20px;font-weight:700;color:var(--green);">$187K</div></div>
+          <div><div style="font-size:11px;color:var(--gray);">Subrogation</div><div style="font-size:20px;font-weight:700;color:var(--orange);">8.1%</div></div>
+        </div>
+      </div>
+      <div class="ai-card" style="background:#E8F5E3; border:1px solid #C8E6C9;">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px;">✅ Priority Action #1</div>
+        <div style="font-size:13px;color:#000;">Initiate SIU referral — beneficiary change 11 days before death of insured</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:4px;">Urgency: Immediate · Category: Investigation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 6 — STP AUTOMATION
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="s-header">
+    <span class="tag">Straight-Through Processing</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background: var(--dark);">
+    <div class="h2 white">From 20+ Days to <span style="color:var(--orange);">7–10 Days</span></div>
+    <div style="width:60px;height:4px;background:var(--orange);border-radius:2px;margin:10px 0 22px;"></div>
+    <div class="grid-2" style="gap:28px; align-items:start;">
+      <div>
+        <div class="label" style="color:rgba(255,255,255,0.5);margin-bottom:14px;">Standard Claims Lifecycle</div>
+        <div class="lifecycle" style="flex-wrap:wrap;gap:6px;">
+          <div class="lc-step">FNOL</div><div class="lc-arrow">→</div>
+          <div class="lc-step">Review</div><div class="lc-arrow">→</div>
+          <div class="lc-step">Requirements</div><div class="lc-arrow">→</div>
+          <div class="lc-step">Assessment</div><div class="lc-arrow">→</div>
+          <div class="lc-step">Decision</div><div class="lc-arrow">→</div>
+          <div class="lc-step highlight">Closed</div>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:10px;">⏱ Average: 20–30 days · 6 manual touchpoints</div>
+        <div class="feat-list" style="margin-top:20px;">
+          <div class="feat-item">
+            <div class="feat-icon" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);">📋</div>
+            <div class="feat-text">
+              <div class="title" style="color:#fff;">Manual document verification</div>
+              <div class="desc" style="color:rgba(255,255,255,0.55);">Examiner manually reviews each document, keys data, verifies requirements</div>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-icon" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);">👥</div>
+            <div class="feat-text">
+              <div class="title" style="color:#fff;">Multiple approval layers</div>
+              <div class="desc" style="color:rgba(255,255,255,0.55);">Supervisor sign-off, quality review, actuary review for larger claims</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div class="label" style="color:rgba(255,255,255,0.5);">STP Fast Track Lifecycle</div>
+          <div class="stp-badge">⚡ STP</div>
+        </div>
+        <div class="lifecycle" style="flex-wrap:wrap;gap:6px;">
+          <div class="lc-step highlight">FNOL</div><div class="lc-arrow">→</div>
+          <div class="lc-step highlight">STP Eval</div><div class="lc-arrow">→</div>
+          <div class="lc-step highlight">Approved</div><div class="lc-arrow">→</div>
+          <div class="lc-step highlight">Payment</div><div class="lc-arrow">→</div>
+          <div class="lc-step highlight">Closed</div>
+        </div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:10px;">⚡ Average: 7–10 days · Near-zero manual touchpoints</div>
+        <div class="grid-2" style="gap:14px;margin-top:20px;">
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:36px;font-weight:900;color:var(--orange);">40%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;">STP Eligible Claims</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:36px;font-weight:900;color:var(--green);">60%</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;">Faster Cycle Time</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:36px;font-weight:900;color:var(--blue);">7</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;">Days Avg STP Close</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:16px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:36px;font-weight:900;color:var(--orange);">Auto</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;">Req. Waiving</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 7 — DOCUMENT INTELLIGENCE
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="s-header">
+    <span class="tag">Document Intelligence</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body row" style="background:var(--light);">
+    <div class="s-col">
+      <div class="h2 dark">IDP + Beneficiary <span class="blue">Analyzer</span></div>
+      <div class="divider"></div>
+      <div class="feat-list">
+        <div class="feat-item">
+          <div class="feat-icon">🔎</div>
+          <div class="feat-text">
+            <div class="title">Auto-Classification</div>
+            <div class="desc">Death certificates, claimant statements, W-9s, APS, police reports — automatically categorized on upload</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon orange">✍️</div>
+          <div class="feat-text">
+            <div class="title">Field Extraction with Confidence Scoring</div>
+            <div class="desc">Name, SSN, DOB, address, relationship — extracted per field with 0–100% AI confidence indicators</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon green">🔐</div>
+          <div class="feat-text">
+            <div class="title">Beneficiary Analyzer</div>
+            <div class="desc">Compares extracted data vs. Policy Admin records. Highlights discrepancies. LexisNexis address &amp; deceased verification.</div>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon red">📸</div>
+          <div class="feat-text">
+            <div class="title">Staged Document Preview</div>
+            <div class="desc">Realistic document mockups (death cert, W-9, ID, APS) with field highlight overlays for review</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s-col">
+      <div class="card">
+        <div class="label gray" style="margin-bottom:12px;">Beneficiary Analyzer — Extracted vs. Admin Records</div>
+        <div class="doc-row">
+          <div class="doc-icon">👤</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#000;">Elizabeth Jones</div>
+            <div style="font-size:11px;color:var(--gray);">Name · Matched to Policy Admin</div>
+          </div>
+          <div class="conf-pill">98% Conf.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon" style="background:#FFF3E0;color:var(--orange);">📍</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#000;">312 Oak Street → 318 Oak Ave</div>
+            <div style="font-size:11px;color:var(--orange);">Address · Discrepancy Detected</div>
+          </div>
+          <div class="conf-pill med">71% Conf.</div>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon">🗓</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#000;">1958-06-15</div>
+            <div style="font-size:11px;color:var(--gray);">DOB · LexisNexis Verified</div>
+          </div>
+          <div class="conf-pill">96% Conf.</div>
+        </div>
+        <div class="doc-row" style="margin-bottom:0;">
+          <div class="doc-icon">💰</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#000;">Spouse — 100% allocation</div>
+            <div style="font-size:11px;color:var(--gray);">Relationship &amp; Share</div>
+          </div>
+          <div class="conf-pill">94% Conf.</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px;background:#E3F2FD;">
+        <div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:8px;">📄 Documents Supported</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="pill blue">Death Certificate</span>
+          <span class="pill gray">W-9 Form</span>
+          <span class="pill gray">Claimant Statement</span>
+          <span class="pill gray">APS</span>
+          <span class="pill gray">Police Report</span>
+          <span class="pill gray">Gov't ID</span>
+          <span class="pill gray">Toxicology</span>
+          <span class="pill gray">Autopsy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 8 — CLAIM GUARDIAN
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="s-header">
+    <span class="tag">Claim Guardian Intelligence</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background:#0D2B52;">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
+      <div class="h2 white">Claim Guardian</div>
+      <div style="background:var(--orange);color:#fff;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;">Intelligence Layer</div>
+    </div>
+    <div style="width:60px;height:4px;background:var(--orange);border-radius:2px;margin-bottom:22px;"></div>
+    <div class="grid-2" style="gap:16px;">
+      <div class="guardian-card">
+        <div class="gua-icon-row">
+          <div class="gua-icon" style="background:#FFF3E0;color:var(--orange);">⚡</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Next Best Actions</div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">AI-ranked action items by priority and urgency. Each action includes AI rationale, category tag (Documentation / Investigation / Payment / Compliance), and urgency level (Immediate / This Week / This Month).</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
+          <div style="background:rgba(214,48,48,0.15);border:1px solid rgba(214,48,48,0.3);border-radius:6px;padding:8px 10px;font-size:12px;color:#FF8A80;">🔴 P1: Initiate SIU referral — beneficiary change near death date</div>
+          <div style="background:rgba(246,146,30,0.12);border:1px solid rgba(246,146,30,0.25);border-radius:6px;padding:8px 10px;font-size:12px;color:#FFB74D;">🟠 P2: Request updated beneficiary designation from policy admin</div>
+        </div>
+      </div>
+      <div class="guardian-card">
+        <div class="gua-icon-row">
+          <div class="gua-icon" style="background:#E8F5E3;color:var(--green);">💸</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Leakage &amp; Recovery</div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;margin-bottom:12px;">Quantifies financial exposure across payment leakage, unrecovered subrogation, and over-settlement risks.</div>
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:rgba(255,255,255,0.07);border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:24px;font-weight:900;color:var(--orange);">$43K</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;text-transform:uppercase;">Leakage Exposure</div>
+          </div>
+          <div style="flex:1;background:rgba(255,255,255,0.07);border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-family:'Roboto Slab',serif;font-size:24px;font-weight:900;color:var(--green);">$18K</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;text-transform:uppercase;">Recovery Opportunity</div>
+          </div>
+        </div>
+      </div>
+      <div class="guardian-card">
+        <div class="gua-icon-row">
+          <div class="gua-icon" style="background:#E3F2FD;color:var(--blue);">📋</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Audit Findings Tracker</div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Automated audit trail of processing compliance — missed workflows, timeline deviations, requirement gaps — with severity-coded open/closed status for every claim.</div>
+      </div>
+      <div class="guardian-card">
+        <div class="gua-icon-row">
+          <div class="gua-icon" style="background:#F3E5F5;color:#AB47BC;">🔄</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Investment Recovery</div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Identifies third-party subrogation (MVA cases), policy rescission opportunities, and overpayment recovery — with estimated recovery amounts and probability scores.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 9 — INTEGRATIONS
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="s-header">
+    <span class="tag">Enterprise Integrations</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background:var(--light);">
+    <div class="h2 dark">Built for the <span class="blue">Enterprise Ecosystem</span></div>
+    <div class="divider"></div>
+    <div class="grid-3" style="gap:16px;margin-top:8px;align-items:start;">
+      <div class="int-card">
+        <div class="int-logo">🔗</div>
+        <div class="int-name">ServiceNow</div>
+        <div class="int-desc">OAuth 2.0 bi-directional sync. FNOL data, work notes, anomaly detection results, and beneficiary analysis stored natively in ServiceNow tables.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill blue">OAuth 2.0</span>
+          <span class="pill gray">FNOL Sync</span>
+          <span class="pill gray">Live Updates</span>
+        </div>
+      </div>
+      <div class="int-card">
+        <div class="int-logo">🔍</div>
+        <div class="int-name">LexisNexis</div>
+        <div class="int-desc">3-point death verification (SSN, name, DOB). Beneficiary address validation. Deceased status confirmation enabling STP fast-track eligibility.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill blue">Death Verify</span>
+          <span class="pill gray">Address Check</span>
+          <span class="pill green">STP Enabler</span>
+        </div>
+      </div>
+      <div class="int-card">
+        <div class="int-logo">📋</div>
+        <div class="int-name">Policy Admin System</div>
+        <div class="int-desc">Real-time policy in-force verification, beneficiary admin records, premium status, and policy details synced as the authoritative system of record.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill blue">SOR</span>
+          <span class="pill gray">In-Force Check</span>
+          <span class="pill gray">Bene Records</span>
+        </div>
+      </div>
+      <div class="int-card">
+        <div class="int-logo">💰</div>
+        <div class="int-name">Tax Engine (cmA)</div>
+        <div class="int-desc">Federal &amp; state withholding calculations, automated 1099-R generation, GL posting integration for accounts payable reconciliation.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill orange">1099-R</span>
+          <span class="pill gray">Fed + State</span>
+          <span class="pill gray">GL Posting</span>
+        </div>
+      </div>
+      <div class="int-card">
+        <div class="int-logo">🧮</div>
+        <div class="int-name">VPMS (PMI Engine)</div>
+        <div class="int-desc">State-specific Post Mortem Interest (PMI) rates for 10 states. Simple interest accrual from date of death to settlement with full validation.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill blue">10 States</span>
+          <span class="pill gray">PMI Calc</span>
+          <span class="pill gray">Accrual</span>
+        </div>
+      </div>
+      <div class="int-card">
+        <div class="int-logo">🤖</div>
+        <div class="int-name">GPT-4o (OpenAI)</div>
+        <div class="int-desc">Claims Analyst Chat and AI Insights Panel powered by GPT-4o. Full claim context injection with structured markdown output and reasoning transparency.</div>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">
+          <span class="pill purple" style="background:#F3E5F5;color:#7B1FA2;">GPT-4o</span>
+          <span class="pill gray">Claim Context</span>
+          <span class="pill gray">AI Chat</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 10 — ROI & METRICS
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+  <div class="s-header" style="background:#0D2B52;">
+    <span class="tag">Business Impact &amp; ROI</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background:var(--blue);justify-content:center;">
+    <div class="h2 white" style="text-align:center;">Measurable Impact from Day One</div>
+    <div style="width:60px;height:4px;background:var(--orange);border-radius:2px;margin:12px auto 28px;"></div>
+    <div class="grid-4" style="gap:16px;margin-bottom:24px;">
+      <div class="roi-stat">
+        <div class="big">60%</div>
+        <div class="sub">Faster Cycle Time</div>
+      </div>
+      <div class="roi-stat">
+        <div class="big">40%</div>
+        <div class="sub">STP Auto-Approval Rate</div>
+      </div>
+      <div class="roi-stat">
+        <div class="big">95%</div>
+        <div class="sub">Document Classification Accuracy</div>
+      </div>
+      <div class="roi-stat">
+        <div class="big">7</div>
+        <div class="sub">Days Avg STP Closure</div>
+      </div>
+    </div>
+    <div class="grid-3" style="gap:16px;">
+      <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:18px;">
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;">📉 Cost Reduction</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;">Fewer manual touchpoints, automated document review, and STP routing reduce per-claim cost by up to 45%</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:18px;">
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;">🔒 Fraud Prevention</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;">Proactive AI risk scoring detects fraud patterns before payment — protecting millions in annual exposure</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:18px;">
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;">😊 Beneficiary Experience</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;">Faster settlements reduce beneficiary follow-ups and complaints — improving NPS and regulatory standing</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 11 — WHY DXC BLOOM
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="s-header">
+    <span class="tag">Why DXC Bloom</span>
+    <span class="logo">🌸 Bloom Claims Assistant</span>
+  </div>
+  <div class="s-body" style="background:#FAFAFA;">
+    <div class="h2 dark">Why <span class="blue">Bloom</span> by DXC?</div>
+    <div class="divider"></div>
+    <div class="grid-2" style="gap:14px;margin-top:8px;align-items:start;">
+      <div class="why-item">
+        <div class="why-num">01</div>
+        <div class="why-text">
+          <div class="wt">Purpose-Built for L&amp;A Carriers</div>
+          <div class="wd">Designed ground-up for Life &amp; Annuity claims — not a generic platform retrofitted. Supports death, maturity, surrender, withdrawal, and disability claim types with L&amp;A-specific workflows.</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">02</div>
+        <div class="why-text">
+          <div class="wt">ServiceNow Ecosystem Native</div>
+          <div class="wd">Built by DXC on top of the world's leading enterprise platform. FNOL data, work notes, AI findings — all sync natively. No middleware, no re-keying.</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">03</div>
+        <div class="why-text">
+          <div class="wt">Enterprise-Grade Data Model</div>
+          <div class="wd">Full claim lifecycle with multi-policy aggregation, nested beneficiary structures, requirement tracking at claim/policy/party levels, and complete timeline audit from all integrated systems.</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">04</div>
+        <div class="why-text">
+          <div class="wt">Regulatory &amp; Compliance Ready</div>
+          <div class="wd">State-specific PMI rates, federal/state tax withholding, 1099-R generation, NIGO tracking, requirement satisfaction audit trails — compliance baked in, not bolted on.</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">05</div>
+        <div class="why-text">
+          <div class="wt">Halstack Design System</div>
+          <div class="wd">Built on DXC's enterprise Halstack React component library — accessible, WCAG compliant, theme-configurable, responsive across desktop, tablet, and iPad layouts.</div>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-num">06</div>
+        <div class="why-text">
+          <div class="wt">L&amp;A + P&amp;C Flexibility</div>
+          <div class="wd">Single platform supporting both Life &amp; Annuity and Property &amp; Casualty product lines with configurable requirement sets, claim types, and workflow rules per product.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SLIDE 12 — CTA
+════════════════════════════════════════════════════════════ -->
+<div class="slide" id="s12">
+  <div style="background:linear-gradient(135deg,#0D2B52 0%,#1B75BB 100%); flex:1; display:flex; flex-direction:column; padding:48px 64px; justify-content:center;">
+    <div class="h2 white" style="text-align:center;">Ready to Transform Your <span style="color:var(--orange);">Claims Operations?</span></div>
+    <div style="width:60px;height:4px;background:var(--orange);border-radius:2px;margin:14px auto 32px;"></div>
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:680px;margin:0 auto;width:100%;">
+      <div class="cta-step">
+        <div class="cta-num">1</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Live Guided Demo</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px;">Full walkthrough of all personas — examiner, supervisor, and risk manager — with your real claim scenarios</div>
+        </div>
+      </div>
+      <div class="cta-step">
+        <div class="cta-num">2</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Integration Assessment</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px;">DXC team reviews your existing ServiceNow environment, policy admin system, and data model for fit analysis</div>
+        </div>
+      </div>
+      <div class="cta-step">
+        <div class="cta-num">3</div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#fff;">Pilot Program</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-top:3px;">Deploy Bloom Claims Assistant against a defined claim cohort — measure STP rates, cycle time, and fraud detection in production conditions</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:40px;margin-top:36px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Platform</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;">🌸 Bloom Claims Assistant</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Built by</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;">DXC Technology</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Product Line</div>
+        <div style="font-size:16px;font-weight:700;color:#fff;">L&amp;A · P&amp;C</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .deck -->
+
+<!-- ── Navigation Bar ── -->
+<nav class="nav">
+  <button onclick="go(-1)" title="Previous (←)">&#8592;</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter">1 / 12</span>
+  <button onclick="go(1)" title="Next (→)">&#8594;</button>
+</nav>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let cur = 0;
+
+  const dotsEl = document.getElementById('dots');
+  const counterEl = document.getElementById('counter');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' on' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    document.querySelectorAll('.dot')[cur].classList.remove('on');
+    cur = Math.max(0, Math.min(total - 1, n));
+    slides[cur].classList.add('active');
+    document.querySelectorAll('.dot')[cur].classList.add('on');
+    counterEl.textContent = `${cur + 1} / ${total}`;
+  }
+
+  function go(dir) { goTo(cur + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   go(-1);
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End')  goTo(total - 1);
+  });
+</script>
+</body>
+</html>

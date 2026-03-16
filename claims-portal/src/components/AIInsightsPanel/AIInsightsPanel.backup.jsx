@@ -11,7 +11,7 @@ import {
 import './AIInsightsPanel.css';
 
 /**
- * SA-012: AI Insights Panel
+ * SA-012: Claim Insights Panel
  *
  * Displays AI-powered insights including:
  * - Anomaly alerts
@@ -82,7 +82,7 @@ const AIInsightsPanel = ({ claimData, insights = [], onViewDetail, onDismiss }) 
               psychology
             </span>
             <DxcTypography fontSize="font-scale-03" fontWeight="font-weight-semibold">
-              AI Insights
+              Claim Insights
             </DxcTypography>
           </DxcFlex>
           <DxcChip
@@ -255,7 +255,7 @@ const AIInsightsPanel = ({ claimData, insights = [], onViewDetail, onDismiss }) 
                 No anomalies detected
               </DxcTypography>
               <DxcTypography fontSize="font-scale-01" color="var(--color-fg-neutral-strong)">
-                All AI verification checks passed successfully
+                All verification checks passed successfully
               </DxcTypography>
             </DxcFlex>
           </DxcContainer>

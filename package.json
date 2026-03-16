@@ -1,36 +1,17 @@
 {
-  "name": "claims-portal",
+  "name": "claims-halstack",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "description": "Claims Portal built with React and DXC Halstack",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "cd claims-portal && npm run dev",
+    "build": "cd claims-portal && npm install && npm run build",
+    "preview": "cd claims-portal && npm run preview",
+    "lint": "cd claims-portal && npm run lint",
+    "postinstall": "cd claims-portal && npm install"
   },
-  "dependencies": {
-    "@dxc-technology/halstack-react": "^16.0.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.9",
-    "@mui/material": "^7.3.9",
-    "@mui/x-data-grid": "^8.27.5",
-    "material-icons": "^1.13.14",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "pptxgenjs": "^4.0.1",
-    "vite": "^6.4.1"
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
-

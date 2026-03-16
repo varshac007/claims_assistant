@@ -12,7 +12,7 @@ import AnomalyDetection from '../shared/AnomalyDetection';
 import './AIInsightsPanel.css';
 
 /**
- * Redesigned AI Insights Panel - Compact & Modern
+ * Redesigned Claim Insights Panel - Compact & Modern
  * Enterprise-grade design for ServiceNow/Insurance portals
  */
 const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
@@ -44,7 +44,7 @@ const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
   // Generate summary text (2-3 lines max)
   const getSummaryText = () => {
     if (totalAlerts === 0) {
-      return 'All AI verification checks passed successfully. No anomalies or risk indicators detected.';
+      return 'All verification checks passed successfully. No anomalies or risk indicators detected.';
     }
 
     const criticalCount = highAlerts.length;
@@ -63,7 +63,7 @@ const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
 
   return (
     <>
-      {/* Compact AI Insights Card */}
+      {/* Compact Claim Insights Card */}
       <div className="ai-insights-card" style={{
         backgroundColor: '#FFFFFF',
         borderRadius: '8px',
@@ -87,7 +87,7 @@ const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
                 fontSize="font-scale-03"
                 fontWeight="font-weight-semibold"
               >
-                AI Insights
+                Claim Insights
               </DxcTypography>
             </DxcFlex>
 

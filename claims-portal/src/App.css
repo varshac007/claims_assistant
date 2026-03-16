@@ -49,7 +49,6 @@ html body footer {
   flex: 1;
   padding: var(--spacing-6, 1.5rem);
   overflow-y: auto;
-  overflow-x: hidden;
   background: var(--color-pale-aqua, #F2F7F6);
 }
 
@@ -603,8 +602,8 @@ input[type="submit"],
 }
 
 /* Catch-all for any button that doesn't match specific modes */
-/* Exclude sidenav navigation buttons */
-button:not([disabled]):not([class*="icon-only"]):not(.collapse-toggle):not(.nav-item):not(.footer-item) {
+/* Exclude sidenav navigation buttons and custom icon buttons */
+button:not([disabled]):not([class*="icon-only"]):not(.collapse-toggle):not(.nav-item):not(.footer-item):not(.ca-send-btn):not(.ca-model-btn):not(.ca-icon-btn):not(.ca-run-btn) {
   min-height: 44px !important;
   padding: 12px 24px !important;
 }
@@ -734,3 +733,4 @@ button.large,
   width: 300px !important;
   height: 300px !important;
 }
+

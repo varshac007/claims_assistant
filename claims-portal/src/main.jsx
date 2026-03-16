@@ -1,4 +1,3 @@
-// Entry point for the Claims Portal application
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'

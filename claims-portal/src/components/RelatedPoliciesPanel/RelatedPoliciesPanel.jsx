@@ -25,14 +25,7 @@ import './RelatedPoliciesPanel.css';
  * - Shows total potential death benefit
  * - Actions to initiate claims on related policies
  */
-const RelatedPoliciesPanel = ({
-  claimData,
-  onConfirmPolicy,
-  onDenyPolicy,
-  onViewPolicy,
-  confirmedPolicies = [],
-  deniedPolicies = []
-}) => {
+const RelatedPoliciesPanel = ({ claimData, onInitiateClaim, onViewPolicy }) => {
   const [relatedPolicies, setRelatedPolicies] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -87,12 +80,6 @@ const RelatedPoliciesPanel = ({
     return 'neutral';
   };
 
-  const getDecision = (policyNumber) => {
-    if (confirmedPolicies.some(p => p.policyNumber === policyNumber)) return 'confirmed';
-    if (deniedPolicies.some(p => p.policyNumber === policyNumber)) return 'denied';
-    return 'pending';
-  };
-
   if (loading) {
     return (
       <DxcContainer
@@ -135,7 +122,7 @@ const RelatedPoliciesPanel = ({
               policy
             </span>
             <DxcTypography fontSize="font-scale-03" fontWeight="font-weight-semibold">
-              Additional Policies — Confirm or Deny Association
+              Other Policies Requiring Claims
             </DxcTypography>
             {hasRelatedPolicies && (
               <DxcChip
@@ -155,9 +142,8 @@ const RelatedPoliciesPanel = ({
                 Additional Policies Identified
               </DxcTypography>
               <DxcTypography fontSize="font-scale-01">
-                The deceased has {relatedPolicies.total} other {relatedPolicies.total === 1 ? 'policy' : 'policies'} on file.
-                Total potential death benefit: <strong>{formatCurrency(relatedPolicies.totalFaceAmount)}</strong>.
-                Confirm association to add as child records under this FNOL, or deny to exclude.
+                The deceased has {relatedPolicies.total} other {relatedPolicies.total === 1 ? 'policy' : 'policies'} that may require death claims.
+                Total potential death benefit: <strong>{formatCurrency(relatedPolicies.totalFaceAmount)}</strong>
               </DxcTypography>
             </DxcFlex>
           </DxcAlert>
@@ -169,7 +155,7 @@ const RelatedPoliciesPanel = ({
             {allPolicies.map((policy, index) => (
               <div
                 key={policy.policyNumber || index}
-                className={`related-policy-card${getDecision(policy.policyNumber) === 'confirmed' ? ' related-policy-card--confirmed' : getDecision(policy.policyNumber) === 'denied' ? ' related-policy-card--denied' : ''}`}
+                className="related-policy-card"
               >
                 <DxcFlex direction="column" gap="var(--spacing-gap-m)">
                   {/* Policy Header */}
@@ -187,12 +173,6 @@ const RelatedPoliciesPanel = ({
                         <DxcBadge
                           label={policy.policyStatus || policy.status || 'In Force'}
                         />
-                        {getDecision(policy.policyNumber) === 'confirmed' && (
-                          <DxcChip label="Confirmed ✓" size="small" />
-                        )}
-                        {getDecision(policy.policyNumber) === 'denied' && (
-                          <DxcChip label="Excluded" size="small" />
-                        )}
                       </DxcFlex>
                       <DxcTypography fontSize="font-scale-01" color="var(--color-fg-neutral-strong)">
                         {policy.policyType || policy.type} • Issued {policy.issueDate}
@@ -272,23 +252,14 @@ const RelatedPoliciesPanel = ({
                   {/* Action Buttons */}
                   <DxcFlex gap="var(--spacing-gap-s)">
                     <DxcButton
-                      label="Confirm Association"
+                      label="Initiate Death Claim"
                       mode="primary"
                       size="small"
-                      icon="link"
-                      disabled={getDecision(policy.policyNumber) === 'confirmed'}
-                      onClick={() => onConfirmPolicy && onConfirmPolicy(policy)}
+                      icon="add"
+                      onClick={() => onInitiateClaim && onInitiateClaim(policy)}
                     />
                     <DxcButton
-                      label="Deny"
-                      mode="tertiary"
-                      size="small"
-                      icon="link_off"
-                      disabled={getDecision(policy.policyNumber) === 'denied'}
-                      onClick={() => onDenyPolicy && onDenyPolicy(policy)}
-                    />
-                    <DxcButton
-                      label="View Details"
+                      label="View Policy Details"
                       mode="secondary"
                       size="small"
                       icon="visibility"

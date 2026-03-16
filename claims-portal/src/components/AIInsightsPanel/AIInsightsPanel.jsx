@@ -87,7 +87,7 @@ const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
                 fontSize="font-scale-03"
                 fontWeight="font-weight-semibold"
               >
-                Automated Insights
+                Claim Insights
               </DxcTypography>
             </DxcFlex>
 

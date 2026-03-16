@@ -15,6 +15,10 @@ import cacheManager from '../utils/cacheManager';
 import { handleAPIError } from '../utils/errorHandler';
 import eventBus, { EventTypes } from '../sync/eventBus';
 import demoData from '../../data/demoData';
+import { getPCDemoData } from '../../data/demoDataPC';
+
+const getActiveDemoData = () =>
+  localStorage.getItem('demoProductLine') === 'pc' ? getPCDemoData() : demoData;
 
 const CMA_BASE_PATH = '/cma';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
@@ -59,7 +63,7 @@ export const getClaim = async (claimId, bypassCache = false) => {
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 300));
 
-      const claim = demoData.claims.find(c =>
+      const claim = getActiveDemoData().claims.find(c =>
         c.id === claimId || c.claimNumber === claimId
       );
 
@@ -128,7 +132,7 @@ export const getClaims = async (filters = {}) => {
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      let filteredClaims = [...demoData.claims];
+      let filteredClaims = [...getActiveDemoData().claims];
 
       // Apply filters if provided
       if (filters.status) {

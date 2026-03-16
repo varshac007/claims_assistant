@@ -2,7 +2,6 @@
   padding: 2rem;
   background-color: #F8F9FA; /* BLOOM: Page background */
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* ════════════════════════════════════════
@@ -28,8 +27,8 @@
 .death-modal {
   background: #fff;
   border-radius: 14px;
-  width: 100%;
-  max-width: 620px;
+  width: 620px;
+  max-width: 95vw;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
@@ -144,12 +143,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-}
-
-@media (max-width: 560px) {
-  .death-modal__grid-2 {
-    grid-template-columns: 1fr;
-  }
 }
 
 .death-modal__field {
@@ -365,26 +358,49 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-gap-l);
+  min-width: 0;
 }
 
 .dashboard-grid-top {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-gap-l);
+  min-width: 0;
 }
 
 .dashboard-grid-middle {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-gap-l);
+  min-width: 0;
 }
 
-@media (max-width: 1200px) {
+/* iPad portrait + landscape (up to 1024px) */
+@media (max-width: 1024px) {
   .dashboard-grid-people,
   .dashboard-grid-top,
   .dashboard-grid-middle {
     grid-template-columns: 1fr;
+    gap: var(--spacing-gap-m);
   }
+}
+
+/* Tabs bar: allow horizontal scroll instead of overflowing the page */
+.workbench-tabs-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* hide scrollbar but keep scroll */
+}
+.workbench-tabs-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Prevent any child element from blowing out the workbench width */
+.workbench-container,
+.workbench-container * {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Payment Details Grid */
@@ -394,13 +410,13 @@
   gap: var(--spacing-gap-m);
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1024px) {
   .payment-details-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .payment-details-grid {
     grid-template-columns: 1fr;
   }
@@ -413,27 +429,14 @@
   gap: var(--spacing-gap-m);
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1024px) {
   .policy-details-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .policy-details-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Workbench container padding reduction on portrait/narrow screens */
-@media (max-width: 1200px) {
-  .workbench-container {
-    padding: 1.25rem;
-  }
-}
-
-@media (max-width: 900px) {
-  .workbench-container {
-    padding: 1rem;
   }
 }

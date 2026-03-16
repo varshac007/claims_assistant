@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom Insurance — Requirements Workbench</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f8fafb;--bg-primary:#ffffff;--bg-muted:#f4f5f7;--bg-hover:#f0f5fa;
+  --border:#e2e6ea;--border-strong:#d0d4da;--border-accent:#1B75BB;
+  --text:#2c2c2c;--text-2:#616873;--text-3:#8c939e;--text-inv:#ffffff;
+  --blue:#1B75BB;--blue-bg:#e8f4fc;--blue-border:#b3d4ee;--blue-hover:#d0e8f7;
+  --green:#1a8a3f;--green-bg:#e8f8ee;--green-border:#b8e6c8;
+  --yellow:#946b0e;--yellow-bg:#fef9e7;--yellow-border:#f5e6a3;
+  --orange:#c2610c;--orange-bg:#fef3e6;--orange-border:#f5d4a3;
+  --red:#c53030;--red-bg:#fef0f0;--red-border:#f5b8b8;
+  --purple:#6c5ce7;--purple-bg:#f0eefe;
+  --teal:#0c8a8a;--teal-bg:#e6f8f8;
+  --r:8px;--rs:6px;--rx:4px;
+  --font:'Roboto',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);font-size:14px;line-height:1.5;color:var(--text);background:var(--bg);overflow:hidden;height:100vh;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+
+/* ─── HEADER ─── */
+.header{height:48px;background:var(--bg-primary);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:12px;}
+.logo{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-3);}
+.logo svg{width:24px;height:24px;}.logo b{color:var(--text);font-weight:700;}
+.spacer{flex:1;}
+.hdr-btn{padding:5px 14px;border:1px solid var(--blue);border-radius:var(--rs);background:transparent;color:var(--blue);font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;}
+.hdr-btn:hover{background:var(--blue-bg);}
+
+/* ─── CLAIM STRIP ─── */
+.claim-strip{height:44px;background:var(--bg-primary);border-bottom:2px solid var(--border-accent);display:flex;align-items:center;padding:0 16px;gap:24px;font-size:12px;}
+.cs-id{font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;}
+.cs-badge{font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;background:var(--blue-bg);color:var(--blue);}
+.cs-sep{width:1px;height:20px;background:var(--border);}
+.cs-kpi{text-align:center;}.cs-kpi-v{font-weight:700;}.cs-kpi-l{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px;}
+
+/* ─── TABS ─── */
+.tabs{display:flex;background:var(--bg-primary);border-bottom:1px solid var(--border);padding:0 16px;}
+.tab{padding:10px 16px;font-size:12px;font-weight:500;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;}
+.tab:hover{color:var(--text);}.tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+
+/* ═══ SPLIT PANE ═══ */
+.split{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 142px);overflow:hidden;}
+
+/* ─── LEFT: PARTY PANEL ─── */
+.party-panel{background:var(--bg-primary);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.pp-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pp-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.pp-subtitle{font-size:10px;color:var(--text-3);}
+.pp-progress{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--bg-muted);}
+.pp-prog-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:6px;}
+.pp-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),#00ADEE);transition:width .5s;}
+.pp-prog-stats{display:flex;gap:8px;font-size:10px;font-weight:500;}
+.pp-prog-stat{padding:1px 6px;border-radius:8px;}
+.pp-list{flex:1;overflow-y:auto;padding:6px;}
+.pp-card{padding:10px 12px;border-radius:var(--rs);cursor:pointer;transition:all .15s;border:2px solid transparent;margin-bottom:2px;}
+.pp-card:hover{background:var(--bg-hover);}
+.pp-card.active{background:var(--blue-bg);border-color:var(--blue);}
+.pp-card-top{display:flex;align-items:center;gap:10px;}
+.pp-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;flex-shrink:0;}
+.pp-name{font-size:13px;font-weight:600;line-height:1.2;}
+.pp-role{font-size:10px;font-weight:500;padding:1px 7px;border-radius:8px;display:inline-block;margin-top:2px;}
+.pp-card-bottom{display:flex;align-items:center;gap:6px;margin-top:8px;padding-left:44px;}
+.pp-mini-bar{flex:1;height:4px;background:var(--bg-muted);border-radius:2px;overflow:hidden;}
+.pp-mini-fill{height:100%;border-radius:2px;transition:width .4s;}
+.pp-mini-pct{font-size:10px;font-weight:600;color:var(--text-3);min-width:28px;text-align:right;}
+.pp-mini-counts{display:flex;gap:4px;margin-top:4px;padding-left:44px;}
+.pp-mc{font-size:9px;font-weight:600;padding:1px 5px;border-radius:6px;}
+
+/* Role colors */
+.av-bene{background:linear-gradient(135deg,#1B75BB,#00ADEE);}
+.av-insured{background:linear-gradient(135deg,#1a8a3f,#8BC53F);}
+.av-provider{background:linear-gradient(135deg,#0c8a8a,#38d9a9);}
+.av-employer{background:linear-gradient(135deg,#c2610c,#F6921E);}
+.av-system{background:linear-gradient(135deg,#8c939e,#b8bec6);}
+.rl-bene{background:var(--blue-bg);color:var(--blue);}.rl-provider{background:var(--teal-bg);color:var(--teal);}
+.rl-employer{background:var(--orange-bg);color:var(--orange);}.rl-system{background:var(--bg-muted);color:var(--text-3);}
+
+/* ─── RIGHT: REQUIREMENTS DETAIL ─── */
+.req-panel{display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.rp-header{padding:14px 20px;background:var(--bg-primary);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.rp-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;}
+.rp-info{flex:1;}.rp-name{font-size:16px;font-weight:700;}.rp-role{font-size:12px;color:var(--text-2);}
+.rp-stats{display:flex;gap:8px;}
+.rp-stat{text-align:center;padding:6px 14px;border-radius:var(--rs);border:1px solid var(--border);}
+.rp-stat-v{font-size:18px;font-weight:700;line-height:1;}.rp-stat-l{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.3px;color:var(--text-3);margin-top:2px;}
+.rp-filter-bar{display:flex;gap:4px;padding:10px 20px;background:var(--bg-primary);border-bottom:1px solid var(--border);flex-shrink:0;}
+.rf-btn{padding:4px 12px;border-radius:14px;border:1px solid var(--border-strong);background:white;font-family:var(--font);font-size:11px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .12s;}
+.rf-btn:hover{border-color:var(--blue);color:var(--blue);}.rf-btn.active{background:var(--blue);color:white;border-color:var(--blue);}
+.rf-btn .ct{font-size:9px;font-weight:700;padding:0 4px;border-radius:6px;margin-left:2px;}
+.rf-btn.active .ct{background:rgba(255,255,255,.3);}.rf-btn:not(.active) .ct{background:var(--bg-muted);}
+
+.rp-body{flex:1;overflow-y:auto;padding:16px 20px;}
+
+/* ─── REQUIREMENT SECTIONS ─── */
+.req-section{margin-bottom:20px;animation:fadeUp .3s ease forwards;}
+.req-section-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 0;}
+.rsh-icon{font-size:16px;}.rsh-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);}
+.rsh-count{font-size:10px;font-weight:600;padding:1px 8px;border-radius:10px;background:var(--bg-muted);color:var(--text-3);}
+.rsh-line{flex:1;height:1px;background:var(--border);}
+
+/* ─── REQUIREMENT CARDS ─── */
+.req-card{background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:8px;transition:all .15s;animation:slideIn .25s ease forwards;opacity:0;border-left:4px solid var(--border);}
+.req-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.req-card.rc-satisfied{border-left-color:var(--green);}.req-card.rc-pending{border-left-color:var(--yellow);}
+.req-card.rc-in_review{border-left-color:var(--blue);}.req-card.rc-nigo{border-left-color:var(--red);background:var(--red-bg);}
+.req-card.rc-waived{border-left-color:var(--text-3);opacity:.7;}
+.rc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.rc-name{font-size:13px;font-weight:600;line-height:1.3;}
+.rc-desc{font-size:11px;color:var(--text-3);margin-top:2px;}
+.rc-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0;}
+.b-satisfied{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.b-pending{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);}
+.b-in_review{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.b-nigo{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.b-waived{background:var(--bg-muted);color:var(--text-3);border:1px solid var(--border);}
+.rc-meta{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap;font-size:11px;color:var(--text-2);}
+.rc-meta-item{display:flex;align-items:center;gap:4px;}
+.rc-meta-item.overdue{color:var(--red);font-weight:600;}
+.rc-meta-item.soon{color:var(--orange);}
+.rc-conf{display:inline-flex;align-items:center;gap:4px;}
+.rc-conf-bar{width:36px;height:4px;background:var(--bg-muted);border-radius:2px;overflow:hidden;}
+.rc-conf-fill{height:100%;border-radius:2px;}
+.rc-conf-high .rc-conf-fill{background:var(--green);}.rc-conf-med .rc-conf-fill{background:var(--yellow);}.rc-conf-low .rc-conf-fill{background:var(--red);}
+.rc-source{display:inline-flex;align-items:center;gap:3px;color:var(--blue);font-size:11px;font-weight:500;text-decoration:none;cursor:pointer;}
+.rc-source:hover{text-decoration:underline;}
+.rc-priority{font-size:10px;font-weight:500;padding:1px 7px;border-radius:8px;}
+.pri-m{background:var(--bg-muted);color:var(--text-2);}.pri-c{background:var(--orange-bg);color:var(--orange);}
+.rc-note{font-size:11px;color:var(--text-2);margin-top:6px;padding:6px 10px;background:var(--bg-muted);border-radius:var(--rx);border-left:3px solid var(--border);font-style:italic;}
+.rc-actions{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+.rc-btn{padding:5px 12px;border-radius:var(--rx);border:1px solid var(--border-strong);background:white;font-family:var(--font);font-size:11px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all .12s;display:inline-flex;align-items:center;gap:4px;}
+.rc-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg);}
+.rc-btn.primary{background:var(--blue);color:white;border-color:var(--blue);}.rc-btn.primary:hover{background:#1565a0;}
+.rc-btn.success{color:var(--green);border-color:var(--green-border);}.rc-btn.success:hover{background:var(--green-bg);}
+.rc-btn.danger{color:var(--red);border-color:var(--red-border);}.rc-btn.danger:hover{background:var(--red-bg);}
+
+/* ─── EMPTY ─── */
+.empty{text-align:center;padding:48px 20px;color:var(--text-3);}
+.empty-icon{font-size:40px;margin-bottom:8px;}
+
+/* ─── PARTY INDICATOR ON SHARED REQS ─── */
+.rc-party-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:8px;background:var(--bg-muted);}
+.rc-party-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="logo">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><path d="M100 16C90 16,68 38,68 62C68 78,78 90,100 100C122 90,132 78,132 62C132 38,110 16,100 16Z" fill="#00ADEE"/><path d="M184 100C184 90,162 68,138 68C122 68,110 78,100 100C110 122,122 132,138 132C162 132,184 110,184 100Z" fill="#37A526"/><path d="M100 184C110 184,132 162,132 138C132 122,122 110,100 100C78 110,68 122,68 138C68 162,90 184,100 184Z" fill="#8BC53F"/><path d="M16 100C16 110,38 132,62 132C78 132,90 122,100 100C90 78,78 68,62 68C38 68,16 90,16 100Z" fill="#1B75BB"/><circle cx="100" cy="100" r="10" fill="#E8DE23"/></svg>
+    <span><b>Bloom</b> Insurance</span>
+  </div>
+  <div class="spacer"></div>
+  <button class="hdr-btn">Actions ▾</button>
+  <span style="font-size:12px;color:var(--text-3);">👤 John Smith</span>
+</div>
+
+<!-- ═══ CLAIM STRIP ═══ -->
+<div class="claim-strip">
+  <span class="cs-id">← CLM-000001 <span class="cs-badge">under_review</span></span>
+  <span class="cs-sep"></span>
+  <span>👤 Robert Jones (Deceased) · POL-847291 · Death Claim</span>
+  <div class="spacer"></div>
+  <div class="cs-kpi"><span class="cs-kpi-v">$150,000</span> <span class="cs-kpi-l">Amount</span></div>
+  <div class="cs-sep"></div>
+  <div class="cs-kpi"><span class="cs-kpi-v" style="color:var(--orange);">10</span> <span class="cs-kpi-l">SLA Days</span></div>
+  <div class="cs-sep"></div>
+  <div class="cs-kpi"><span class="cs-kpi-v" id="kpi-pct">3/17</span> <span class="cs-kpi-l">Reqs Done</span></div>
+</div>
+
+<!-- ═══ TABS ═══ -->
+<div class="tabs">
+  <div class="tab">Dashboard</div><div class="tab">Financials</div><div class="tab">Policy 360</div><div class="tab">Timeline</div>
+  <div class="tab active">Requirements</div><div class="tab">Documents</div><div class="tab">Beneficiary Analyzer</div><div class="tab">Related Policies</div>
+</div>
+
+<!-- ═══ SPLIT PANE ═══ -->
+<div class="split">
+
+  <!-- ─── LEFT: PARTY PANEL ─── -->
+  <div class="party-panel">
+    <div class="pp-header">
+      <div><div class="pp-title">👥 Claim Parties</div><div class="pp-subtitle">Click a party to see their requirements</div></div>
+    </div>
+    <div class="pp-progress">
+      <div class="pp-prog-track"><div class="pp-prog-fill" id="global-prog-fill" style="width:18%;"></div></div>
+      <div class="pp-prog-stats">
+        <span class="pp-prog-stat" id="gp-sat" style="background:var(--green-bg);color:var(--green);">✅ 3</span>
+        <span class="pp-prog-stat" id="gp-pend" style="background:var(--yellow-bg);color:var(--yellow);">⏳ 11</span>
+        <span class="pp-prog-stat" id="gp-nigo" style="background:var(--red-bg);color:var(--red);">❌ 1</span>
+        <span class="pp-prog-stat" id="gp-waived" style="background:var(--bg-muted);color:var(--text-3);">➖ 2</span>
+      </div>
+    </div>
+    <div class="pp-list" id="party-list"></div>
+  </div>
+
+  <!-- ─── RIGHT: REQUIREMENTS ─── -->
+  <div class="req-panel">
+    <div class="rp-header" id="rp-header"></div>
+    <div class="rp-filter-bar" id="rp-filter-bar"></div>
+    <div class="rp-body" id="rp-body"></div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA: CLAIM PARTIES
+// ═══════════════════════════════════════
+const parties = [
+  { id:'ALL',   name:'All Parties',        role:'Overview',                      initials:'ALL', avCls:'av-system',   rlCls:'rl-system',   type:'overview' },
+  { id:'BEN1',  name:'Sarah Jones',        role:'Beneficiary · Primary (60%)',   initials:'SJ',  avCls:'av-bene',     rlCls:'rl-bene',     type:'person', contact:'(555) 123-4567', email:'sarah.jones@email.com' },
+  { id:'BEN2',  name:'Michael Jones',      role:'Beneficiary · Contingent (40%)',initials:'MJ',  avCls:'av-bene',     rlCls:'rl-bene',     type:'person', contact:'(555) 234-5678', email:'m.jones@email.com' },
+  { id:'BEN3',  name:'Jones Family Trust',  role:'Beneficiary · Irrevocable Trust',initials:'JT', avCls:'av-bene',    rlCls:'rl-bene',     type:'entity', contact:'Margaret Jones (Trustee)', email:'trust@jonesfamily.com' },
+  { id:'PROV',  name:'Dr. Martinez',       role:'Attending Physician',           initials:'DM',  avCls:'av-provider', rlCls:'rl-provider', type:'person', contact:'(555) 345-6789', email:'martinez@hospital.org' },
+  { id:'EMP',   name:'Acme Corp',          role:'Group Employer · HR Dept',      initials:'AC',  avCls:'av-employer', rlCls:'rl-employer', type:'entity', contact:'HR Benefits', email:'benefits@acme.com' },
+  { id:'SYS',   name:'System / Auto',      role:'Policy Admin · Auto-Verified',  initials:'⚙',  avCls:'av-system',   rlCls:'rl-system',   type:'system' },
+];
+
+// ═══════════════════════════════════════
+// DATA: REQUIREMENTS
+// ═══════════════════════════════════════
+const reqs = [
+  // ── Claim Level (assigned to primary bene by default but shared) ──
+  { id:'R01', name:'Certified Death Certificate',      desc:'Official death certificate from state vital records',            level:'claim', partyId:'BEN1', status:'pending',    pri:'mandatory',   due:'2026-02-12', recv:null,         src:null,                                         conf:null, note:'Original or certified copy — any party may submit',                   acts:['upload','request','waive'] },
+  { id:'R02', name:'Police / Accident Report',         desc:'Required when cause of death is accidental',                    level:'claim', partyId:'BEN1', status:'waived',     pri:'conditional', due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'Natural causes confirmed — waived',                                  acts:['reinstate'] },
+
+  // ── Policy Level (system) ──
+  { id:'R03', name:'Policy In-Force Verification',     desc:'Verify policy status and coverage at date of death',            level:'policy',partyId:'SYS',  status:'satisfied', pri:'mandatory',   due:'2026-02-08', recv:'2026-02-05', src:{n:'POL-847291 Admin Extract',u:'#'},          conf:99,   note:'Auto-verified from admin system',                                    acts:['view'] },
+  { id:'R04', name:'Contestability Period Check',      desc:'Policy issued within 2 years of DOD triggers investigation',    level:'policy',partyId:'SYS',  status:'satisfied', pri:'mandatory',   due:'2026-02-08', recv:'2026-02-05', src:{n:'Contestability Engine',u:'#'},              conf:99,   note:'Policy issued 2019 — clear of contestability window',                acts:['view'] },
+  { id:'R05', name:'Beneficiary Designation on File',  desc:'Confirm all named beneficiaries match policy records',          level:'policy',partyId:'SYS',  status:'satisfied', pri:'mandatory',   due:'2026-02-08', recv:'2026-02-05', src:{n:'Bene Designation Extract',u:'#'},           conf:99,   note:'3 beneficiaries confirmed: Sarah 60%, Michael 40% contingent, Trust', acts:['view'] },
+
+  // ── Sarah Jones (Primary 60%) ──
+  { id:'R06', name:'Claimant Statement of Claim',      desc:'Signed statement of claim form — all pages',                   level:'party', partyId:'BEN1', status:'in_review', pri:'mandatory',   due:'2026-02-12', recv:'2026-02-05', src:{n:'ClaimForm_SJones_signed.pdf',u:'#'},        conf:78,   note:'Signature verification in progress — IDP flagged page 3 signature area', acts:['view','approve','reject'] },
+  { id:'R07', name:'Government-Issued Photo ID',       desc:"Driver's license, passport, or state-issued ID",              level:'party', partyId:'BEN1', status:'satisfied', pri:'mandatory',   due:'2026-02-12', recv:'2026-02-04', src:{n:'DL_SarahJones.pdf',u:'#'},                  conf:96,   note:'Verified via IDP — name, photo, expiry all confirmed',               acts:['view'] },
+  { id:'R08', name:'W-9 / Tax Certification',          desc:'IRS W-9 form for tax withholding on benefit payout',          level:'party', partyId:'BEN1', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'Needed before payment processing can begin',                         acts:['upload','request'] },
+  { id:'R09', name:'Payment Election Form',            desc:'Lump sum vs. installment selection, banking details',          level:'party', partyId:'BEN1', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'',                                                                   acts:['upload','request'] },
+
+  // ── Michael Jones (Contingent 40%) ──
+  { id:'R10', name:'Claimant Statement of Claim',      desc:'Signed statement of claim form — all pages',                   level:'party', partyId:'BEN2', status:'nigo',      pri:'mandatory',   due:'2026-02-12', recv:'2026-02-08', src:{n:'ClaimForm_MJones_v1.pdf',u:'#'},            conf:42,   note:'❌ NIGO: Missing signature on page 2. Returned to claimant 02/10.',  acts:['view','upload','request'] },
+  { id:'R11', name:'Government-Issued Photo ID',       desc:"Driver's license, passport, or state-issued ID",              level:'party', partyId:'BEN2', status:'pending',    pri:'mandatory',   due:'2026-02-12', recv:null,         src:null,                                         conf:null, note:'Not yet received',                                                   acts:['upload','request'] },
+  { id:'R12', name:'W-9 / Tax Certification',          desc:'IRS W-9 form for tax withholding on benefit payout',          level:'party', partyId:'BEN2', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'',                                                                   acts:['upload','request'] },
+  { id:'R13', name:'Payment Election Form',            desc:'Lump sum vs. installment selection, banking details',          level:'party', partyId:'BEN2', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'',                                                                   acts:['upload','request'] },
+
+  // ── Jones Family Trust ──
+  { id:'R14', name:'Trust Certification / Abstract',   desc:'Certified trust document showing trustee authority',           level:'party', partyId:'BEN3', status:'in_review', pri:'mandatory',   due:'2026-02-19', recv:'2026-02-10', src:{n:'JonesTrust_Cert_2024.pdf',u:'#'},            conf:65,   note:'Reviewing trustee authority — entity type validation required',       acts:['view','approve','reject'] },
+  { id:'R15', name:'Trustee Government-Issued ID',     desc:'Photo ID for Margaret Jones, acting trustee',                 level:'party', partyId:'BEN3', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'Need ID for Margaret Jones (Trustee)',                                acts:['upload','request'] },
+  { id:'R16', name:'Trust TIN / EIN Verification',     desc:'IRS EIN for the Jones Family Trust entity',                   level:'party', partyId:'BEN3', status:'pending',    pri:'mandatory',   due:'2026-02-19', recv:null,         src:null,                                         conf:null, note:'',                                                                   acts:['upload','request'] },
+  { id:'R17', name:'Beneficiary Designation Match',    desc:'Confirm trust is named as irrevocable beneficiary',           level:'policy', partyId:'SYS', status:'waived',     pri:'conditional', due:'2026-02-08', recv:null,         src:null,                                         conf:null, note:'Trust confirmed as named irrevocable bene on file — auto-waived',    acts:['reinstate'] },
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let selectedParty = 'ALL';
+let statusFilter = 'all';
+
+// ═══════════════════════════════════════
+// PARTY LIST RENDER
+// ═══════════════════════════════════════
+function renderPartyList() {
+  const el = document.getElementById('party-list');
+  el.innerHTML = parties.map(p => {
+    const myReqs = p.id === 'ALL' ? reqs : reqs.filter(r => r.partyId === p.id);
+    const sat = myReqs.filter(r => r.status === 'satisfied').length;
+    const pend = myReqs.filter(r => r.status === 'pending' || r.status === 'in_review').length;
+    const nigo = myReqs.filter(r => r.status === 'nigo').length;
+    const waived = myReqs.filter(r => r.status === 'waived').length;
+    const pct = myReqs.length ? Math.round(sat / myReqs.length * 100) : 0;
+    const fillColor = pct === 100 ? 'var(--green)' : nigo > 0 ? 'var(--red)' : 'var(--blue)';
+    const isActive = selectedParty === p.id;
+
+    return `<div class="pp-card ${isActive ? 'active' : ''}" onclick="selectParty('${p.id}')">
+      <div class="pp-card-top">
+        <div class="pp-avatar ${p.avCls}">${p.id === 'ALL' ? '👥' : p.initials}</div>
+        <div>
+          <div class="pp-name">${p.name}</div>
+          <span class="pp-role ${p.rlCls}">${p.role}</span>
+        </div>
+      </div>
+      <div class="pp-card-bottom">
+        <div class="pp-mini-bar"><div class="pp-mini-fill" style="width:${pct}%;background:${fillColor};"></div></div>
+        <div class="pp-mini-pct">${sat}/${myReqs.length}</div>
+      </div>
+      <div class="pp-mini-counts">
+        ${sat ? `<span class="pp-mc" style="background:var(--green-bg);color:var(--green);">✅${sat}</span>` : ''}
+        ${pend ? `<span class="pp-mc" style="background:var(--yellow-bg);color:var(--yellow);">⏳${pend}</span>` : ''}
+        ${nigo ? `<span class="pp-mc" style="background:var(--red-bg);color:var(--red);">❌${nigo}</span>` : ''}
+        ${waived ? `<span class="pp-mc" style="background:var(--bg-muted);color:var(--text-3);">➖${waived}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// RIGHT PANEL RENDER
+// ═══════════════════════════════════════
+function renderReqPanel() {
+  const p = parties.find(x => x.id === selectedParty);
+  const isAll = selectedParty === 'ALL';
+
+  // Get requirements for this party view
+  let myReqs = isAll ? [...reqs] : reqs.filter(r => r.partyId === selectedParty);
+
+  // For individual benes, also show claim-level and policy-level reqs
+  const partyType = p ? p.type : 'overview';
+  let sharedReqs = [];
+  if (!isAll && partyType !== 'system') {
+    sharedReqs = reqs.filter(r => (r.level === 'claim' || r.level === 'policy') && !myReqs.includes(r));
+  }
+
+  // Apply status filter
+  if (statusFilter !== 'all') {
+    myReqs = myReqs.filter(r => r.status === statusFilter);
+    sharedReqs = sharedReqs.filter(r => r.status === statusFilter);
+  }
+
+  // Count for filter bar
+  const allForParty = isAll ? reqs : reqs.filter(r => r.partyId === selectedParty);
+  const counts = {all: allForParty.length, pending: 0, in_review: 0, satisfied: 0, nigo: 0, waived: 0};
+  allForParty.forEach(r => counts[r.status]++);
+
+  // ─── HEADER ───
+  const hdr = document.getElementById('rp-header');
+  if (isAll) {
+    const gSat = reqs.filter(r=>r.status==='satisfied').length;
+    const gPend = reqs.filter(r=>r.status==='pending'||r.status==='in_review').length;
+    const gNigo = reqs.filter(r=>r.status==='nigo').length;
+    hdr.innerHTML = `
+      <div class="pp-avatar av-system" style="width:40px;height:40px;font-size:18px;">👥</div>
+      <div class="rp-info"><div class="rp-name">All Parties — Full Requirements View</div><div class="rp-role">CLM-000001 · Robert Jones · ${reqs.length} total requirements</div></div>
+      <div class="rp-stats">
+        <div class="rp-stat"><div class="rp-stat-v" style="color:var(--green);">${gSat}</div><div class="rp-stat-l">Satisfied</div></div>
+        <div class="rp-stat"><div class="rp-stat-v" style="color:var(--yellow);">${gPend}</div><div class="rp-stat-l">Pending</div></div>
+        <div class="rp-stat"><div class="rp-stat-v" style="color:var(--red);">${gNigo}</div><div class="rp-stat-l">NIGO</div></div>
+      </div>`;
+  } else {
+    const sat = allForParty.filter(r=>r.status==='satisfied').length;
+    hdr.innerHTML = `
+      <div class="rp-avatar ${p.avCls}">${p.initials}</div>
+      <div class="rp-info">
+        <div class="rp-name">${p.name}</div>
+        <div class="rp-role">${p.role}${p.contact ? ' · '+p.contact : ''}${p.email ? ' · '+p.email : ''}</div>
+      </div>
+      <div class="rp-stats">
+        <div class="rp-stat"><div class="rp-stat-v">${sat}/${allForParty.length}</div><div class="rp-stat-l">Complete</div></div>
+        ${counts.nigo ? `<div class="rp-stat" style="border-color:var(--red-border);background:var(--red-bg);"><div class="rp-stat-v" style="color:var(--red);">${counts.nigo}</div><div class="rp-stat-l">NIGO</div></div>` : ''}
+      </div>`;
+  }
+
+  // ─── FILTER BAR ───
+  const fb = document.getElementById('rp-filter-bar');
+  fb.innerHTML = `
+    <button class="rf-btn ${statusFilter==='all'?'active':''}" onclick="setStatus('all')">All <span class="ct">${counts.all}</span></button>
+    <button class="rf-btn ${statusFilter==='pending'?'active':''}" onclick="setStatus('pending')">⏳ Pending <span class="ct">${counts.pending}</span></button>
+    <button class="rf-btn ${statusFilter==='in_review'?'active':''}" onclick="setStatus('in_review')">🔍 Review <span class="ct">${counts.in_review}</span></button>
+    <button class="rf-btn ${statusFilter==='satisfied'?'active':''}" onclick="setStatus('satisfied')">✅ Done <span class="ct">${counts.satisfied}</span></button>
+    ${counts.nigo ? `<button class="rf-btn ${statusFilter==='nigo'?'active':''}" onclick="setStatus('nigo')">❌ NIGO <span class="ct">${counts.nigo}</span></button>` : ''}
+    ${counts.waived ? `<button class="rf-btn ${statusFilter==='waived'?'active':''}" onclick="setStatus('waived')">➖ Waived <span class="ct">${counts.waived}</span></button>` : ''}
+  `;
+
+  // ─── BODY: GROUPED BY LEVEL ───
+  const body = document.getElementById('rp-body');
+  if (!myReqs.length && !sharedReqs.length) {
+    body.innerHTML = `<div class="empty"><div class="empty-icon">✅</div>No requirements match this filter</div>`;
+    return;
+  }
+
+  let html = '';
+  const levels = [
+    { key:'party', icon:'👤', label: isAll ? 'Party Level Requirements' : `${p.name} — Party Requirements`, reqs: myReqs.filter(r=>r.level==='party') },
+    { key:'claim', icon:'📋', label:'Claim Level Requirements', reqs: isAll ? myReqs.filter(r=>r.level==='claim') : myReqs.filter(r=>r.level==='claim').concat(sharedReqs.filter(r=>r.level==='claim')) },
+    { key:'policy', icon:'🏛', label:'Policy Level Requirements', reqs: isAll ? myReqs.filter(r=>r.level==='policy') : myReqs.filter(r=>r.level==='policy').concat(sharedReqs.filter(r=>r.level==='policy')) },
+  ];
+
+  levels.forEach(lv => {
+    if (!lv.reqs.length) return;
+    // Deduplicate
+    const seen = new Set(); const unique = [];
+    lv.reqs.forEach(r => { if (!seen.has(r.id)) { seen.add(r.id); unique.push(r); }});
+    const satCount = unique.filter(r=>r.status==='satisfied').length;
+    html += `<div class="req-section">
+      <div class="req-section-header">
+        <span class="rsh-icon">${lv.icon}</span>
+        <span class="rsh-label">${lv.label}</span>
+        <span class="rsh-count">${satCount}/${unique.length}</span>
+        <div class="rsh-line"></div>
+      </div>`;
+    unique.forEach((r, i) => { html += renderCard(r, i, isAll); });
+    html += `</div>`;
+  });
+
+  body.innerHTML = html;
+}
+
+function renderCard(r, idx, showPartyTag) {
+  const party = parties.find(p => p.id === r.partyId);
+  return `<div class="req-card rc-${r.status}" style="animation-delay:${idx*0.04}s">
+    <div class="rc-top">
+      <div>
+        <div class="rc-name">${r.name}</div>
+        <div class="rc-desc">${r.desc}</div>
+      </div>
+      <span class="rc-badge b-${r.status}">${sIcon(r.status)} ${sLabel(r.status)}</span>
+    </div>
+    <div class="rc-meta">
+      ${showPartyTag && party ? `<span class="rc-party-tag"><span class="rc-party-dot" style="background:${partyDotColor(party)}"></span>${party.name}</span>` : ''}
+      <span class="rc-priority ${r.pri==='mandatory'?'pri-m':'pri-c'}">${r.pri}</span>
+      ${dueTag(r)}
+      ${r.src ? `<a class="rc-source" onclick="doAction('view','${r.id}')">📎 ${r.src.n}</a>` : '<span style="font-size:11px;color:var(--text-3);font-style:italic;">No document</span>'}
+      ${confTag(r)}
+    </div>
+    ${r.note ? `<div class="rc-note">${r.note}</div>` : ''}
+    <div class="rc-actions">${actBtns(r)}</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function sIcon(s){return{pending:'⏳',in_review:'🔍',satisfied:'✅',nigo:'❌',waived:'➖'}[s]||'';}
+function sLabel(s){return{pending:'Pending',in_review:'In Review',satisfied:'Satisfied',nigo:'NIGO',waived:'Waived'}[s]||s;}
+function partyDotColor(p){return{BEN1:'#1B75BB',BEN2:'#00ADEE',BEN3:'#5CA9DD',PROV:'#0c8a8a',EMP:'#c2610c',SYS:'#8c939e'}[p.id]||'#8c939e';}
+
+function dueTag(r) {
+  if (!r.due) return '';
+  const d = Math.ceil((new Date(r.due) - new Date('2026-02-25')) / 86400000);
+  if (r.status==='satisfied'||r.status==='waived') return `<span class="rc-meta-item">📅 ${r.due.replace('2026-','')}</span>`;
+  if (d < 0) return `<span class="rc-meta-item overdue">🚨 ${Math.abs(d)}d overdue (${r.due.replace('2026-','')})</span>`;
+  if (d <= 3) return `<span class="rc-meta-item soon">⚠️ ${d}d left (${r.due.replace('2026-','')})</span>`;
+  return `<span class="rc-meta-item">📅 ${r.due.replace('2026-','')} · ${d}d</span>`;
+}
+
+function confTag(r) {
+  if (r.conf === null) return '';
+  const cls = r.conf >= 90 ? 'rc-conf-high' : r.conf >= 70 ? 'rc-conf-med' : 'rc-conf-low';
+  return `<span class="rc-conf ${cls}">IDP <span class="rc-conf-bar"><span class="rc-conf-fill" style="width:${r.conf}%"></span></span> ${r.conf}%</span>`;
+}
+
+function actBtns(r) {
+  const m = {
+    upload:    `<button class="rc-btn primary" onclick="doAction('upload','${r.id}')">📤 Upload</button>`,
+    request:   `<button class="rc-btn" onclick="doAction('request','${r.id}')">📧 Request</button>`,
+    view:      `<button class="rc-btn" onclick="doAction('view','${r.id}')">👁 View</button>`,
+    approve:   `<button class="rc-btn success" onclick="doAction('approve','${r.id}')">✅ Approve</button>`,
+    reject:    `<button class="rc-btn danger" onclick="doAction('reject','${r.id}')">❌ NIGO</button>`,
+    waive:     `<button class="rc-btn" onclick="doAction('waive','${r.id}')">➖ Waive</button>`,
+    'follow-up':`<button class="rc-btn" onclick="doAction('follow-up','${r.id}')">📞 Follow-Up</button>`,
+    reinstate: `<button class="rc-btn" onclick="doAction('reinstate','${r.id}')">↩ Reinstate</button>`,
+  };
+  return r.acts.map(a => m[a]||'').join('');
+}
+
+// ═══════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════
+function selectParty(id) {
+  selectedParty = id;
+  statusFilter = 'all';
+  renderAll();
+}
+
+function setStatus(s) {
+  statusFilter = s;
+  renderReqPanel();
+}
+
+function doAction(action, reqId) {
+  const r = reqs.find(x => x.id === reqId);
+  if (!r) return;
+  const p = parties.find(x => x.id === r.partyId);
+  const who = p ? p.name : '';
+
+  if (action === 'approve')  { r.status = 'satisfied'; r.recv = '2026-02-25'; r.acts = ['view']; }
+  else if (action === 'reject')   { r.status = 'nigo'; r.acts = ['view','upload','request']; }
+  else if (action === 'waive')    { r.status = 'waived'; r.acts = ['reinstate']; }
+  else if (action === 'reinstate'){ r.status = 'pending'; r.acts = ['upload','request','waive']; }
+  else { toast(`${action === 'upload' ? '📤 Upload' : action === 'request' ? '📧 Request sent to' : action === 'follow-up' ? '📞 Follow-up for' : '👁 Opening'} ${who}: ${r.name}`); return; }
+
+  renderAll();
+  toast(`${sIcon(r.status)} ${r.name} → ${sLabel(r.status)} (${who})`);
+}
+
+// ═══════════════════════════════════════
+// GLOBAL STATS
+// ═══════════════════════════════════════
+function updateGlobal() {
+  const sat = reqs.filter(r=>r.status==='satisfied').length;
+  const pend = reqs.filter(r=>r.status==='pending'||r.status==='in_review').length;
+  const nigo = reqs.filter(r=>r.status==='nigo').length;
+  const waived = reqs.filter(r=>r.status==='waived').length;
+  const pct = Math.round(sat/reqs.length*100);
+
+  document.getElementById('global-prog-fill').style.width = pct+'%';
+  document.getElementById('gp-sat').textContent = '✅ '+sat;
+  document.getElementById('gp-pend').textContent = '⏳ '+pend;
+  document.getElementById('gp-nigo').textContent = '❌ '+nigo;
+  document.getElementById('gp-waived').textContent = '➖ '+waived;
+  document.getElementById('kpi-pct').textContent = sat+'/'+reqs.length;
+}
+
+function renderAll() { renderPartyList(); renderReqPanel(); updateGlobal(); }
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function toast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {position:'fixed',bottom:'20px',left:'50%',transform:'translateX(-50%)',background:'#2c2c2c',color:'white',padding:'10px 24px',borderRadius:'8px',fontSize:'13px',fontWeight:'500',zIndex:'9999',boxShadow:'0 4px 16px rgba(0,0,0,.2)',animation:'fadeUp .3s ease'});
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+// ═══ INIT ═══
+renderAll();
+</script>
+</body>
+</html>
