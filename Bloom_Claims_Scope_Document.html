@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom Claims Assistant — Scope Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f8fafb; --bg-primary:#ffffff; --bg-muted:#f4f5f7; --bg-hover:#f0f5fa;
+  --border:#e2e6ea; --border-strong:#d0d4da; --border-accent:#1B75BB;
+  --text:#2c2c2c; --text-2:#616873; --text-3:#8c939e; --text-inv:#ffffff;
+  --blue:#1B75BB; --blue-bg:#e8f4fc; --blue-border:#b3d4ee; --blue-hover:#d0e8f7;
+  --green:#1a8a3f; --green-bg:#e8f8ee; --green-border:#b8e6c8;
+  --yellow:#946b0e; --yellow-bg:#fef9e7; --yellow-border:#f5e6a3;
+  --orange:#c2610c; --orange-bg:#fef3e6; --orange-border:#f5d4a3;
+  --red:#c53030; --red-bg:#fef0f0; --red-border:#f5b8b8;
+  --purple:#5f249f; --purple-bg:#f5eefe; --purple-border:#d4b8ee;
+  --navy:#1B1F3A;
+  --r:8px; --rs:6px; --rx:4px;
+  --font:'Roboto',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);font-size:14px;line-height:1.6;color:var(--text);background:var(--bg);}
+
+/* ─── HEADER ─── */
+.header{background:var(--navy);color:#fff;padding:32px 48px 28px;display:flex;align-items:flex-start;justify-content:space-between;}
+.header-left{}
+.header-logo{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.header-logo .dot{width:10px;height:10px;border-radius:50%;background:#00AEEF;}
+.header-logo span{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.header h1{font-size:28px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:6px;}
+.header h1 span{color:#00AEEF;}
+.header-sub{font-size:13px;color:rgba(255,255,255,0.55);font-weight:400;}
+.header-meta{text-align:right;display:flex;flex-direction:column;gap:4px;padding-top:4px;}
+.meta-pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:4px 14px;font-size:11px;color:rgba(255,255,255,0.7);white-space:nowrap;}
+.meta-pill b{color:#fff;}
+
+/* ─── SUMMARY BAND ─── */
+.summary-band{background:#fff;border-bottom:2px solid var(--border-accent);padding:20px 48px;display:flex;gap:40px;align-items:center;}
+.kpi{text-align:center;}
+.kpi-v{font-size:26px;font-weight:700;color:var(--blue);line-height:1;}
+.kpi-l{font-size:10px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;margin-top:3px;}
+.kpi-sep{width:1px;background:var(--border);height:40px;}
+.scope-tags{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto;}
+.tag{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;}
+.tag-must{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.tag-should{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.tag-nice{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);}
+.tag-oos{background:#f4f5f7;color:var(--text-3);border:1px solid var(--border);}
+
+/* ─── MAIN LAYOUT ─── */
+.main{max-width:1200px;margin:0 auto;padding:36px 48px 64px;}
+
+/* ─── SECTION ─── */
+.section{margin-bottom:40px;}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ─── EXECUTIVE SUMMARY ─── */
+.exec-box{background:#fff;border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:var(--r);padding:20px 24px;}
+.exec-box p{color:var(--text-2);line-height:1.7;margin-bottom:10px;}
+.exec-box p:last-child{margin-bottom:0;}
+.exec-box strong{color:var(--text);}
+
+/* ─── OBJECTIVE CARDS ─── */
+.obj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.obj-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;}
+.obj-card .obj-icon{font-size:20px;margin-bottom:8px;}
+.obj-card .obj-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.obj-card .obj-body{font-size:12px;color:var(--text-2);line-height:1.5;}
+
+/* ─── PHASE TABLE ─── */
+.phase-block{margin-bottom:24px;}
+.phase-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:var(--r) var(--r) 0 0;border:1px solid var(--border);}
+.phase-header.p1{background:linear-gradient(135deg,#e8f4fc,#f0f8ff);border-color:var(--blue-border);}
+.phase-header.p2{background:linear-gradient(135deg,#e8f8ee,#f0fbf4);border-color:var(--green-border);}
+.phase-header.p3{background:linear-gradient(135deg,#fef9e7,#fffdf0);border-color:var(--yellow-border);}
+.phase-header.p4{background:linear-gradient(135deg,var(--purple-bg),#fdf5ff);border-color:var(--purple-border);}
+.phase-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.phase-badge.p1{background:var(--blue);}
+.phase-badge.p2{background:var(--green);}
+.phase-badge.p3{background:var(--yellow);}
+.phase-badge.p4{background:var(--purple);}
+.phase-info{flex:1;}
+.phase-name{font-size:14px;font-weight:700;color:var(--text);}
+.phase-desc{font-size:11px;color:var(--text-2);margin-top:1px;}
+.phase-weeks{background:#fff;border-radius:20px;padding:4px 14px;font-size:11px;font-weight:600;border:1px solid var(--border);}
+.phase-weeks.p1{color:var(--blue);}
+.phase-weeks.p2{color:var(--green);}
+.phase-weeks.p3{color:var(--yellow);}
+.phase-weeks.p4{color:var(--purple);}
+
+.feature-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);overflow:hidden;}
+.feature-table th{padding:9px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);background:var(--bg-muted);border-bottom:1px solid var(--border);}
+.feature-table td{padding:10px 14px;font-size:12px;color:var(--text);border-bottom:1px solid var(--border);vertical-align:top;}
+.feature-table tr:last-child td{border-bottom:none;}
+.feature-table tr:hover td{background:var(--bg-hover);}
+.feature-table .feat-name{font-weight:600;color:var(--text);}
+.feature-table .feat-desc{color:var(--text-2);font-size:11px;margin-top:2px;}
+.feature-table .effort{font-weight:600;white-space:nowrap;}
+.feature-table .notes{color:var(--text-2);font-size:11px;}
+
+.pri{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px;}
+.pri-must{background:var(--blue-bg);color:var(--blue);}
+.pri-should{background:var(--green-bg);color:var(--green);}
+.pri-nice{background:var(--yellow-bg);color:var(--yellow);}
+
+/* ─── IN / OUT OF SCOPE ─── */
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.scope-box{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;}
+.scope-box.in{border-top:3px solid var(--green);}
+.scope-box.out{border-top:3px solid var(--border-strong);}
+.scope-box-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;}
+.scope-box.in .scope-box-title{color:var(--green);}
+.scope-box.out .scope-box-title{color:var(--text-3);}
+.scope-list{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.scope-list li{font-size:12px;color:var(--text-2);display:flex;align-items:flex-start;gap:8px;}
+.scope-list li::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.scope-box.in .scope-list li::before{background:var(--green);}
+.scope-box.out .scope-list li::before{background:var(--border-strong);}
+
+/* ─── INTEGRATION TABLE ─── */
+.int-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.int-table th{padding:9px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);background:var(--bg-muted);border-bottom:1px solid var(--border);}
+.int-table td{padding:11px 16px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.int-table tr:last-child td{border-bottom:none;}
+.int-table tr:hover td{background:var(--bg-hover);}
+.int-name{font-weight:600;}
+.int-type{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;}
+.int-required{background:var(--blue-bg);color:var(--blue);}
+.int-optional{background:var(--yellow-bg);color:var(--yellow);}
+.int-future{background:#f4f5f7;color:var(--text-3);}
+.int-complexity{font-weight:600;}
+.complexity-high{color:var(--red);}
+.complexity-med{color:var(--yellow);}
+.complexity-low{color:var(--green);}
+
+/* ─── RISK TABLE ─── */
+.risk-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.risk-table th{padding:9px 16px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);background:var(--bg-muted);border-bottom:1px solid var(--border);}
+.risk-table td{padding:11px 16px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;}
+.risk-table tr:last-child td{border-bottom:none;}
+.risk-sev{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.risk-high{background:var(--red-bg);color:var(--red);}
+.risk-med{background:var(--orange-bg);color:var(--orange);}
+.risk-low{background:var(--yellow-bg);color:var(--yellow);}
+
+/* ─── ASSUMPTION BOX ─── */
+.assumption-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.assumption-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
+.assumption-card .ac-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--text-3);margin-bottom:8px;}
+.assumption-card ul{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.assumption-card ul li{font-size:12px;color:var(--text-2);padding-left:14px;position:relative;}
+.assumption-card ul li::before{content:'–';position:absolute;left:0;color:var(--text-3);}
+
+/* ─── EFFORT SUMMARY ─── */
+.effort-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.effort-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;text-align:center;}
+.effort-card .ev{font-size:22px;font-weight:700;line-height:1;}
+.effort-card .el{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text-3);margin-top:4px;}
+.effort-card.p1 .ev{color:var(--blue);}
+.effort-card.p2 .ev{color:var(--green);}
+.effort-card.p3 .ev{color:var(--yellow);}
+.effort-card.p4 .ev{color:var(--purple);}
+.effort-card.total{background:var(--navy);}
+.effort-card.total .ev{color:#00AEEF;}
+.effort-card.total .el{color:rgba(255,255,255,0.6);}
+
+/* ─── FOOTER ─── */
+.footer{background:var(--navy);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;}
+.footer-left{font-size:11px;color:rgba(255,255,255,0.45);}
+.footer-left strong{color:rgba(255,255,255,0.75);}
+.footer-right{font-size:11px;color:rgba(255,255,255,0.35);}
+
+/* ─── PRINT ─── */
+@media print {
+  body{background:#fff;}
+  .main{padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">
+      <div class="dot"></div>
+      <span>DXC Technology — Smart Apps</span>
+    </div>
+    <h1>Bloom <span>Claims Assistant</span> Portal</h1>
+    <div class="header-sub">Scope of Work &nbsp;·&nbsp; Life &amp; Annuity Claims Management Platform</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-pill">Version <b>1.0</b></div>
+    <div class="meta-pill">Date <b>March 17, 2026</b></div>
+    <div class="meta-pill">Author <b>DXC Smart Apps</b></div>
+    <div class="meta-pill">Client <b>Bloom Insurance</b></div>
+  </div>
+</div>
+
+<!-- SUMMARY BAND -->
+<div class="summary-band">
+  <div class="kpi"><div class="kpi-v">4</div><div class="kpi-l">Phases</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">32</div><div class="kpi-l">Features</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">26–34</div><div class="kpi-l">Weeks Total</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">7</div><div class="kpi-l">Integrations</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">4</div><div class="kpi-l">User Roles</div></div>
+  <div class="scope-tags">
+    <span class="tag tag-must">Must Have</span>
+    <span class="tag tag-should">Should Have</span>
+    <span class="tag tag-nice">Nice to Have</span>
+    <span class="tag tag-oos">Out of Scope</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="section">
+    <div class="section-title">Executive Summary</div>
+    <div class="exec-box">
+      <p>The <strong>Bloom Claims Assistant Portal</strong> is a modern, React-based intelligent claims management platform for life and annuity insurance. It replaces traditional ServiceNow UI with a high-performance "System of Engagement" layer, integrating directly with ServiceNow FSO as the System of Action.</p>
+      <p>The platform supports the full claims lifecycle — from <strong>First Notice of Loss (FNOL) intake</strong> through <strong>investigation, requirements gathering, beneficiary analysis, intelligent document processing, and payment authorization</strong> — with AI-powered insights embedded throughout. It is built exclusively on the DXC Halstack Design System and supports multi-persona workflows for Examiners, Supervisors, and Managers.</p>
+      <p>This scope document defines the features, phasing, integration requirements, effort estimates, assumptions, and risks for delivering the production-ready platform.</p>
+    </div>
+  </div>
+
+  <!-- OBJECTIVES -->
+  <div class="section">
+    <div class="section-title">Project Objectives</div>
+    <div class="obj-grid">
+      <div class="obj-card">
+        <div class="obj-icon">🏗️</div>
+        <div class="obj-title">Modern Claims Experience</div>
+        <div class="obj-body">Replace legacy ServiceNow forms with a premium React portal delivering superior examiner and supervisor UX.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">🤖</div>
+        <div class="obj-title">AI-Accelerated Processing</div>
+        <div class="obj-body">Embed anomaly detection, beneficiary analysis, document intelligence, and FastTrack/STP routing to reduce manual work.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">🔗</div>
+        <div class="obj-title">ServiceNow FSO Integration</div>
+        <div class="obj-body">Leverage ServiceNow FSO Insurance Data Model as the system of record with bi-directional real-time sync.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">📄</div>
+        <div class="obj-title">Intelligent Document Processing</div>
+        <div class="obj-body">Auto-classify, extract, and populate claim data from uploaded documents using Azure Form Recognizer or AWS Textract.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">👥</div>
+        <div class="obj-title">Multi-Persona Workflows</div>
+        <div class="obj-body">Tailored views and permissions for Examiners, Supervisors, Managers, and Intake Specialists.</div>
+      </div>
+      <div class="obj-card">
+        <div class="obj-icon">📊</div>
+        <div class="obj-title">Analytics &amp; Compliance</div>
+        <div class="obj-body">Real-time SLA tracking, performance dashboards, RBAC security, and full audit trail for regulatory compliance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN / OUT OF SCOPE -->
+  <div class="section">
+    <div class="section-title">Scope Boundaries</div>
+    <div class="scope-grid">
+      <div class="scope-box in">
+        <div class="scope-box-title">✓ In Scope</div>
+        <ul class="scope-list">
+          <li>React portal built on DXC Halstack Design System</li>
+          <li>All 4 phases of feature delivery (see below)</li>
+          <li>ServiceNow FSO integration — claims, policies, parties, requirements, documents</li>
+          <li>Multi-persona dashboards: Examiner, Supervisor, Manager, Intake</li>
+          <li>FNOL intake wizard with document upload</li>
+          <li>Claims Workbench (Timeline, Policy 360, Requirements, Documents)</li>
+          <li>AI Insights Panel — anomaly detection and risk scoring</li>
+          <li>Beneficiary analysis and party management</li>
+          <li>Related policies discovery and aggregation</li>
+          <li>Intelligent document processing (IDP) integration</li>
+          <li>Financial calculators (PMI, tax withholding)</li>
+          <li>FastTrack / Straight-Through Processing routing</li>
+          <li>Requirements engine (rules-based, decision table)</li>
+          <li>RBAC, ServiceNow OAuth 2.0, JWT token management</li>
+          <li>L&amp;A primary product line; P&amp;C secondary</li>
+          <li>Demo data, persona switching, training support</li>
+        </ul>
+      </div>
+      <div class="scope-box out">
+        <div class="scope-box-title">✗ Out of Scope</div>
+        <ul class="scope-list">
+          <li>ServiceNow platform configuration and FSO setup</li>
+          <li>LexisNexis contract, credentials, or account setup</li>
+          <li>Azure Form Recognizer / AWS Textract provisioning</li>
+          <li>Document storage infrastructure (S3 / Azure Blob)</li>
+          <li>CI/CD pipeline build-out beyond Jenkinsfile scaffold</li>
+          <li>Native mobile application (iOS / Android)</li>
+          <li>Payment disbursement execution (portal authorizes; payment system executes)</li>
+          <li>Custom ServiceNow FSO table creation or schema changes</li>
+          <li>Third-party policy administration system integration</li>
+          <li>Claims litigation or legal hold management</li>
+          <li>End-user training delivery (train-the-trainer only)</li>
+          <li>Production infrastructure provisioning and sizing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- EFFORT SUMMARY -->
+  <div class="section">
+    <div class="section-title">Effort Summary by Phase</div>
+    <div class="effort-grid">
+      <div class="effort-card p1"><div class="ev">6–8 wks</div><div class="el">Phase 1 · Foundation</div></div>
+      <div class="effort-card p2"><div class="ev">6–8 wks</div><div class="el">Phase 2 · Core Claims</div></div>
+      <div class="effort-card p3"><div class="ev">8–10 wks</div><div class="el">Phase 3 · AI &amp; IDP</div></div>
+      <div class="effort-card p4"><div class="ev">6–8 wks</div><div class="el">Phase 4 · Analytics &amp; Ops</div></div>
+      <div class="effort-card total"><div class="ev">26–34 wks</div><div class="el">Total Estimated Duration</div></div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="section">
+    <div class="section-title">Phased Feature Delivery</div>
+
+    <div class="phase-block">
+      <div class="phase-header p1">
+        <div class="phase-badge p1">1</div>
+        <div class="phase-info">
+          <div class="phase-name">Phase 1 — Foundation &amp; Shell</div>
+          <div class="phase-desc">Application scaffold, authentication, navigation, Examiner Dashboard, basic claim list</div>
+        </div>
+        <div class="phase-weeks p1">6–8 Weeks</div>
+      </div>
+      <table class="feature-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Feature</th>
+            <th style="width:35%">Description</th>
+            <th style="width:12%">Priority</th>
+            <th style="width:12%">Effort</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="feat-name">App Shell &amp; Navigation</div></td>
+            <td>DxcApplicationLayout with sidebar nav, header, product line switcher (L&amp;A / P&amp;C), theme (light/dark)</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">100% Halstack components. DXC navy + cyan branding.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Authentication &amp; RBAC</div></td>
+            <td>ServiceNow OAuth 2.0, JWT token management, role retrieval (examiner / supervisor / manager), persona switching for demo</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1–2 wks</td>
+            <td class="notes">Persona switcher accelerates demo delivery.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Examiner Dashboard</div></td>
+            <td>Assigned claims queue, SLA indicators, FastTrack badges, status badges, basic search &amp; filter</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Primary landing view for most users.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Claims List &amp; Search</div></td>
+            <td>Multi-criteria claim search, column sort, pagination, status filter, product line filter</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Uses DxcDataGrid.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Context &amp; State Management</div></td>
+            <td>AppContext, ClaimsContext, PolicyContext, WorkflowContext providers; service layer scaffold</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Foundation for all subsequent features.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Demo Data Layer</div></td>
+            <td>Sample claims, policies, parties, personas with realistic L&amp;A data for demos and UAT</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Enables parallel demo delivery before backend is live.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-block">
+      <div class="phase-header p2">
+        <div class="phase-badge p2">2</div>
+        <div class="phase-info">
+          <div class="phase-name">Phase 2 — Core Claims Processing</div>
+          <div class="phase-desc">Claims Workbench, FNOL intake, death claim, beneficiary &amp; party management, requirements, documents</div>
+        </div>
+        <div class="phase-weeks p2">6–8 Weeks</div>
+      </div>
+      <table class="feature-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Feature</th>
+            <th style="width:35%">Description</th>
+            <th style="width:12%">Priority</th>
+            <th style="width:12%">Effort</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="feat-name">Claims Workbench</div><div class="feat-desc">4-tab interface</div></td>
+            <td>Timeline, Policy 360, Requirements, and Documents tabs. Claim header with progress bar, SLA, FastTrack badge. Approve / Deny / Hold actions.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">2.5 wks</td>
+            <td class="notes">Core examiner workflow. Highest complexity component.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">FNOL Intake Wizard</div></td>
+            <td>3-step form: claim info → claimant info → document upload. Drag-and-drop upload, real-time validation, claim number generation on submit.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Entry point for all new claims.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Death Event Panel</div></td>
+            <td>Capture/edit: date &amp; time of death, manner, state, proof date, incident description. LexisNexis verification hook.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">LexisNexis integration is Phase 3 dependency.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Beneficiary &amp; Party Management</div></td>
+            <td>Add/edit insured, claimant, beneficiary. Display masked SSN, relationship, allocation %, birth dates, status.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Ties to AI beneficiary analyzer in Phase 3.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Requirements Engine</div></td>
+            <td>Rules-based requirement generation by claim type, policy type, state, amount. IGO tracking, status management (Pending → Received → Complete).</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Decision table engine included.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Document Management</div></td>
+            <td>Upload, classify, view documents. Accordion grouping by document type. Link to claim records.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">AI extraction layer added in Phase 3.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Work Notes</div></td>
+            <td>Threaded notes/comments per claim with timestamps and author attribution.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Mirrors ServiceNow work notes UX.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Policy Summary &amp; Policy 360</div></td>
+            <td>Policy overview panel and detailed view: coverages, status, effective/term dates, beneficiary allocations.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Data sourced from ServiceNow FSO sn_insurance_policy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-block">
+      <div class="phase-header p3">
+        <div class="phase-badge p3">3</div>
+        <div class="phase-info">
+          <div class="phase-name">Phase 3 — AI, IDP &amp; Advanced Features</div>
+          <div class="phase-desc">AI insights, anomaly detection, beneficiary analyzer, intelligent document processing, related policies, FastTrack routing</div>
+        </div>
+        <div class="phase-weeks p3">8–10 Weeks</div>
+      </div>
+      <table class="feature-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Feature</th>
+            <th style="width:35%">Description</th>
+            <th style="width:12%">Priority</th>
+            <th style="width:12%">Effort</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="feat-name">AI Insights Panel</div></td>
+            <td>Compact card with expandable modal. Anomaly detection with HIGH / MEDIUM / LOW severity scoring, evidence-based recommendations, PASS/FAIL indicators, agential claim summary.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">2 wks</td>
+            <td class="notes">Requires agentic AI service in ServiceNow or external. Key differentiator.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Beneficiary Analyzer</div></td>
+            <td>AI-powered conflict detection across beneficiaries. Flags competing claims, legal risks. Suggests resolution paths. Triggers workflow in ServiceNow.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Depends on beneficiaryAnalyzerService backend.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Intelligent Document Processing</div></td>
+            <td>Auto-classify document type, OCR field extraction, confidence scoring, auto-populate claim fields from death certificates, IDs, and ACORD forms.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">2 wks</td>
+            <td class="notes">Azure Form Recognizer or AWS Textract. IDP service must be provisioned externally.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Related Policies Discovery</div></td>
+            <td>Auto-search for other policies on deceased. Multi-policy grouping, total death benefit aggregation, warning alerts, quick-action to initiate related claims.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Significant revenue opportunity — surfaces unworked claims.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">FastTrack / STP Routing</div></td>
+            <td>Eligibility analysis engine. Determines claims suitable for straight-through processing. Bypasses non-essential requirements. FastTrack badge throughout UI.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Rules config in ServiceNow decision table.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">LexisNexis Death Verification</div></td>
+            <td>On FNOL submit, trigger LexisNexis death record verification. Return verification status to claim record.</td>
+            <td><span class="pri pri-should">Should Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Requires LexisNexis contract and credentials. Can stub for Phase 2.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Financial Calculators</div></td>
+            <td>PMI Calculator (mortgage insurance, monthly payment, LTV) and Tax Withholding Calculator (gross benefit, federal/state tax, net benefit).</td>
+            <td><span class="pri pri-should">Should Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Pure frontend logic; no external integration.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Payment Quick View</div></td>
+            <td>Disbursement summary panel showing payment status, method, and amounts. Authorization action (execution by external payment system).</td>
+            <td><span class="pri pri-should">Should Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Portal authorizes; does not execute payments.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-block">
+      <div class="phase-header p4">
+        <div class="phase-badge p4">4</div>
+        <div class="phase-info">
+          <div class="phase-name">Phase 4 — Analytics, Queues &amp; Operational Readiness</div>
+          <div class="phase-desc">Supervisor &amp; Manager dashboards, queue management, reporting, FNOL workspace, production hardening</div>
+        </div>
+        <div class="phase-weeks p4">6–8 Weeks</div>
+      </div>
+      <table class="feature-table">
+        <thead>
+          <tr>
+            <th style="width:28%">Feature</th>
+            <th style="width:35%">Description</th>
+            <th style="width:12%">Priority</th>
+            <th style="width:12%">Effort</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="feat-name">Supervisor Dashboard</div></td>
+            <td>Team queue overview, performance metrics, claim assignment management, SLA at-risk alerting.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Uses same data model as Examiner Dashboard with elevated role access.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Manager / Risk Dashboard</div></td>
+            <td>Advanced analytics: written premium YTD, approval/decline rates, SLA trends, FastTrack %, anomaly flagging trends. Executive-level view.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">2 wks</td>
+            <td class="notes">Requires aggregated reporting API from ServiceNow.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Queue Management</div></td>
+            <td>Pending Claims Review workspace, Requirements Received workspace, claim assignment and routing, Claims Handler personal queue.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Supervisor-facing feature set.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">FNOL Workspace</div></td>
+            <td>Dedicated workspace for claim notifications and in-progress FNOL intake management.</td>
+            <td><span class="pri pri-should">Should Have</span></td>
+            <td class="effort">0.5 wk</td>
+            <td class="notes">Supports intake specialist persona.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Reports Module</div></td>
+            <td>Claims metrics and performance reporting. Export to CSV/PDF. Filterable by date range, examiner, product line, status.</td>
+            <td><span class="pri pri-should">Should Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Data sourced from ServiceNow reporting APIs.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Real-Time Updates (WebSocket)</div></td>
+            <td>Live claim status updates, requirement receipt notifications, SLA breach alerts via WebSocket connection to ServiceNow.</td>
+            <td><span class="pri pri-nice">Nice to Have</span></td>
+            <td class="effort">1 wk</td>
+            <td class="notes">Requires ServiceNow scripted web service or middleware event bridge.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">P&amp;C Product Line Support</div></td>
+            <td>Separate data, UI variations, and persona context for Property &amp; Casualty claims alongside L&amp;A.</td>
+            <td><span class="pri pri-nice">Nice to Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">L&amp;A is primary. P&amp;C can be toggled via product line switcher.</td>
+          </tr>
+          <tr>
+            <td><div class="feat-name">Production Hardening</div></td>
+            <td>Performance optimization, error handling framework, caching strategy, accessibility audit (WCAG 2.1 AA), security review, deployment documentation.</td>
+            <td><span class="pri pri-must">Must Have</span></td>
+            <td class="effort">1.5 wks</td>
+            <td class="notes">Required before go-live. Halstack provides baseline accessibility.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INTEGRATIONS -->
+  <div class="section">
+    <div class="section-title">Integration Requirements</div>
+    <table class="int-table">
+      <thead>
+        <tr>
+          <th style="width:20%">System</th>
+          <th style="width:30%">Purpose</th>
+          <th style="width:12%">Type</th>
+          <th style="width:12%">Complexity</th>
+          <th>Dependencies / Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="int-name">ServiceNow FSO</div></td>
+          <td>Primary system of action. Claims, policies, parties, requirements, documents, death cases. Full CRUD via REST APIs.</td>
+          <td><span class="int-type int-required">Required</span></td>
+          <td class="int-complexity complexity-high">High</td>
+          <td class="notes">FSO Insurance Data Model must be installed. Table access roles required. Scripted REST APIs for custom endpoints.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">ServiceNow OAuth 2.0</div></td>
+          <td>Authentication, JWT token lifecycle, user role/profile retrieval, SSO support.</td>
+          <td><span class="int-type int-required">Required</span></td>
+          <td class="int-complexity complexity-med">Medium</td>
+          <td class="notes">OAuth provider configured in ServiceNow. Token refresh handling in portal.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Azure Form Recognizer<br><em>or</em> AWS Textract</td>
+          <td>Intelligent document processing — OCR, field extraction, document classification, confidence scoring.</td>
+          <td><span class="int-type int-required">Required</span></td>
+          <td class="int-complexity complexity-med">Medium</td>
+          <td class="notes">Client to provision service and provide credentials. Configurable via idpService. One provider required; both not necessary.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">LexisNexis</div></td>
+          <td>Death record verification on FNOL submission. Returns verification status to claim.</td>
+          <td><span class="int-type int-optional">Phase 3</span></td>
+          <td class="int-complexity complexity-med">Medium</td>
+          <td class="notes">Requires client LexisNexis contract. Can stub with mock response in earlier phases.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Document Storage<br><small>S3 / Azure Blob</small></div></td>
+          <td>Persistent document storage for uploaded files. Referenced by ServiceNow document records.</td>
+          <td><span class="int-type int-required">Required</span></td>
+          <td class="int-complexity complexity-low">Low</td>
+          <td class="notes">Client to provision storage. DMS service layer handles upload/retrieval URLs.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Agentic AI Service</div></td>
+          <td>Powers AI Insights Panel — anomaly detection, risk scoring, claim summaries, beneficiary conflict analysis.</td>
+          <td><span class="int-type int-required">Required</span></td>
+          <td class="int-complexity complexity-high">High</td>
+          <td class="notes">Can be ServiceNow Now Assist, Claude API, or custom ML service. Architecture to be finalized in Phase 3 design.</td>
+        </tr>
+        <tr>
+          <td><div class="int-name">CDN / Static Hosting<br><small>CloudFront / Azure CDN</small></div></td>
+          <td>Frontend static asset delivery. Vite build artifacts deployed to S3 or Azure Blob with CDN front-end.</td>
+          <td><span class="int-type int-optional">Infra</span></td>
+          <td class="int-complexity complexity-low">Low</td>
+          <td class="notes">Out of scope to provision. Deployment guide provided.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ROLES & PERMISSIONS -->
+  <div class="section">
+    <div class="section-title">User Roles &amp; Permissions</div>
+    <table class="int-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Primary View</th>
+          <th>Key Capabilities</th>
+          <th>ServiceNow Role Mapping</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="int-name">Claims Examiner</div></td>
+          <td>Examiner Dashboard</td>
+          <td>View assigned claims, full workbench access, approve/deny/hold, add work notes, upload documents, view requirements</td>
+          <td><code>sn_fso.claims_examiner</code></td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Claims Supervisor</div></td>
+          <td>Supervisor Dashboard</td>
+          <td>All examiner capabilities + team queue management, claim assignment, performance reporting, SLA oversight</td>
+          <td><code>sn_fso.claims_supervisor</code></td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Claims Manager</div></td>
+          <td>Manager / Risk Dashboard</td>
+          <td>All supervisor capabilities + advanced analytics, risk dashboard, executive reports, full claim edit</td>
+          <td><code>sn_fso.claims_manager</code></td>
+        </tr>
+        <tr>
+          <td><div class="int-name">Intake Specialist / CSR</div></td>
+          <td>FNOL Workspace</td>
+          <td>Submit FNOL, upload documents, track intake status. No workbench access.</td>
+          <td><code>sn_fso.intake_specialist</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ASSUMPTIONS & DEPENDENCIES -->
+  <div class="section">
+    <div class="section-title">Assumptions &amp; Dependencies</div>
+    <div class="assumption-grid">
+      <div class="assumption-card">
+        <div class="ac-label">Client Responsibilities</div>
+        <ul>
+          <li>ServiceNow FSO instance provisioned with Insurance Data Model installed</li>
+          <li>ServiceNow OAuth 2.0 provider configured before Phase 1 start</li>
+          <li>LexisNexis contract and API credentials provided before Phase 3</li>
+          <li>IDP service (Azure Form Recognizer or AWS Textract) provisioned before Phase 3</li>
+          <li>Document storage (S3 or Azure Blob) provisioned and accessible</li>
+          <li>Agentic AI service architecture decision made before Phase 3 design</li>
+          <li>UAT resources available at end of each phase</li>
+        </ul>
+      </div>
+      <div class="assumption-card">
+        <div class="ac-label">Technical Assumptions</div>
+        <ul>
+          <li>ServiceNow FSO Insurance Data Model tables used as-is (no custom schema changes)</li>
+          <li>React 18 + Vite + DXC Halstack 16 as mandated tech stack</li>
+          <li>Browser targets: Chrome, Edge, Safari (latest 2 versions)</li>
+          <li>No IE11 or legacy browser support required</li>
+          <li>Demo data layer maintained for all phases to support parallel sales demos</li>
+          <li>Role-based access controlled at ServiceNow; portal enforces UI-level only</li>
+        </ul>
+      </div>
+      <div class="assumption-card">
+        <div class="ac-label">Design &amp; UX Assumptions</div>
+        <ul>
+          <li>DXC Halstack Design System is the exclusive component library</li>
+          <li>No custom CSS frameworks or third-party component libraries except MUI for data grids</li>
+          <li>WCAG 2.1 AA accessibility compliance via Halstack baseline</li>
+          <li>Light and dark mode supported via Halstack theme</li>
+          <li>Bloom brand color (#5f249f purple) applied as primary; DXC cyan (#00AEEF) as accent</li>
+          <li>Responsive layout for desktop and tablet (portrait); mobile not in scope</li>
+        </ul>
+      </div>
+      <div class="assumption-card">
+        <div class="ac-label">Project &amp; Delivery Assumptions</div>
+        <ul>
+          <li>Phases are sequential; Phase N+1 begins after Phase N UAT sign-off</li>
+          <li>Weekly sprint cadence with fortnightly stakeholder demos</li>
+          <li>Change requests outside this scope will require formal scope change process</li>
+          <li>Training is train-the-trainer; end-user training delivery out of scope</li>
+          <li>Production infrastructure provisioning is client responsibility</li>
+          <li>Effort estimates assume 2–3 front-end developers + 1 tech lead</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISKS -->
+  <div class="section">
+    <div class="section-title">Risks &amp; Mitigations</div>
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>Risk</th>
+          <th>Severity</th>
+          <th>Probability</th>
+          <th>Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ServiceNow FSO API access delayed</strong> — instance not provisioned or role access not granted in time for Phase 1</td>
+          <td><span class="risk-sev risk-high">High</span></td>
+          <td>Medium</td>
+          <td>Demo data layer allows full UI development without live ServiceNow. API integration layered in once access is confirmed.</td>
+        </tr>
+        <tr>
+          <td><strong>Agentic AI service architecture undefined</strong> — AI Insights Panel (Phase 3) blocked if backend service not selected</td>
+          <td><span class="risk-sev risk-high">High</span></td>
+          <td>Medium</td>
+          <td>Architectural decision required by end of Phase 2. Mock response layer allows UI development to proceed independently.</td>
+        </tr>
+        <tr>
+          <td><strong>IDP accuracy below threshold</strong> — Azure Form Recognizer / Textract confidence on insurance documents may be low without model training</td>
+          <td><span class="risk-sev risk-med">Medium</span></td>
+          <td>Medium</td>
+          <td>Custom model training on sample documents prior to Phase 3 integration. Confidence thresholds displayed to examiners; manual override always available.</td>
+        </tr>
+        <tr>
+          <td><strong>LexisNexis contract delay</strong> — Phase 3 death verification feature blocked without credentials</td>
+          <td><span class="risk-sev risk-med">Medium</span></td>
+          <td>Low</td>
+          <td>Stub mock service returns configurable verification status. Feature soft-launches when credentials are available with no code change.</td>
+        </tr>
+        <tr>
+          <td><strong>Scope creep on AI features</strong> — AI Insights and Beneficiary Analyzer scope may expand during development</td>
+          <td><span class="risk-sev risk-med">Medium</span></td>
+          <td>High</td>
+          <td>AI features scoped to defined outputs (risk score, findings, recommendations). Additional AI capabilities logged as Phase 5 backlog items.</td>
+        </tr>
+        <tr>
+          <td><strong>Halstack component gaps</strong> — edge case UI requirements not met by available Halstack components</td>
+          <td><span class="risk-sev risk-low">Low</span></td>
+          <td>Low</td>
+          <td>MUI is available as secondary library for data grids and specialized components. DXC Halstack team consulted for roadmap components.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- APPROVAL -->
+  <div class="section">
+    <div class="section-title">Document Approval</div>
+    <table class="int-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Name</th>
+          <th>Organization</th>
+          <th>Date</th>
+          <th>Signature</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Solution Architect</td>
+          <td>&nbsp;</td>
+          <td>DXC Technology</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Project Sponsor</td>
+          <td>&nbsp;</td>
+          <td>Bloom Insurance</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>IT Lead</td>
+          <td>&nbsp;</td>
+          <td>Bloom Insurance</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Claims Operations Lead</td>
+          <td>&nbsp;</td>
+          <td>Bloom Insurance</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left"><strong>DXC Technology — Smart Apps Practice</strong> &nbsp;·&nbsp; Bloom Claims Assistant Portal &nbsp;·&nbsp; Scope of Work v1.0</div>
+  <div class="footer-right">Confidential &amp; Proprietary &nbsp;·&nbsp; March 2026</div>
+</div>
+
+</body>
+</html>

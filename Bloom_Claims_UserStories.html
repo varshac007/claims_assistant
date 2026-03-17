@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom Claims Assistant Portal — User Stories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #1B1F3A;
+      --blue:   #1B75BB;
+      --cyan:   #00AEEF;
+      --green:  #1a8a3f;
+      --red:    #c53030;
+      --orange: #c2610c;
+      --yellow: #946b0e;
+      --purple: #5f249f;
+      --teal:   #0d7377;
+      --bg:     #f8fafb;
+      --card:   #ffffff;
+      --border: #e2e8f0;
+      --text:   #1a202c;
+      --muted:  #64748b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .page-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 36px 40px 28px;
+      border-bottom: 4px solid var(--cyan);
+    }
+    .page-header .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .logo-badge {
+      background: var(--cyan);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .08em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .dxc-tag {
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      font-weight: 300;
+    }
+    .page-header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+    }
+    .page-header h1 span { color: var(--cyan); }
+    .subtitle {
+      color: rgba(255,255,255,.7);
+      font-size: 13px;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    .meta-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .meta-pill {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .meta-pill strong { color: var(--cyan); }
+
+    /* ── Legend ─────────────────────────────────────────────── */
+    .legend-band {
+      background: var(--navy);
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding: 12px 40px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+    .legend-label {
+      color: rgba(255,255,255,.5);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-right: 4px;
+    }
+    .legend-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sp-scale {
+      color: rgba(255,255,255,.45);
+      font-size: 11px;
+      font-family: 'Roboto Mono', monospace;
+      border-left: 1px solid rgba(255,255,255,.15);
+      padding-left: 16px;
+    }
+
+    /* ── Summary Stats ──────────────────────────────────────── */
+    .stats-band {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      gap: 0;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 0 16px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .stat-number.cyan  { color: var(--cyan); }
+    .stat-number.blue  { color: var(--blue); }
+    .stat-number.green { color: var(--green); }
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* ── Main Content ────────────────────────────────────────── */
+    .content {
+      max-width: 1300px;
+      margin: 32px auto;
+      padding: 0 32px;
+    }
+
+    /* ── Epic Card ───────────────────────────────────────────── */
+    .epic-card {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
+      margin-bottom: 28px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .epic-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 20px;
+      color: #fff;
+    }
+    .epic-id {
+      background: rgba(255,255,255,.18);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .epic-name {
+      font-size: 15px;
+      font-weight: 700;
+      flex: 1;
+    }
+    .epic-phase {
+      font-size: 11px;
+      opacity: .75;
+      white-space: nowrap;
+    }
+    .epic-pts {
+      background: rgba(255,255,255,.2);
+      font-weight: 700;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    /* Epic color themes */
+    .epic-blue        { background: var(--blue); }
+    .epic-blue-dark   { background: #1354a3; }
+    .epic-green       { background: var(--green); }
+    .epic-purple      { background: var(--purple); }
+    .epic-teal        { background: var(--teal); }
+
+    /* ── Stories Table ───────────────────────────────────────── */
+    .stories-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .stories-table thead tr {
+      background: #f1f5f9;
+      border-bottom: 2px solid var(--border);
+    }
+    .stories-table thead th {
+      padding: 9px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--muted);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .stories-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+    }
+    .stories-table tbody tr:last-child { border-bottom: none; }
+    .stories-table tbody tr:hover { background: #f8faff; }
+    .stories-table td {
+      padding: 12px 14px;
+      vertical-align: top;
+    }
+
+    /* Column widths */
+    .col-id     { width: 100px; }
+    .col-story  { min-width: 280px; }
+    .col-ac     { min-width: 280px; }
+    .col-pri    { width: 120px; }
+    .col-pts    { width: 60px; text-align: center; }
+
+    /* Story ID */
+    .story-id {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--navy);
+      background: #eef2ff;
+      padding: 3px 7px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* Story text */
+    .story-text {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .story-role {
+      font-weight: 500;
+      color: var(--blue);
+    }
+
+    /* AC list */
+    .ac-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ac-list li {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      padding: 1px 0 1px 14px;
+      position: relative;
+    }
+    .ac-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-size: 10px;
+      top: 2px;
+    }
+
+    /* Priority pills */
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    .pill-must {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    .pill-should {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .pill-nice {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    /* Priority pill matching legend */
+    .legend-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .lp-must   { background: #dbeafe; color: #1e40af; }
+    .lp-should { background: #dcfce7; color: #166534; }
+    .lp-nice   { background: #fef9c3; color: #854d0e; }
+
+    /* SP badge */
+    .sp-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 auto;
+    }
+    .sp-1  { background: #94a3b8; }
+    .sp-2  { background: #64748b; }
+    .sp-3  { background: #3b82f6; }
+    .sp-5  { background: #8b5cf6; }
+    .sp-8  { background: #f59e0b; }
+    .sp-13 { background: #ef4444; }
+
+    /* ── Sprint Planning ─────────────────────────────────────── */
+    .sprint-section {
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 12px rgba(0,0,0,.05);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .sprint-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 16px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      border-bottom: 3px solid var(--cyan);
+    }
+    .sprint-body {
+      padding: 24px;
+    }
+    .sprint-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .sprint-meta-item {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      flex: 1;
+      min-width: 180px;
+    }
+    .sprint-meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .sprint-meta-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .phase-block {
+      border-radius: 8px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+    }
+    .phase-block.p1 { background: #eff6ff; border-left: 4px solid var(--blue); }
+    .phase-block.p2 { background: #f0fdf4; border-left: 4px solid var(--green); }
+    .phase-block.p3 { background: #faf5ff; border-left: 4px solid var(--purple); }
+    .phase-block.p4 { background: #f0fdfa; border-left: 4px solid var(--teal); }
+    .phase-block-title {
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .phase-block.p1 .phase-block-title { color: var(--blue); }
+    .phase-block.p2 .phase-block-title { color: var(--green); }
+    .phase-block.p3 .phase-block-title { color: var(--purple); }
+    .phase-block.p4 .phase-block-title { color: var(--teal); }
+    .phase-block-detail {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .demo-note {
+      background: #fef9c3;
+      border: 1px solid #fde047;
+      border-left: 4px solid var(--yellow);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #713f12;
+    }
+    .demo-note strong { color: #854d0e; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .page-footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 18px 40px;
+      font-size: 12px;
+    }
+    .page-footer strong { color: var(--cyan); }
+
+    /* ── Print ───────────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; font-size: 11px; }
+      .page-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .epic-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .epic-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 18px; }
+      .stats-band { border: 1px solid #ccc; margin-bottom: 12px; }
+      .content { margin: 16px auto; padding: 0 16px; }
+      .sprint-section { page-break-inside: avoid; }
+    }
+
+    @media (max-width: 900px) {
+      .stats-band { flex-wrap: wrap; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); padding: 12px; flex: 0 0 50%; }
+      .content { padding: 0 12px; }
+      .page-header { padding: 24px 16px 20px; }
+      .legend-band { padding: 12px 16px; }
+      .stories-table thead { display: none; }
+      .stories-table td { display: block; padding: 6px 12px; }
+      .stories-table td::before {
+        content: attr(data-label) ': ';
+        font-weight: 600;
+        font-size: 11px;
+        color: var(--muted);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════ PAGE HEADER ════════════════════════ -->
+<header class="page-header">
+  <div class="logo-row">
+    <span class="logo-badge">DXC Smart Apps</span>
+    <span class="dxc-tag">DXC Technology · Insurance &amp; Financial Services</span>
+  </div>
+  <h1><span>Bloom</span> Claims Assistant Portal — User Stories</h1>
+  <p class="subtitle">Agile Epics &amp; Stories &nbsp;·&nbsp; v1.0 &nbsp;·&nbsp; March 2026</p>
+  <div class="meta-pills">
+    <span class="meta-pill">Total Epics: <strong>14</strong></span>
+    <span class="meta-pill">Total Stories: <strong>60</strong></span>
+    <span class="meta-pill">Total Story Points: <strong>247</strong></span>
+    <span class="meta-pill">Platform: <strong>React + MUI v5</strong></span>
+    <span class="meta-pill">Backend: <strong>ServiceNow FSO</strong></span>
+    <span class="meta-pill">Client: <strong>Bloom Insurance</strong></span>
+  </div>
+</header>
+
+<!-- ════════════════════════ LEGEND ════════════════════════ -->
+<div class="legend-band">
+  <span class="legend-label">Priority:</span>
+  <div class="legend-group">
+    <span class="legend-pill lp-must">Must Have</span>
+    <span class="legend-pill lp-should">Should Have</span>
+    <span class="legend-pill lp-nice">Nice to Have</span>
+  </div>
+  <span class="sp-scale">Story Points: 1 = trivial &nbsp;·&nbsp; 2 = small &nbsp;·&nbsp; 3 = medium &nbsp;·&nbsp; 5 = large &nbsp;·&nbsp; 8 = complex &nbsp;·&nbsp; 13 = very complex</span>
+</div>
+
+<!-- ════════════════════════ SUMMARY STATS ════════════════════════ -->
+<div class="stats-band">
+  <div class="stat-item">
+    <div class="stat-number">60</div>
+    <div class="stat-label">Total Stories</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number cyan">247</div>
+    <div class="stat-label">Story Points</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number blue">14</div>
+    <div class="stat-label">Epics</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number green">44</div>
+    <div class="stat-label">Must Have Stories</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ CONTENT ════════════════════════ -->
+<main class="content">
+
+  <!-- ─── EPIC 1 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-blue">
+      <span class="epic-id">EPIC 1</span>
+      <span class="epic-name">Application Foundation &amp; Authentication</span>
+      <span class="epic-phase">Phase 1</span>
+      <span class="epic-pts">17 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to log in using my company credentials so that I can securely access the claims portal.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>OAuth 2.0 SSO redirects to ServiceNow login</li><li>JWT token stored securely in session</li><li>Failed login shows a clear error message</li><li>Session expires after configurable inactivity period</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">system admin</span>, I want user roles automatically assigned from ServiceNow so that access control is consistent with enterprise permissions.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Role retrieved from ServiceNow profile on login</li><li>Examiner/supervisor/manager roles map to correct views</li><li>Role displayed in user menu</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">demo presenter</span>, I want to switch between user personas so that I can demonstrate different role experiences without multiple logins.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Persona switcher visible in demo mode only</li><li>Switching loads correct dashboard and permissions</li><li>Demo badge visible when active</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US004</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want a consistent navigation sidebar so that I can quickly move between portal sections.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Sidebar shows only permitted nav items per role</li><li>Active section highlighted</li><li>Collapses to icon-only mode</li><li>Fully accessible by keyboard</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US005</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want to toggle between light and dark mode so that I can work comfortably in different environments.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Toggle persists across sessions via localStorage</li><li>All MUI components respect theme tokens</li><li>Charts and badges adapt to theme</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP1-US006</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want to switch between L&amp;A and P&amp;C product lines so that I can view claims relevant to my current work context.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Product line switcher available in header</li><li>All data and labels update on switch</li><li>Defaults to L&amp;A on login</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 2 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-blue">
+      <span class="epic-id">EPIC 2</span>
+      <span class="epic-name">Dashboards &amp; Claim Search</span>
+      <span class="epic-phase">Phase 1</span>
+      <span class="epic-pts">26 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see my assigned claims on my dashboard so that I can prioritize my work queue.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Only assigned claims shown</li><li>Claims sorted by SLA urgency by default</li><li>Claim count displayed in header</li><li>Dashboard loads within 3 seconds</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see SLA status badges on each claim so that I immediately know which claims are at risk.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>On-track (green), At-risk (amber), Overdue (red) badges</li><li>Days remaining shown on each badge</li><li>Tooltip explains the SLA rule applied</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see FastTrack/STP eligibility on each claim so that I can prioritize straight-through processing.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>FastTrack badge shown for eligible claims</li><li>STP badge for fully automated claims</li><li>Clicking badge shows eligibility criteria</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US004</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want to search for claims by ID, insured name, policy number, status, or date range so that I can quickly locate specific claims.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Search returns results within 2 seconds</li><li>Supports partial match on name and ID</li><li>No-results state displayed clearly with guidance</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US005</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims supervisor</span>, I want to see all my team's claims in my dashboard so that I can manage workload distribution.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>All team claims visible regardless of individual assignment</li><li>Filterable by examiner</li><li>Team metrics shown: total open, SLA at-risk count</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP2-US006</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims manager</span>, I want a risk management dashboard with performance analytics so that I can make informed operational decisions.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Written premium YTD, approval/decline rates, SLA compliance %, FastTrack %</li><li>Date range filter applied to all metrics</li><li>Product line filter available</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 3 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-blue-dark">
+      <span class="epic-id">EPIC 3</span>
+      <span class="epic-name">Claims Workbench</span>
+      <span class="epic-phase">Phase 2</span>
+      <span class="epic-pts">30 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to open a claim workbench with a full timeline so that I can see the complete history of a claim.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Timeline shows all events chronologically</li><li>Each event has timestamp, actor, and description</li><li>Timeline is scrollable and printable</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to view the Policy 360 tab so that I can see all policy details relevant to the claim.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Shows: policy number, type, status, effective/term dates, face amount, riders</li><li>Beneficiary list with allocations displayed</li><li>Data sourced from ServiceNow FSO</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to track requirements in the workbench so that I can manage what documents and information are still outstanding.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Requirements listed with status: Pending / Received / In Progress / Complete</li><li>Can update status inline; received date auto-stamped</li><li>IGO (In Good Order) flag visible per requirement</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to view and manage documents in the workbench so that all claim documents are accessible in one place.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Documents grouped by type in accordion sections</li><li>Each document shows name, type, and upload date</li><li>Viewer opens in-panel; upload button available</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US005</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see a claim progress bar so that I understand how complete the claim processing is.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Progress % calculated from completed requirements and steps</li><li>Visible at top of workbench</li><li>Updates automatically on requirement completion</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US006</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to Approve, Deny, or Hold a claim so that I can take action on processed claims.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Action buttons in workbench header</li><li>Confirm dialog before any action is taken</li><li>Status updates in ServiceNow; audit trail entry created</li><li>Email notification triggered to claimant</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP3-US007</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to add work notes to a claim so that I can document my investigation and communicate with teammates.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Work notes threaded by date with author name and timestamp</li><li>Rich text entry supported</li><li>Notes sync to ServiceNow on save</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 4 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-green">
+      <span class="epic-id">EPIC 4</span>
+      <span class="epic-name">FNOL &amp; Intake</span>
+      <span class="epic-phase">Phase 2</span>
+      <span class="epic-pts">21 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP4-US001</span></td>
+          <td data-label="Story"><span class="story-text">As an <span class="story-role">intake specialist</span>, I want a 3-step FNOL wizard so that I can capture all required claim information in a guided, error-free process.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Step 1: claim type, policy #, insured name, date of death, description</li><li>Step 2: claimant name, email, phone, relationship</li><li>Step 3: document upload; cannot advance with validation errors</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP4-US002</span></td>
+          <td data-label="Story"><span class="story-text">As an <span class="story-role">intake specialist</span>, I want to drag and drop documents during FNOL so that I can upload death certificates and IDs quickly.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Drag-and-drop zone accepts PDF, JPG, PNG up to 25 MB</li><li>Upload progress shown; uploaded files listed</li><li>Files can be removed before submission</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP4-US003</span></td>
+          <td data-label="Story"><span class="story-text">As an <span class="story-role">intake specialist</span>, I want to receive a claim number after FNOL submission so that I can provide confirmation to the claimant.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Claim number displayed on success screen</li><li>Next-steps message shown</li><li>Option to print or email confirmation</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP4-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to use an FNOL Workspace so that I can manage all incoming claim notifications in one view.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Lists all new FNOL submissions with submission date, claimant name, claim type</li><li>Can open any submission for review</li><li>Filterable by status</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP4-US005</span></td>
+          <td data-label="Story"><span class="story-text">As an <span class="story-role">intake specialist</span>, I want FNOL submission to trigger death verification so that accuracy is validated at intake.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>LexisNexis verification triggered on submit</li><li>Verification status stored on claim; examiner notified of result</li><li>Stub mode available when credentials not yet configured</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 5 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-green">
+      <span class="epic-id">EPIC 5</span>
+      <span class="epic-name">Death Claim Processing</span>
+      <span class="epic-phase">Phase 2</span>
+      <span class="epic-pts">8 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP5-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to capture and edit death event details so that the claim record has accurate death information.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Fields: date/time of death, manner of death, state, death in USA, proof of death date, incident description</li><li>Saves to ServiceNow; audit logs each edit</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP5-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want death case records auto-loaded from ServiceNow when I open a claim so that I don't have to manually look them up.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Death case record fetched on workbench open</li><li>Populated into Death Event Panel automatically</li><li>Error state displayed if no record found</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP5-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see the LexisNexis death verification status on the claim so that I can confirm the death is verified before proceeding.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Verification status badge: Verified / Unverified / Pending in claim header</li><li>Timestamp of last verification shown</li><li>Re-trigger verification button available</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 6 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-purple">
+      <span class="epic-id">EPIC 6</span>
+      <span class="epic-name">Beneficiary Analysis &amp; Party Management</span>
+      <span class="epic-phase">Phase 3</span>
+      <span class="epic-pts">18 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP6-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to view all beneficiaries with their details so that I can assess who is entitled to the benefit.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Shows: name, masked SSN (reveal on click), relationship, allocation %, birth date, status</li><li>Data sourced from ServiceNow FSO</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP6-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to add or edit parties on a claim so that I can correct or update insured, claimant, and beneficiary information.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Party form: name, SSN, DOB, relationship, contact info</li><li>Validates all required fields before save</li><li>Saves to ServiceNow; audit trail entry created</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP6-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want the system to automatically analyze beneficiaries for conflicts so that I can identify and resolve eligibility disputes early.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>AI analysis auto-triggers on workbench open</li><li>Findings show conflict description, severity, and recommended resolution</li><li>Examiner can acknowledge and note action taken</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP6-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see beneficiary conflict severity levels so that I can triage disputes appropriately.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>HIGH conflicts shown as red alert; MEDIUM as amber; LOW as informational</li><li>Conflict counts shown in workbench header badge</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 7 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-purple">
+      <span class="epic-id">EPIC 7</span>
+      <span class="epic-name">Intelligent Document Processing</span>
+      <span class="epic-phase">Phase 3</span>
+      <span class="epic-pts">24 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP7-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want uploaded documents to be automatically classified by type so that I don't have to manually tag every document.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Classification runs within 30 seconds of upload</li><li>Document type label applied with confidence score shown</li><li>Examiner can correct classification if needed</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP7-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want key fields extracted from uploaded documents so that I don't have to manually re-key data that is already in the document.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Extracted fields shown alongside source document</li><li>Each field displays a confidence percentage</li><li>Extracted fields mapped to claim form sections</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP7-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want extracted data to auto-populate claim fields so that data entry is minimized.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Auto-populated fields highlighted in form</li><li>Examiner reviews and confirms or edits before saving</li><li>Original extracted value preserved in audit</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP7-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to review and override auto-populated data so that I maintain control over what is saved to the claim record.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>All auto-populated fields are editable</li><li>Override saves new value and logs original extraction</li><li>Confidence score visible throughout review</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 8 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-purple">
+      <span class="epic-id">EPIC 8</span>
+      <span class="epic-name">AI Insights &amp; Anomaly Detection</span>
+      <span class="epic-phase">Phase 3</span>
+      <span class="epic-pts">23 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP8-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want an AI Insights panel in the workbench so that I can quickly see if there are any risk indicators on the claim.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>AI panel visible on workbench load</li><li>Shows overall risk level: HIGH / MEDIUM / LOW / CLEAR</li><li>Expandable to full modal; loads within 5 seconds</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP8-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want each AI finding to include a description, evidence, and recommendation so that I understand why a risk was flagged.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Finding card shows: severity badge, title, evidence bullets, recommended action, PASS/FAIL indicator</li><li>Can be dismissed with an examiner note</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP8-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want an AI-generated claim summary so that I can quickly understand the key facts and risks without reading the full file.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Summary paragraph auto-generated on workbench open</li><li>Includes: insured, claim type, amount, key dates, active risk count</li><li>Refreshes when claim data changes</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP8-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims manager</span>, I want anomaly trends visible in the manager dashboard so that I can see if fraud patterns are increasing.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Anomaly count by severity charted over time</li><li>Top anomaly types listed</li><li>Filterable by date range and examiner</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-nice">Nice to Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 9 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-purple">
+      <span class="epic-id">EPIC 9</span>
+      <span class="epic-name">Related Policies</span>
+      <span class="epic-phase">Phase 3</span>
+      <span class="epic-pts">13 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP9-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want the system to automatically find other policies on the deceased insured so that no eligible claim is missed.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Search triggers on claim open</li><li>Finds policies by insured SSN and name</li><li>Results shown in Related Policies panel</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP9-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to see total aggregated death benefit across related policies so that I understand the full claim exposure.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Total death benefit sum displayed prominently</li><li>Breakdown by policy shown</li><li>Cash values and loan balances noted</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP9-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to be alerted when related policies are found so that I don't miss the notification.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Alert banner shown when related policies are discovered</li><li>Alert persists until acknowledged by the examiner</li><li>Count of related policies shown in the banner</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP9-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to initiate a new claim from the related policies panel so that I can start related claims without leaving the workbench.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>"Initiate Claim" button per related policy</li><li>Pre-populates FNOL with insured and policy data</li><li>Opens in new tab or modal</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 10 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-green">
+      <span class="epic-id">EPIC 10</span>
+      <span class="epic-name">Requirements Engine</span>
+      <span class="epic-phase">Phase 2</span>
+      <span class="epic-pts">16 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP10-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want requirements auto-generated when a claim is created so that I have a complete checklist without manual setup.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Requirements generated based on: claim type, policy type, state, amount thresholds</li><li>List appears in Requirements tab; each starts as Pending</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP10-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want to update requirement status as items are received so that the claim progress reflects current state.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Status dropdown: Pending / Received / In Progress / Complete</li><li>Received date auto-stamped on status change</li><li>Progress bar updates after each status change</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP10-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want FastTrack-eligible claims to have non-essential requirements automatically waived so that simple claims process faster.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>FastTrack routing applied at claim creation</li><li>Waived requirements marked "Waived - STP" with reason</li><li>Examiner can override any waiver</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 11 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-green">
+      <span class="epic-id">EPIC 11</span>
+      <span class="epic-name">Financial Calculations</span>
+      <span class="epic-phase">Phase 3</span>
+      <span class="epic-pts">9 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP11-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want a PMI calculator so that I can compute mortgage insurance amounts for applicable claims.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Inputs: loan amount, property value, interest rate, loan term</li><li>Outputs: monthly payment, P&amp;I split, LTV ratio</li><li>Results are copyable to clipboard</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP11-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want a tax withholding calculator so that I can determine net benefit amounts.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Inputs: gross benefit amount, federal/state withholding rates</li><li>Outputs: federal tax, state tax, net benefit</li><li>State dropdown pre-loaded with all US states</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP11-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want a payment quick view panel so that I can see disbursement summary and authorize payment.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Shows: payee, amount, method, status</li><li>Authorize button sends approval to ServiceNow</li><li>Execution handled by external payment system only</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 12 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-teal">
+      <span class="epic-id">EPIC 12</span>
+      <span class="epic-name">Queue Management</span>
+      <span class="epic-phase">Phase 4</span>
+      <span class="epic-pts">14 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP12-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims supervisor</span>, I want a Pending Claims Review workspace so that I can manage claims awaiting examiner action.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Lists all pending claims; sortable by SLA, date, examiner</li><li>Bulk reassign supported</li><li>Shows days in pending status per claim</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP12-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims supervisor</span>, I want a Requirements Received workspace so that I can ensure received items are processed promptly.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Lists claims with recently received requirements</li><li>Shows requirement name, received date, assigned examiner</li><li>One-click open to claim workbench</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP12-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims examiner</span>, I want a personal claims handler queue so that I have a focused view of just my current workload.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Shows only my assigned open claims sorted by priority</li><li>Quick actions: open workbench, add note, update status</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP12-US004</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims supervisor</span>, I want to reassign claims between examiners so that I can balance team workload.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Reassign action on each claim; examiner dropdown shows only active team members</li><li>Notification sent to new assignee</li><li>Audit log updated with reassignment record</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 13 ─── -->
+  <div class="epic-card">
+    <div class="epic-header epic-teal">
+      <span class="epic-id">EPIC 13</span>
+      <span class="epic-name">Reports &amp; Analytics</span>
+      <span class="epic-phase">Phase 4</span>
+      <span class="epic-pts">13 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP13-US001</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims manager</span>, I want a reports module with filterable claims metrics so that I can produce operational reports.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Filters: date range, product line, examiner, claim type, status</li><li>Metrics: open claims, closed claims, avg processing time, SLA compliance</li><li>Export to CSV supported</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-8">8</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP13-US002</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims manager</span>, I want to filter all dashboards by product line (L&amp;A vs P&amp;C) so that I can analyze each book separately.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Product line filter applies to all metrics on dashboard</li><li>Filter persists for session; resets on logout</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-should">Should Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP13-US003</span></td>
+          <td data-label="Story"><span class="story-text">As a <span class="story-role">claims manager</span>, I want to see FastTrack routing rate trends so that I can measure STP program effectiveness.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Line chart of FastTrack % over time</li><li>Breakdown by claim type; comparison to target threshold line</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-nice">Nice to Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ─── EPIC 14 ─── -->
+  <div class="epic-card">
+    <div class="epic-header" style="background:#374151;">
+      <span class="epic-id">EPIC 14</span>
+      <span class="epic-name">Non-Functional &amp; Accessibility</span>
+      <span class="epic-phase">All Phases</span>
+      <span class="epic-pts">15 pts</span>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th class="col-id">Story ID</th>
+          <th class="col-story">User Story</th>
+          <th class="col-ac">Acceptance Criteria</th>
+          <th class="col-pri">Priority</th>
+          <th class="col-pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP14-US001</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want the portal to be keyboard navigable so that users with motor impairments can use all features.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>All interactive elements reachable by Tab key</li><li>Focus indicators clearly visible</li><li>No keyboard traps; all modals closeable with Escape</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP14-US002</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want all PII fields (SSN, DOB, account numbers) masked by default so that sensitive data is not exposed on screen.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>SSN shows as ***-**-XXXX; DOB shows as **/**/XXXX</li><li>Reveal icon toggles visibility per field</li><li>Reveal action logged in audit trail</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-3">3</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP14-US003</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want the portal to load in under 3 seconds on a standard enterprise network so that productivity is not impacted.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>Lighthouse performance score ≥ 80</li><li>Dashboard TTI ≤ 3s on 10 Mbps connection</li><li>Lazy loading implemented on non-critical components</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-5">5</span></td>
+        </tr>
+        <tr>
+          <td data-label="ID"><span class="story-id">EP14-US004</span></td>
+          <td data-label="Story"><span class="story-text">As <span class="story-role">any user</span>, I want the portal to work on Chrome, Edge, and Safari (latest 2 versions) so that all staff can use their preferred browser.</span></td>
+          <td data-label="AC"><ul class="ac-list"><li>E2E tests pass on Chrome, Edge, and Safari</li><li>No layout breaks or browser-specific JavaScript errors</li></ul></td>
+          <td data-label="Priority"><span class="pill pill-must">Must Have</span></td>
+          <td data-label="Pts"><span class="sp-badge sp-2">2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ════════════════════════ SPRINT PLANNING GUIDE ════════════════════════ -->
+  <div class="sprint-section">
+    <div class="sprint-header">Sprint Planning Guide</div>
+    <div class="sprint-body">
+      <div class="sprint-meta">
+        <div class="sprint-meta-item">
+          <div class="sprint-meta-label">Recommended Team Size</div>
+          <div class="sprint-meta-value">3 Front-End Devs + 1 Tech Lead</div>
+        </div>
+        <div class="sprint-meta-item">
+          <div class="sprint-meta-label">Sprint Length</div>
+          <div class="sprint-meta-value">2 Weeks</div>
+        </div>
+        <div class="sprint-meta-item">
+          <div class="sprint-meta-label">Velocity Assumption</div>
+          <div class="sprint-meta-value">30 – 40 points / sprint</div>
+        </div>
+        <div class="sprint-meta-item">
+          <div class="sprint-meta-label">Total Story Points</div>
+          <div class="sprint-meta-value">247 pts (~7 sprints at 35 avg)</div>
+        </div>
+      </div>
+
+      <div class="phase-grid">
+        <div class="phase-block p1">
+          <div class="phase-block-title">Phase 1 — Foundation &amp; Dashboards</div>
+          <div class="phase-block-detail">
+            <strong>Sprints 1–4</strong><br/>
+            Epics 1 &amp; 2 · Authentication, navigation, examiner and supervisor dashboards, claim search, SLA badges, manager analytics<br/>
+            <em>43 pts total · ~2 sprints at 35 avg + sprint buffer</em>
+          </div>
+        </div>
+        <div class="phase-block p2">
+          <div class="phase-block-title">Phase 2 — Workbench &amp; Processing</div>
+          <div class="phase-block-detail">
+            <strong>Sprints 5–8</strong><br/>
+            Epics 3, 4, 5, 10 · Claims workbench, FNOL wizard, death processing, requirements engine<br/>
+            <em>75 pts total · ~2 sprints at 38 avg</em>
+          </div>
+        </div>
+        <div class="phase-block p3">
+          <div class="phase-block-title">Phase 3 — AI &amp; Intelligent Features</div>
+          <div class="phase-block-detail">
+            <strong>Sprints 9–14</strong><br/>
+            Epics 6, 7, 8, 9, 11 · Beneficiary AI analysis, IDP, AI Insights, related policies, financial calculators<br/>
+            <em>87 pts total · ~2–3 sprints</em>
+          </div>
+        </div>
+        <div class="phase-block p4">
+          <div class="phase-block-title">Phase 4 — Operations &amp; Reporting</div>
+          <div class="phase-block-detail">
+            <strong>Sprints 15–18</strong><br/>
+            Epics 12, 13, 14 · Queue management, reports, accessibility hardening, cross-browser testing<br/>
+            <em>42 pts total · ~1–2 sprints + QA buffer</em>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-note">
+        <strong>Demo Data Layer Note:</strong> The portal includes a mock/stub data layer that mirrors the ServiceNow FSO API contract. This allows front-end UI development to proceed in parallel ahead of ServiceNow integration milestones. Stubs can be toggled via an environment variable (<code>VITE_USE_MOCK_API=true</code>), enabling full demo capability without live backend connectivity.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ════════════════════════ FOOTER ════════════════════════ -->
+<footer class="page-footer">
+  <strong>Bloom Claims Assistant Portal</strong> &nbsp;·&nbsp; Agile User Stories v1.0 &nbsp;·&nbsp; March 2026<br/>
+  Prepared by <strong>DXC Technology Smart Apps</strong> &nbsp;·&nbsp; Insurance &amp; Financial Services Practice &nbsp;·&nbsp; Built with React + MUI v5 + ServiceNow FSO
+</footer>
+
+</body>
+</html>

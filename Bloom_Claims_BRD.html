@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom Claims Assistant Portal — Business Requirements Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f8fafb; --bg-primary:#ffffff; --bg-muted:#f4f5f7; --bg-hover:#f0f5fa;
+  --border:#e2e6ea; --border-strong:#d0d4da; --border-accent:#1B75BB;
+  --text:#2c2c2c; --text-2:#616873; --text-3:#8c939e; --text-inv:#ffffff;
+  --blue:#1B75BB; --blue-bg:#e8f4fc; --blue-border:#b3d4ee; --blue-hover:#d0e8f7;
+  --green:#1a8a3f; --green-bg:#e8f8ee; --green-border:#b8e6c8;
+  --yellow:#946b0e; --yellow-bg:#fef9e7; --yellow-border:#f5e6a3;
+  --orange:#c2610c; --orange-bg:#fef3e6; --orange-border:#f5d4a3;
+  --red:#c53030; --red-bg:#fef0f0; --red-border:#f5b8b8;
+  --purple:#5f249f; --purple-bg:#f5eefe; --purple-border:#d4b8ee;
+  --cyan:#00AEEF;
+  --navy:#1B1F3A;
+  --r:8px; --rs:6px; --rx:4px;
+  --font:'Roboto',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);font-size:14px;line-height:1.6;color:var(--text);background:var(--bg);}
+
+/* ─── HEADER ─── */
+.header{background:var(--navy);color:#fff;padding:36px 48px 32px;display:flex;align-items:flex-start;justify-content:space-between;}
+.header-left{}
+.header-logo{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.header-logo .dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);}
+.header-logo span{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+.header h1{font-size:30px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:6px;}
+.header h1 span{color:var(--cyan);}
+.header-sub{font-size:13px;color:rgba(255,255,255,0.55);font-weight:400;margin-top:4px;}
+.header-meta{text-align:right;display:flex;flex-direction:column;gap:5px;padding-top:4px;}
+.meta-pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 16px;font-size:11px;color:rgba(255,255,255,0.7);white-space:nowrap;}
+.meta-pill b{color:#fff;}
+.meta-pill.status-draft{background:rgba(0,174,239,0.15);border-color:rgba(0,174,239,0.4);color:var(--cyan);}
+
+/* ─── ACCENT BAND ─── */
+.accent-band{background:#fff;border-bottom:3px solid var(--border-accent);padding:16px 48px;display:flex;gap:32px;align-items:center;flex-wrap:wrap;}
+.kpi{text-align:center;}
+.kpi-v{font-size:24px;font-weight:700;color:var(--blue);line-height:1;}
+.kpi-l{font-size:10px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:.6px;margin-top:3px;}
+.kpi-sep{width:1px;background:var(--border);height:38px;}
+.doc-type-badge{margin-left:auto;background:var(--navy);color:#fff;border-radius:6px;padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;}
+
+/* ─── MAIN LAYOUT ─── */
+.main{max-width:1200px;margin:0 auto;padding:36px 48px 64px;}
+
+/* ─── SECTION ─── */
+.section{margin-bottom:44px;}
+.section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-num{background:var(--blue);color:#fff;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;letter-spacing:.5px;}
+
+/* ─── CARDS ─── */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:16px;}
+.card-accent{border-left:4px solid var(--blue);}
+
+/* ─── EXEC SUMMARY ─── */
+.exec-box{background:#fff;border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:var(--r);padding:22px 26px;}
+.exec-box p{color:var(--text-2);line-height:1.75;margin-bottom:12px;font-size:14px;}
+.exec-box p:last-child{margin-bottom:0;}
+.exec-box strong{color:var(--text);}
+
+/* ─── OBJECTIVES ─── */
+.obj-list{counter-reset:obj;}
+.obj-item{display:flex;align-items:flex-start;gap:14px;background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;margin-bottom:10px;}
+.obj-num{counter-increment:obj;background:var(--blue);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.obj-num::before{content:counter(obj);}
+.obj-text{font-size:13.5px;color:var(--text);line-height:1.5;}
+.obj-text .metric{font-weight:700;color:var(--blue);}
+
+/* ─── TABLES ─── */
+.tbl-wrap{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;background:#fff;margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:var(--navy);color:#fff;padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;}
+thead th:first-child{border-radius:0;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:nth-child(even){background:#f8fafb;}
+tbody tr:hover{background:var(--bg-hover);}
+tbody td{padding:10px 14px;vertical-align:top;line-height:1.5;}
+.td-id{font-family:monospace;font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.td-muted{color:var(--text-3);font-size:12px;}
+
+/* ─── PRIORITY PILLS ─── */
+.pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;white-space:nowrap;}
+.pill-must{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
+.pill-should{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.pill-nice{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);}
+
+/* ─── INFLUENCE PILLS ─── */
+.inf-high{background:#fef0f0;color:var(--red);border:1px solid var(--red-border);display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.inf-med{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border);display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.inf-low{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+
+/* ─── FUNCTIONAL AREA HEADER ─── */
+.fa-header{background:linear-gradient(135deg,var(--navy),#2d3260);color:#fff;padding:11px 18px;border-radius:var(--rs) var(--rs) 0 0;display:flex;align-items:center;gap:10px;}
+.fa-range{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;background:rgba(0,174,239,0.25);border:1px solid rgba(0,174,239,0.4);color:var(--cyan);border-radius:4px;padding:2px 8px;}
+.fa-title{font-size:13px;font-weight:700;color:#fff;}
+.fa-block{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:24px;}
+.fa-block table{border-radius:0;}
+.fa-block thead th{background:rgba(27,31,58,0.85);}
+
+/* ─── TECH STACK ─── */
+.tech-row-highlight td:first-child{font-weight:600;color:var(--navy);}
+
+/* ─── CONSTRAINTS ─── */
+.constraint-list{list-style:none;padding:0;}
+.constraint-list li{display:flex;align-items:flex-start;gap:10px;padding:10px 16px;background:#fff;border:1px solid var(--border);border-radius:var(--rs);margin-bottom:8px;font-size:13.5px;color:var(--text-2);}
+.constraint-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:7px;}
+
+/* ─── GLOSSARY ─── */
+.gloss-term{font-weight:700;color:var(--navy);font-size:13px;}
+.gloss-def{font-size:13px;color:var(--text-2);}
+
+/* ─── APPROVAL ─── */
+.approval-note{font-size:12px;color:var(--text-3);font-style:italic;margin-top:10px;}
+
+/* ─── KPI TABLE ─── */
+.kpi-target{font-weight:700;color:var(--green);}
+.kpi-baseline{color:var(--text-3);font-style:italic;}
+
+/* ─── PRINT ─── */
+@media print {
+  body{background:#fff;}
+  .header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .accent-band{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .fa-header{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .pill{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .fa-block{page-break-inside:avoid;}
+  .section{page-break-inside:avoid;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">
+      <div class="dot"></div>
+      <span>DXC Technology &mdash; Smart Apps Practice</span>
+    </div>
+    <h1>Bloom Claims Assistant <span>Portal</span></h1>
+    <div style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.75);margin-top:4px;letter-spacing:.3px;">Business Requirements Document</div>
+    <div class="header-sub" style="margin-top:10px;">Life &amp; Annuity Claims Management &mdash; React + MUI v5 &mdash; ServiceNow FSO</div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-pill"><b>Client:</b> Bloom Insurance</div>
+    <div class="meta-pill"><b>Version:</b> 0.1</div>
+    <div class="meta-pill"><b>Date:</b> March 17, 2026</div>
+    <div class="meta-pill"><b>Author:</b> DXC Smart Apps</div>
+    <div class="meta-pill status-draft"><b>Status:</b> DRAFT</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     ACCENT BAND
+════════════════════════════════════════════════════════════ -->
+<div class="accent-band">
+  <div class="kpi"><div class="kpi-v">13</div><div class="kpi-l">Functional Areas</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">58</div><div class="kpi-l">Requirements</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">4</div><div class="kpi-l">Delivery Phases</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">MUI v5</div><div class="kpi-l">UI Component Library</div></div>
+  <div class="kpi-sep"></div>
+  <div class="kpi"><div class="kpi-v">ServiceNow FSO</div><div class="kpi-l">System of Action</div></div>
+  <div class="doc-type-badge">BRD &mdash; v0.1</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- ── 1. DOCUMENT CONTROL ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">1</span> Document Control</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Author</th>
+            <th>Reviewed By</th>
+            <th>Change Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">v0.1</td>
+            <td>March 17, 2026</td>
+            <td>DXC Smart Apps</td>
+            <td style="color:var(--text-3);font-style:italic;">Pending</td>
+            <td>Initial draft — all functional areas, full BR-XXX requirements catalog, technology stack, KPIs, and constraints.</td>
+            <td><span class="pill pill-must">Draft</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 2. EXECUTIVE SUMMARY ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">2</span> Executive Summary</div>
+    <div class="exec-box">
+      <p>Bloom Insurance currently manages life and annuity claims through the native ServiceNow interface, which was designed as a system of record rather than a system of engagement. Claims examiners navigate multiple disconnected screens, perform significant manual data entry, and rely on paper or scanned documents for death certificates and ACORD forms. This results in extended average processing times, elevated operational costs, inconsistent SLA compliance, and a degraded examiner experience that contributes to onboarding friction and error rates. <strong>The status quo presents a measurable risk to Bloom's service quality commitments and competitive positioning in the L&amp;A market.</strong></p>
+      <p>DXC Technology Smart Apps proposes to design and deliver the <strong>Bloom Claims Assistant Portal</strong> — a modern, React 18 + MUI v5 (Material UI) web application that sits as a System of Engagement over ServiceNow FSO (Financial Services Operations). The portal will provide a purpose-built claims workbench, guided FNOL intake wizard, intelligent document processing (IDP) with AI-driven auto-population, AI anomaly detection and risk scoring, related policy discovery, beneficiary conflict analysis, and a real-time manager analytics dashboard. All claim data and business logic remain authoritative within ServiceNow FSO; the React portal communicates exclusively through ServiceNow REST APIs secured by OAuth 2.0.</p>
+      <p>The expected business value of this engagement is material and measurable. <strong>Processing time reductions of 30% or more are targeted</strong> through FastTrack/STP routing for eligible claims, IDP-driven data capture, and guided workflow automation. Beneficiary conflict resolution, historically a source of delay and litigation risk, is targeted for a 50% cycle-time reduction via AI-assisted analysis. Real-time SLA dashboards will give supervisors and managers the visibility needed to intervene proactively, reducing SLA breach rates and improving Bloom's regulatory compliance posture. The investment directly supports Bloom's stated strategic objectives of operational efficiency, digital modernization, and superior policyholder experience.</p>
+    </div>
+  </div>
+
+  <!-- ── 3. BUSINESS OBJECTIVES ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">3</span> Business Objectives</div>
+    <div class="obj-list">
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Reduce average claim processing time by <span class="metric">30%</span> within 12 months of go-live through FastTrack routing, guided workflows, and IDP-driven data entry elimination.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Materially reduce manual data entry effort by leveraging Intelligent Document Processing (IDP) to auto-populate claim fields from uploaded death certificates, ACORD forms, and supporting documents.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Achieve FastTrack / Straight-Through Processing (STP) routing for <span class="metric">40% or more</span> of eligible claims, reducing examiner touchpoints for low-complexity cases.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Achieve <span class="metric">100% SLA visibility</span> across all open claims — providing examiners, supervisors, and managers with real-time on-track, at-risk, and overdue indicators.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Reduce beneficiary conflict resolution time by <span class="metric">50%</span> through AI-powered conflict detection, severity scoring, and recommended resolution guidance surfaced inline on the workbench.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-num"></div>
+        <div class="obj-text">Provide real-time analytics and performance dashboards for management decision-making, including written premium trends, FastTrack rates, approval/decline ratios, and SLA compliance trends.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. STAKEHOLDERS ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">4</span> Stakeholders</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Interest</th>
+            <th>Influence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Claims Examiner</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Claims Operations</td>
+            <td>Primary end user; daily workbench, document review, claim decisioning</td>
+            <td><span class="inf-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Claims Supervisor</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Claims Operations</td>
+            <td>Team queue management, SLA oversight, exception handling</td>
+            <td><span class="inf-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Claims Manager</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Claims Operations</td>
+            <td>Analytics, performance KPIs, strategic reporting</td>
+            <td><span class="inf-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Intake Specialist / CSR</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Customer Service</td>
+            <td>FNOL submission, document collection, claimant communication</td>
+            <td><span class="inf-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>IT / ServiceNow Admin</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Information Technology</td>
+            <td>ServiceNow FSO configuration, API enablement, OAuth setup, system integration</td>
+            <td><span class="inf-high">High</span></td>
+          </tr>
+          <tr>
+            <td><strong>Compliance Officer</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Legal &amp; Compliance</td>
+            <td>Audit trail completeness, PII masking, regulatory adherence, accessibility</td>
+            <td><span class="inf-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td><strong>Project Sponsor</strong></td>
+            <td class="td-muted">TBD</td>
+            <td>Executive / Bloom Leadership</td>
+            <td>Strategic alignment, budget authority, go-live approval</td>
+            <td><span class="inf-high">High</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 5. BUSINESS REQUIREMENTS ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">5</span> Business Requirements</div>
+
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:20px;line-height:1.6;">Requirements are organized by functional area using the BR-XXX numbering scheme. Priority designations: <span class="pill pill-must">Must Have</span> = mandatory for launch &nbsp; <span class="pill pill-should">Should Have</span> = high value, planned &nbsp; <span class="pill pill-nice">Nice to Have</span> = desirable, subject to schedule.</p>
+
+    <!-- BR-100: Auth -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-100s</span>
+        <span class="fa-title">Authentication &amp; Access Control</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-101</td>
+            <td>The system must authenticate all users via ServiceNow OAuth 2.0 before granting access to any portal functionality.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>IT / ServiceNow Admin</td>
+            <td>Unauthenticated requests redirect to OAuth login. Token refresh handled transparently. No credentials stored in localStorage.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-102</td>
+            <td>The system must enforce role-based access control (RBAC) with distinct permission sets for: Examiner, Supervisor, Manager, and Intake Specialist roles.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager, Compliance</td>
+            <td>Each role sees only authorized navigation items, actions, and data. Role assignment managed in ServiceNow.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-103</td>
+            <td>The system must display only the features and data permitted for the authenticated user's role; unauthorized routes must return an access-denied state, not a 404.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Compliance Officer</td>
+            <td>Direct URL navigation to restricted routes displays a clear access-denied message and logs the attempt in the audit trail.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-104</td>
+            <td>The system must support demo persona switching — allowing authorized users to toggle between role personas for training and live demonstrations without re-authentication.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>DXC Smart Apps / Training</td>
+            <td>Persona switcher visible only to users with the demo role. Switching persona updates all displayed data and UI affordances to match the selected persona's permissions.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-200: Dashboard -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-200s</span>
+        <span class="fa-title">Claims Dashboard &amp; Search</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-201</td>
+            <td>Upon login, Examiners must see a dashboard filtered to only their personally assigned claims — not the full claim queue.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Dashboard query filters by assigned_to = current user. Zero cross-contamination with other examiners' queues.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-202</td>
+            <td>Supervisors must see a consolidated dashboard displaying all claims assigned to members of their reporting team.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor</td>
+            <td>Dashboard aggregates claims across all direct reports. Team composition sourced from ServiceNow.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-203</td>
+            <td>Managers must see an enterprise-wide claims view including risk flags, SLA compliance trends, FastTrack rates, and performance analytics across all examiners and product lines.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager</td>
+            <td>Manager dashboard loads all-claims data with chart-level drill-down. No personal claim filtering applied.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-204</td>
+            <td>All users must be able to search for claims by: claim ID, insured name, policy number, claim status, and date range.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>All Roles</td>
+            <td>Search returns results within 2 seconds. Partial-match search supported for name fields. Results respect the user's role-based data scope.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-205</td>
+            <td>The dashboard must display a real-time SLA status indicator (On Track, At Risk, Overdue) for each claim in the queue.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor</td>
+            <td>SLA status derived from ServiceNow SLA task data. Color coding: green (on-track), amber (at-risk), red (overdue). Refreshes on page load and at configurable intervals.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-206</td>
+            <td>The dashboard must display a FastTrack / STP eligibility badge on each claim row where the claim meets the auto-routing criteria.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Manager</td>
+            <td>FastTrack badge visible on eligible claims. Eligibility logic configurable in ServiceNow. Badge links to the requirements engine status for that claim.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-300: Workbench -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-300s</span>
+        <span class="fa-title">Claims Workbench</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-301</td>
+            <td>The workbench must provide a Timeline tab displaying a complete, chronological audit trail of all claim events, state changes, notes, and system actions.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Compliance Officer</td>
+            <td>All ServiceNow claim history records rendered in reverse-chronological order with actor, timestamp, and event type. Non-editable.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-302</td>
+            <td>The workbench must provide a Policy 360 tab displaying: policy details, coverage types and amounts, coverage effective/expiration dates, and beneficiary allocation breakdown.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Policy data retrieved from ServiceNow FSO insurance data model in real time. Beneficiary allocations display as percentage and dollar estimates.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-303</td>
+            <td>The workbench must provide a Requirements tab with IGO (In Good Order) tracking — listing each requirement, its current status, due date, and received date.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Requirements list sourced from ServiceNow. Examiner can update status. Overdue requirements highlighted. IGO completion percentage displayed.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-304</td>
+            <td>The workbench must provide a Documents tab supporting: document upload, document viewing, and IDP-based document type classification.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Intake</td>
+            <td>Uploaded documents display with classification label, upload date, and uploader. Inline PDF/image preview available. Documents linked to ServiceNow claim record.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-305</td>
+            <td>The workbench must display a claim progress percentage reflecting overall completeness based on requirements, tasks, and decisions outstanding.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Progress bar and percentage calculated server-side from requirements and task completion data. Updates in real time upon status changes.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-306</td>
+            <td>Authorized Examiners must be able to execute claim decisions — Approve, Deny, or Hold — directly from the workbench with a required decision rationale note.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Supervisor</td>
+            <td>Decision actions call ServiceNow state-transition APIs. Confirmation dialog required before submission. Decision and rationale written to claim audit trail. Supervisor approval gate configurable for high-value claims.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-307</td>
+            <td>The workbench must support Work Notes — threaded internal comments displaying author name, role, and timestamp — visible only to authenticated portal users.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Supervisor</td>
+            <td>Work Notes stored as ServiceNow journal entries. New note submission requires non-empty text. Notes displayed in reverse-chronological thread. Notes not exposed to external claimants.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-400: FNOL -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-400s</span>
+        <span class="fa-title">FNOL &amp; Intake</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-401</td>
+            <td>The system must provide a guided 3-step FNOL wizard: Step 1 — Claim Information; Step 2 — Claimant Information; Step 3 — Document Upload.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Intake Specialist</td>
+            <td>Stepper UI prevents advancing until current step passes validation. Back navigation allowed. Progress state preserved on accidental navigation.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-402</td>
+            <td>The FNOL form must validate all required fields in real time, surfacing inline field-level error messages before allowing submission.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Intake Specialist</td>
+            <td>Validation fires on field blur and on Next/Submit. Required field errors display adjacent to the field. Submit button disabled until all validations pass.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-403</td>
+            <td>FNOL submission must create a new claim record in ServiceNow FSO via API, populating all captured fields into the FSO insurance data model.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>IT / ServiceNow Admin</td>
+            <td>ServiceNow claim record created within 5 seconds of submission. All Step 1 and Step 2 data fields mapped to FSO fields. Submission failure displays a user-friendly error with retry option.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-404</td>
+            <td>FNOL submission must automatically trigger a LexisNexis death verification request for the insured, storing the verification response on the claim record.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>LexisNexis API call initiated asynchronously post-submission. Verification status (Verified / Unverified / Pending) displayed on the workbench within the expected SLA of the LexisNexis service.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-405</td>
+            <td>Document upload in FNOL Step 3 must support drag-and-drop and file picker, accepting PDF, JPG, and PNG formats up to a configurable maximum file size.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Intake Specialist</td>
+            <td>Unsupported file types rejected with clear error message. Upload progress indicator displayed. Multiple files uploadable in a single step. Files linked to the newly created claim record.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-406</td>
+            <td>Upon successful FNOL submission, the system must generate and prominently display the new ServiceNow claim number to the submitting user.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Intake Specialist</td>
+            <td>Claim number displayed on a confirmation screen with option to copy to clipboard. Claim number links directly to the new workbench record.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-500: Death Claim -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-500s</span>
+        <span class="fa-title">Death Claim Processing</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-501</td>
+            <td>The system must capture and store the following death-related fields on the claim record: date of death, time of death, manner of death, state of death, death in USA flag, and proof of death received date.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>All fields mapped to FSO insurance data model. Manner of death presented as a configurable picklist. Date/time fields validated for logical consistency.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-502</td>
+            <td>The death verification status returned by LexisNexis must be stored on the ServiceNow claim record and surfaced visually on the workbench.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Verification status stored in a dedicated FSO field. Status badge displayed on workbench header: Verified (green), Unverified (red), Pending (amber).</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-503</td>
+            <td>When a claim is opened in the workbench, the system must automatically retrieve associated death case records from ServiceNow and display them in the Death Details panel.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Death case data pre-loaded on workbench open. Panel displays all related death case fields. No manual search required by the examiner.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-600: Beneficiary -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-600s</span>
+        <span class="fa-title">Beneficiary &amp; Party Management</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-601</td>
+            <td>The system must display all beneficiaries associated with the policy, showing: full name, masked SSN (last 4 visible), relationship to insured, allocation percentage, and current status (Active, Deceased, Disputed).</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>SSN masked by default; reveal requires explicit examiner action and is logged in audit trail. Allocations total to 100% or discrepancy flag is shown.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-602</td>
+            <td>Examiners must be able to add, edit, and update party records (insured, claimant, beneficiary) directly from the workbench.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Party edits write back to ServiceNow via API. Edit history captured in audit trail. Required fields enforced before save.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-603</td>
+            <td>The system must provide an AI beneficiary conflict analysis capability, allowing examiners to trigger analysis and view structured results inline on the workbench.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor</td>
+            <td>Analysis trigger button available on Beneficiary tab. Results return within 10 seconds. Results include conflict summary, contributing factors, and resolution options.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-604</td>
+            <td>The system must surface identified beneficiary conflicts with a severity level (High, Medium, Low) and a recommended resolution action for each conflict.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor, Compliance</td>
+            <td>Each conflict card displays: conflict type, severity badge, narrative description, and recommended next action. Examiner can acknowledge and add a response note.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-700: IDP -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-700s</span>
+        <span class="fa-title">Intelligent Document Processing (IDP)</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-701</td>
+            <td>The system must automatically classify uploaded documents by type upon upload, including: Death Certificate, Government-Issued ID, ACORD 714, Beneficiary Designation Form, Medical Records, and Other.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Classification result displayed as a labeled badge on the document record within 5 seconds of upload completion. Classification accuracy target ≥ 90%.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-702</td>
+            <td>The system must extract key data fields from uploaded documents using OCR, including: insured name, date of death, cause of death, policy number, claimant name, and SSN.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Extracted fields displayed in a structured review panel alongside the source document image. Extraction time target ≤ 30 seconds per document.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-703</td>
+            <td>Each extracted field must display a confidence score (percentage) to allow examiners to prioritize manual review of low-confidence extractions.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Confidence score displayed adjacent to each extracted value. Fields below a configurable confidence threshold (default 80%) visually flagged for examiner review.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-704</td>
+            <td>The system must auto-populate claim form fields with extracted document data, reducing the need for manual re-keying of information already present in uploaded documents.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Intake</td>
+            <td>Auto-populated fields visually distinguished from manually entered fields (e.g., icon indicator). Auto-population does not overwrite existing confirmed data without examiner approval.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-705</td>
+            <td>Examiners must be able to review all auto-populated data and override any individual field value with manual input before finalizing the claim record.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>All auto-populated fields editable. Override action logged in audit trail with original auto-populated value preserved for reference.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-800: AI Insights -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-800s</span>
+        <span class="fa-title">AI Insights &amp; Anomaly Detection</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-801</td>
+            <td>The system must display an AI Insights panel on the Claims Workbench, accessible as a persistent side panel or dedicated tab.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Manager</td>
+            <td>Panel loads with claim on workbench open. Loading state displayed during AI processing. Panel can be collapsed/expanded without losing state.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-802</td>
+            <td>AI analysis must return risk findings categorized by severity: HIGH (red), MEDIUM (amber), and LOW (green).</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor</td>
+            <td>Severity categories visually distinct with color coding and icon. HIGH severity findings displayed first. Count of each severity level shown in panel header.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-803</td>
+            <td>Each AI finding must include: a plain-language description of the finding, supporting evidence, an actionable recommendation, and a PASS / FAIL / REVIEW status indicator.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>All four data elements present on each finding card. Examiners can acknowledge a finding with a note. Acknowledged findings do not disappear — they are marked as reviewed.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-804</td>
+            <td>The AI must generate a plain-language agentic claim summary — a narrative paragraph synthesizing key claim facts, risk indicators, and recommended next steps for the examiner.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Examiner, Supervisor</td>
+            <td>Summary displayed at the top of the AI Insights panel. Summary regenerates on demand. Maximum 200 words. Summary clearly labeled as AI-generated.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-805</td>
+            <td>The AI must specifically flag the following anomaly patterns when detected: policy age at death (within contestability period), claim amount outliers relative to policy and insured profile, and beneficiary designation changes within 90 days of date of death.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor, Compliance</td>
+            <td>Each anomaly type surfaces as a named finding with the specific triggering data cited as evidence. Thresholds configurable in ServiceNow.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-900: Related Policies -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-900s</span>
+        <span class="fa-title">Related Policies Discovery</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-901</td>
+            <td>When a claim is opened, the system must automatically search ServiceNow for all other active policies on the same deceased insured (matched by SSN) and display the results in a Related Policies panel.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Supervisor</td>
+            <td>Related policy search executes on workbench load. Results available within 5 seconds. Search matches on insured SSN. Panel displays even if zero related policies found (explicit "None Found" state).</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-902</td>
+            <td>The system must display the total aggregated death benefit across all related policies, giving the examiner an immediate view of total exposure for the insured.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager</td>
+            <td>Aggregated benefit total displayed prominently in the Related Policies panel header. Individual policy amounts itemized in the panel table.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-903</td>
+            <td>When one or more related policies are discovered, the system must display a prominent alert to the examiner on the workbench to ensure the finding is not overlooked.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Supervisor</td>
+            <td>Alert banner or notification displayed within the workbench when related policies count &gt; 0. Alert remains visible until examiner explicitly dismisses it. Dismissal logged.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-904</td>
+            <td>Examiners must be able to initiate a new FNOL claim directly from a related policy row in the Related Policies panel, pre-populating FNOL fields with the related policy data.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Initiate Claim action available on each related policy row. FNOL wizard opens with policy number, insured name, and date of death pre-populated from the related policy.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-1000: Requirements Engine -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-1000s</span>
+        <span class="fa-title">Requirements Engine</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-1001</td>
+            <td>The system must automatically generate the applicable list of claim requirements based on a configurable rule set driven by: claim type, policy type, state of loss, and claim amount thresholds.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager, Compliance</td>
+            <td>Requirements generated within 3 seconds of claim creation. Rule engine configuration managed in ServiceNow. Rule changes do not require portal code deployment.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1002</td>
+            <td>Examiners must be able to update the status of each requirement to: Pending, Received, In Progress, or Complete — with updates persisted to ServiceNow in real time.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Status update persists to ServiceNow within 2 seconds. Update logged in audit trail. IGO progress percentage recalculates immediately upon status change.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1003</td>
+            <td>The system must support a FastTrack routing path that automatically bypasses non-essential requirements for claims that meet pre-defined eligibility criteria, enabling STP processing.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager</td>
+            <td>FastTrack eligibility evaluated at claim creation and on any change to eligibility-determining fields. Bypassed requirements marked as "FastTrack Exempt" with clear visual indicator. FastTrack status reversible if eligibility criteria no longer met.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-1100: Financial -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-1100s</span>
+        <span class="fa-title">Financial Calculations</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-1101</td>
+            <td>The system must provide a PMI (Policy Mortgage Insurance) calculator displaying: estimated monthly payment, interest/principal split, and LTV (Loan-to-Value) analysis relevant to the claim.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Calculator accessible from the Financial Details panel on the workbench. Inputs editable by examiner. Calculations performed client-side with configurable rate parameters.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1102</td>
+            <td>The system must provide a tax withholding calculator displaying: gross benefit amount, federal withholding rate, state withholding rate, and net benefit payable to beneficiary.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner</td>
+            <td>Default rates configurable per state. Examiner can override rates for individual claims. Calculation output displayed in a summary table. Results do not automatically write to payment record without examiner confirmation.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1103</td>
+            <td>The system must display a Payment Quick View panel showing: disbursement summary by beneficiary, payment method, and a payment authorization action for eligible examiners.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Examiner, Supervisor</td>
+            <td>Payment Quick View displays total payable, per-beneficiary allocation, and payment method. Authorization action available only to users with payment authority role. Authorization writes to ServiceNow with audit trail entry.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-1200: Analytics -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-1200s</span>
+        <span class="fa-title">Analytics &amp; Reporting</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-1201</td>
+            <td>The Manager dashboard must display the following performance metrics: written premium year-to-date, claim approval rate, claim decline rate, SLA compliance trend (weekly/monthly), and FastTrack routing percentage.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager</td>
+            <td>All metrics sourced from ServiceNow reporting APIs. Charts render using MUI-compatible charting library. Data refreshes on page load and on manual refresh trigger.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1202</td>
+            <td>The Reports module must support export of displayed data sets to CSV format for use in external reporting and audit processes.</td>
+            <td><span class="pill pill-should">Should Have</span></td>
+            <td>Claims Manager, Compliance</td>
+            <td>Export button available on all data table views. CSV download initiates within 3 seconds. Exported file includes column headers and reflects currently applied filters.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1203</td>
+            <td>All dashboards and reports must support filtering by: date range, product line (Life &amp; Annuity / P&amp;C), assigned examiner, and claim status.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Claims Manager, Supervisor</td>
+            <td>Filter controls persistent in the dashboard header. Applying filters updates all charts and tables on the page simultaneously. Filter state preserved in URL for bookmarking and sharing.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BR-1300: Non-Functional -->
+    <div class="fa-block">
+      <div class="fa-header">
+        <span class="fa-range">BR-1300s</span>
+        <span class="fa-title">Non-Functional Requirements</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th style="width:80px;">ID</th><th>Requirement Statement</th><th style="width:110px;">Priority</th><th style="width:140px;">Source</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-id">BR-1301</td>
+            <td>The portal must achieve WCAG 2.1 Level AA accessibility compliance across all pages and interactive components.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Compliance Officer</td>
+            <td>Automated accessibility audit (axe or Lighthouse) returns zero critical violations. Keyboard navigation functional for all primary workflows. Screen reader compatibility verified with NVDA or VoiceOver.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1302</td>
+            <td>The portal must support the latest two major versions of Chrome, Microsoft Edge, and Safari as target browsers.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>IT / ServiceNow Admin</td>
+            <td>Cross-browser test suite passes for all primary user journeys on each supported browser. Internet Explorer is explicitly out of scope.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1303</td>
+            <td>The portal must load the initial claims dashboard (Time to Interactive) within 3 seconds on a standard enterprise network (100 Mbps).</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>IT / ServiceNow Admin</td>
+            <td>Lighthouse performance score ≥ 80. Code-splitting and lazy loading implemented for non-critical routes. Bundle size optimized with Vite production build.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1304</td>
+            <td>All PII fields — including SSN, Date of Birth, and financial account numbers — must be masked by default. Authorized examiners may reveal individual field values via an explicit action, and each reveal must be logged in the audit trail.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Compliance Officer</td>
+            <td>PII fields render as masked values on initial display. Reveal requires button click. Reveal event logged with user, field name, claim ID, and timestamp. Bulk reveal of all PII fields not permitted.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1305</td>
+            <td>All API calls between the React portal and ServiceNow must use TLS 1.3 encryption in transit.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>IT / ServiceNow Admin</td>
+            <td>TLS version enforced at the CDN/load balancer layer. Security scan confirms no TLS 1.0 or 1.1 connections accepted. Verified in penetration test prior to go-live.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1306</td>
+            <td>The system must maintain a full, tamper-evident audit log of all claim state changes, decision actions, PII reveals, document uploads, and work note submissions.</td>
+            <td><span class="pill pill-must">Must Have</span></td>
+            <td>Compliance Officer</td>
+            <td>Audit log stored in ServiceNow with actor, action type, affected record, old value, new value, and UTC timestamp. Log entries are read-only. Audit log accessible to Compliance role via dedicated view.</td>
+          </tr>
+          <tr>
+            <td class="td-id">BR-1307</td>
+            <td>The portal must support both light mode and dark mode display themes, with the user's preference persisted across sessions.</td>
+            <td><span class="pill pill-nice">Nice to Have</span></td>
+            <td>DXC Smart Apps</td>
+            <td>Mode toggle accessible from the portal header. MUI ThemeProvider switches between light and dark palettes. Preference stored in localStorage. System preference (prefers-color-scheme) honored as default.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /section requirements -->
+
+  <!-- ── 6. TECHNOLOGY STACK ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">6</span> Technology Stack</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:220px;">Layer / Category</th>
+            <th>Technology / Service</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tech-row-highlight">
+            <td>Frontend Framework</td>
+            <td>React 18, Vite, TypeScript</td>
+            <td>Vite for fast development server and optimized production builds. TypeScript for type safety and maintainability.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>UI Component Library</td>
+            <td style="font-weight:700;color:var(--blue);">MUI v5 (Material UI)</td>
+            <td style="color:var(--blue);font-weight:500;">Primary component library. Replaces DXC Halstack. All components sourced from MUI v5. Custom theming via MUI ThemeProvider.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>State Management</td>
+            <td>React Context API + Custom Hooks</td>
+            <td>No Redux required for this scope. Context provides auth state, claim data, and UI preferences across component tree.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Authentication</td>
+            <td>ServiceNow OAuth 2.0 / JWT</td>
+            <td>Authorization Code flow. JWT tokens stored in memory (not localStorage). Refresh token rotation implemented.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Backend / System of Action</td>
+            <td>ServiceNow FSO (Financial Services Operations)</td>
+            <td>ServiceNow FSO Insurance Data Model. All claim data, workflow, and business rules authoritative in ServiceNow. Portal communicates via Table API and custom Scripted REST APIs.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Intelligent Document Processing</td>
+            <td>Azure Form Recognizer <em>or</em> AWS Textract</td>
+            <td>Client choice pending. Both support custom model training for insurance document types. Integration point abstracted behind a common IDP service interface.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Death Verification</td>
+            <td>LexisNexis</td>
+            <td>LexisNexis Accurint or InstantID Q&amp;A for SSA-89 and death data. API contract required (BR-404). Called via a ServiceNow Integration Hub spoke.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Document Storage</td>
+            <td>AWS S3 <em>or</em> Azure Blob Storage</td>
+            <td>Client cloud preference determines provider. Signed URL pattern for secure document access. Documents indexed in ServiceNow Attachment table.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>AI / Agentic Capabilities</td>
+            <td>ServiceNow Now Assist <em>or</em> Claude API (TBD)</td>
+            <td>Decision deferred to architecture phase. Now Assist preferred if SNow contract covers it; Claude API as alternative for agentic summarization and anomaly detection.</td>
+          </tr>
+          <tr class="tech-row-highlight">
+            <td>Deployment</td>
+            <td>Static hosting (AWS S3 / Azure Blob) + CDN</td>
+            <td>Portal deployed as a static SPA. CloudFront (AWS) or Azure CDN for global edge delivery. CI/CD pipeline via GitHub Actions or Jenkins.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 7. SUCCESS CRITERIA / KPIs ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">7</span> Success Criteria &amp; KPIs</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>KPI</th>
+            <th style="width:130px;">Baseline</th>
+            <th style="width:160px;">Target</th>
+            <th>Measurement Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Average Claim Processing Time</strong></td>
+            <td class="kpi-baseline">TBD (pre-project)</td>
+            <td class="kpi-target">30% reduction vs. baseline</td>
+            <td>ServiceNow SLA task reports; average days from FNOL to claim close, measured monthly post-go-live.</td>
+          </tr>
+          <tr>
+            <td><strong>FNOL Submission Time (minutes)</strong></td>
+            <td class="kpi-baseline">TBD (timed study)</td>
+            <td class="kpi-target">&le; 10 minutes per submission</td>
+            <td>Portal instrumentation tracking time from wizard open to confirmation screen. Percentile distribution reported monthly.</td>
+          </tr>
+          <tr>
+            <td><strong>IDP Auto-Population Accuracy Rate</strong></td>
+            <td class="kpi-baseline">0% (no IDP today)</td>
+            <td class="kpi-target">&ge; 90% field-level accuracy</td>
+            <td>Ratio of auto-populated fields accepted without examiner override to total auto-populated fields. Tracked per document type.</td>
+          </tr>
+          <tr>
+            <td><strong>FastTrack Routing Rate</strong></td>
+            <td class="kpi-baseline">TBD (manual review)</td>
+            <td class="kpi-target">&ge; 40% of eligible claims</td>
+            <td>ServiceNow reporting: count of claims assigned FastTrack status / total claims submitted, by product line.</td>
+          </tr>
+          <tr>
+            <td><strong>SLA Compliance Rate</strong></td>
+            <td class="kpi-baseline">TBD (pre-project)</td>
+            <td class="kpi-target">&ge; 95% on-time SLA</td>
+            <td>ServiceNow SLA breach reports. Measured as percentage of claims closed within SLA target. Reported weekly to management.</td>
+          </tr>
+          <tr>
+            <td><strong>Examiner Satisfaction Score (CSAT)</strong></td>
+            <td class="kpi-baseline">TBD (baseline survey)</td>
+            <td class="kpi-target">&ge; 4.0 / 5.0</td>
+            <td>Quarterly in-app survey (MUI Dialog). 5-point rating scale. Minimum 60% response rate required for statistical validity.</td>
+          </tr>
+          <tr>
+            <td><strong>Document Classification Accuracy</strong></td>
+            <td class="kpi-baseline">0% (no IDP today)</td>
+            <td class="kpi-target">&ge; 90% correct classification</td>
+            <td>Monthly sampling: 200 randomly selected classified documents reviewed by claims ops team. Accuracy = correct / total sample.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 8. CONSTRAINTS ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">8</span> Constraints &amp; Assumptions</div>
+    <ul class="constraint-list">
+      <li>ServiceNow FSO Insurance Data Model must be installed, licensed, and configured in the target instance before Phase 1 API integration begins.</li>
+      <li>The portal UI will be built exclusively with MUI v5 (Material UI) components. No other CSS component frameworks (e.g., Bootstrap, Tailwind, DXC Halstack) will be introduced.</li>
+      <li>Custom CSS outside of the MUI ThemeProvider theming system is prohibited; all visual customization must be achieved through MUI's <code>sx</code> prop, <code>styled()</code> API, or theme overrides.</li>
+      <li>A valid LexisNexis API contract and production credentials must be in place and accessible before Phase 3 death verification integration is activated.</li>
+      <li>The client-selected IDP service (Azure Form Recognizer or AWS Textract) must be provisioned, credentialed, and accessible to the integration layer before Phase 3 document processing functionality is enabled.</li>
+      <li>Browser support is limited to modern browsers (Chrome, Edge, Safari — latest 2 major versions). Internet Explorer 11 is explicitly out of scope and will not be tested or supported.</li>
+      <li>A native mobile application (iOS or Android) is out of scope for this engagement. The portal will be responsive for tablet use but is not optimized for smartphone form factors.</li>
+      <li>All business logic, workflow automation, and data validation rules remain authoritative within ServiceNow. The React portal acts solely as a System of Engagement and does not replicate or shadow ServiceNow business logic.</li>
+      <li>Bloom Insurance will provide a dedicated non-production ServiceNow FSO instance for development and testing. Production data will not be used in any non-production environment.</li>
+    </ul>
+  </div>
+
+  <!-- ── 9. GLOSSARY ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">9</span> Glossary</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:160px;">Term / Acronym</th><th>Definition</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="gloss-term">ACORD</td><td class="gloss-def">Association for Cooperative Operations Research and Development. ACORD forms are standardized insurance industry data exchange forms (e.g., ACORD 714 — Life Claim form).</td></tr>
+          <tr><td class="gloss-term">BRD</td><td class="gloss-def">Business Requirements Document. A formal document capturing what a system must do to meet business objectives, written from the perspective of business stakeholders.</td></tr>
+          <tr><td class="gloss-term">FastTrack</td><td class="gloss-def">A claim routing path that bypasses non-essential requirements for low-complexity, low-risk claims meeting pre-defined eligibility criteria, enabling accelerated processing and STP.</td></tr>
+          <tr><td class="gloss-term">FNOL</td><td class="gloss-def">First Notice of Loss. The initial report made by a policyholder, beneficiary, or intake specialist to register a new claim event with the insurer.</td></tr>
+          <tr><td class="gloss-term">FSO</td><td class="gloss-def">Financial Services Operations. The ServiceNow industry module providing an insurance-specific data model, workflows, and pre-built integrations for life, annuity, and P&amp;C insurance operations.</td></tr>
+          <tr><td class="gloss-term">IDP</td><td class="gloss-def">Intelligent Document Processing. AI/ML-driven capability to automatically classify, extract, and validate data from unstructured documents (PDFs, images) using OCR and machine learning models.</td></tr>
+          <tr><td class="gloss-term">IGO</td><td class="gloss-def">In Good Order. A standard insurance term indicating that all required claim documents and information have been received and are complete, accurate, and sufficient for processing.</td></tr>
+          <tr><td class="gloss-term">JWT</td><td class="gloss-def">JSON Web Token. A compact, URL-safe token format used to securely transmit authentication and authorization claims between the portal and ServiceNow APIs.</td></tr>
+          <tr><td class="gloss-term">L&amp;A</td><td class="gloss-def">Life &amp; Annuity. The insurance product line encompassing term life, whole life, universal life, and annuity products. Primary product line for this portal.</td></tr>
+          <tr><td class="gloss-term">LexisNexis</td><td class="gloss-def">LexisNexis Risk Solutions. A third-party data provider offering death verification services (Accurint, InstantID) used to validate insured death records against SSA and public death data.</td></tr>
+          <tr><td class="gloss-term">MUI</td><td class="gloss-def">Material UI (MUI) v5. An open-source React component library implementing Google's Material Design system, used as the exclusive UI component library for this portal.</td></tr>
+          <tr><td class="gloss-term">OAuth 2.0</td><td class="gloss-def">Open Authorization 2.0. An industry-standard authorization protocol used to grant the React portal delegated access to ServiceNow APIs on behalf of authenticated users.</td></tr>
+          <tr><td class="gloss-term">OCR</td><td class="gloss-def">Optical Character Recognition. Technology that converts images of text (scanned documents, photos) into machine-readable text, enabling IDP field extraction.</td></tr>
+          <tr><td class="gloss-term">P&amp;C</td><td class="gloss-def">Property &amp; Casualty. Insurance product line covering property damage, liability, and casualty risks. Referenced in analytics filtering but not the primary product line for this portal.</td></tr>
+          <tr><td class="gloss-term">RBAC</td><td class="gloss-def">Role-Based Access Control. A security model in which system access permissions are assigned to roles (Examiner, Supervisor, Manager, Intake) rather than individual users.</td></tr>
+          <tr><td class="gloss-term">ServiceNow FSO</td><td class="gloss-def">See FSO above. The authoritative system of record and system of action for all claim data, workflow, and business logic in this architecture.</td></tr>
+          <tr><td class="gloss-term">SLA</td><td class="gloss-def">Service Level Agreement. Contractual or regulatory time-bound commitments for claim processing milestones (e.g., acknowledgment within 3 business days, decision within 30 days).</td></tr>
+          <tr><td class="gloss-term">SSN</td><td class="gloss-def">Social Security Number. A US government-issued personal identification number. Classified as PII and subject to masking requirements under BR-1304.</td></tr>
+          <tr><td class="gloss-term">STP</td><td class="gloss-def">Straight-Through Processing. Automated end-to-end claim processing with minimal or zero manual examiner intervention, enabled by FastTrack routing for eligible claims.</td></tr>
+          <tr><td class="gloss-term">System of Action</td><td class="gloss-def">The authoritative backend system where business logic executes and data is persisted. In this architecture: ServiceNow FSO.</td></tr>
+          <tr><td class="gloss-term">System of Engagement</td><td class="gloss-def">A purpose-built user interface layer designed for a specific user persona and workflow, providing a superior experience over the native System of Action UI. In this architecture: the React + MUI v5 portal.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 10. APPROVAL ── -->
+  <div class="section">
+    <div class="section-title"><span class="section-num">10</span> Document Approval</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Organization</th>
+            <th>Signature</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Solution Architect</strong></td>
+            <td style="color:var(--text-3);font-style:italic;min-width:160px;">&nbsp;</td>
+            <td>DXC Technology</td>
+            <td style="min-width:180px;border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+            <td style="min-width:120px;border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><strong>Project Sponsor</strong></td>
+            <td style="color:var(--text-3);font-style:italic;">&nbsp;</td>
+            <td>Bloom Insurance</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><strong>IT Lead</strong></td>
+            <td style="color:var(--text-3);font-style:italic;">&nbsp;</td>
+            <td>Bloom Insurance</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><strong>Claims Operations Lead</strong></td>
+            <td style="color:var(--text-3);font-style:italic;">&nbsp;</td>
+            <td>Bloom Insurance</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+          </tr>
+          <tr>
+            <td><strong>Compliance Officer</strong></td>
+            <td style="color:var(--text-3);font-style:italic;">&nbsp;</td>
+            <td>Bloom Insurance</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+            <td style="border-bottom:1px solid var(--border-strong);">&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="approval-note">By signing above, each approver confirms that this Business Requirements Document accurately represents the agreed requirements for the Bloom Claims Assistant Portal and authorizes DXC Technology Smart Apps to proceed with solution design and development activities.</p>
+  </div>
+
+</div><!-- /main -->
+
+<!-- FOOTER -->
+<div style="background:var(--navy);color:rgba(255,255,255,0.4);padding:18px 48px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.4px;">
+  <div>Bloom Claims Assistant Portal &mdash; Business Requirements Document &mdash; v0.1 &mdash; DRAFT</div>
+  <div>DXC Technology Smart Apps &nbsp;|&nbsp; Confidential &amp; Proprietary &nbsp;|&nbsp; March 17, 2026</div>
+</div>
+
+</body>
+</html>
