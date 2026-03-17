@@ -46,22 +46,23 @@ const STATUS_CFG = {
   [ClaimStatus.CLOSED]:               { bg: '#F9FAFB', text: '#374151', border: '#E5E7EB', label: 'Closed' },
   [ClaimStatus.PENDING_REQUIREMENTS]: { bg: '#FFF7ED', text: '#C2410C', border: '#FED7AA', label: 'Pending Req.' },
   [ClaimStatus.REQUIREMENTS_COMPLETE]:{ bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: 'Req. Complete' },
-  [ClaimStatus.IN_APPROVAL]:          { bg: '#FAF5FF', text: '#7C3AED', border: '#DDD6FE', label: 'In Approval' },
+  [ClaimStatus.IN_APPROVAL]:          { bg: '#F0F9FF', text: '#0369A1', border: '#BAE6FD', label: 'In Approval' },
   [ClaimStatus.PAYMENT_SCHEDULED]:    { bg: '#ECFDF5', text: '#047857', border: '#A7F3D0', label: 'Pmt. Scheduled' },
   [ClaimStatus.PAYMENT_COMPLETE]:     { bg: '#F0FDF4', text: '#15803D', border: '#BBF7D0', label: 'Pmt. Complete' },
   [ClaimStatus.SUSPENDED]:            { bg: '#FFF1F2', text: '#BE123C', border: '#FECDD3', label: 'Suspended' },
 };
 
 const StatusChip = ({ status }) => {
-  const cfg = STATUS_CFG[status] || { bg: '#F9FAFB', text: '#374151', border: '#E5E7EB', label: status || '—' };
+  const cfg = STATUS_CFG[status] || { bg: '#F9FAFB', text: '#374151', label: status || '—' };
   return (
     <Box sx={{
-      display: 'inline-flex', alignItems: 'center',
-      px: 1.25, py: 0.35, borderRadius: '6px',
-      backgroundColor: cfg.bg, border: `1px solid ${cfg.border}`,
+      display: 'inline-flex', alignItems: 'center', gap: 0.75,
+      px: 1.5, py: 0.5, borderRadius: '100px',
+      backgroundColor: cfg.bg,
       fontSize: '11px', fontWeight: 700, color: cfg.text,
-      letterSpacing: 0.2, whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap', lineHeight: 1,
     }}>
+      <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: cfg.text, flexShrink: 0, opacity: 0.85 }} />
       {cfg.label}
     </Box>
   );
@@ -126,21 +127,53 @@ const WorkflowTile = ({ label, count, active, onClick, urgent }) => (
 );
 
 // ── DataGrid shared styles ─────────────────────────────────────────────────────
-const gridSx = (headerBg = '#F8FAFC') => ({
-  border: '1px solid #E2E8F0', borderRadius: 2, fontSize: 13,
+const gridSx = () => ({
+  border: 'none',
+  borderRadius: 0,
+  fontSize: 13,
   '& .MuiDataGrid-columnHeaders': {
-    backgroundColor: headerBg, borderBottom: '2px solid #E2E8F0',
-    '& .MuiDataGrid-columnHeaderTitle': { fontWeight: 700, fontSize: 12, color: '#475569', textTransform: 'uppercase', letterSpacing: 0.5 }
+    backgroundColor: '#0F172A',
+    borderBottom: 'none',
+    minHeight: '42px !important',
+    maxHeight: '42px !important',
+    '& .MuiDataGrid-columnHeaderTitle': {
+      fontWeight: 600, fontSize: 10, color: '#94A3B8',
+      textTransform: 'uppercase', letterSpacing: 1.2,
+    },
+    '& .MuiDataGrid-columnSeparator': { display: 'none' },
+    '& .MuiDataGrid-sortIcon': { color: '#64748B' },
+    '& .MuiDataGrid-menuIcon button, & .MuiDataGrid-iconButtonContainer button': { color: '#64748B' },
   },
   '& .MuiDataGrid-row': {
     cursor: 'pointer',
-    '&:hover': { backgroundColor: '#F0F7FF' },
+    minHeight: '52px !important',
+    maxHeight: '52px !important',
+    borderLeft: '3px solid transparent',
+    transition: 'background-color 0.1s ease, border-color 0.1s ease',
+    '&:hover': { backgroundColor: '#EFF6FF !important', borderLeft: '3px solid #2563EB' },
+    '&.Mui-hovered': { backgroundColor: '#EFF6FF !important' },
     '&:nth-of-type(even)': { backgroundColor: '#FAFBFC' },
-    '&:nth-of-type(even):hover': { backgroundColor: '#F0F7FF' },
   },
-  '& .MuiDataGrid-cell': { borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', py: 1 },
-  '& .MuiDataGrid-footerContainer': { borderTop: '2px solid #E2E8F0', backgroundColor: '#F8FAFC' },
-  '& .MuiDataGrid-virtualScroller': { minHeight: 80 },
+  '& .MuiDataGrid-cell': {
+    borderBottom: '1px solid #F1F5F9',
+    padding: '0 12px',
+    display: 'flex',
+    alignItems: 'center',
+    '&:focus, &:focus-within': { outline: 'none' },
+  },
+  '& .MuiDataGrid-columnHeader': {
+    padding: '0 12px',
+    '&:focus, &:focus-within': { outline: 'none' },
+  },
+  '& .MuiDataGrid-footerContainer': {
+    borderTop: '1px solid #E2E8F0',
+    backgroundColor: '#F8FAFC',
+    minHeight: 48,
+  },
+  '& .MuiDataGrid-virtualScroller': { minHeight: 120 },
+  '& .MuiDataGrid-selectedRowCount': { display: 'none' },
+  '& .MuiTablePagination-root': { fontSize: 12, color: '#64748B' },
+  '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': { fontSize: 12, color: '#64748B' },
 });
 
 // ── Main Dashboard ─────────────────────────────────────────────────────────────
@@ -262,75 +295,87 @@ const Dashboard = ({ onClaimSelect }) => {
 
   const claimColumns = useMemo(() => [
     {
-      field: 'claimNumber', headerName: 'Claim #', width: 150,
+      field: 'claimNumber', headerName: 'Claim #', width: 158, minWidth: 140,
       renderCell: ({ row }) => (
-        <Typography sx={{ fontWeight: 700, color: '#2563EB', fontSize: 13, cursor: 'pointer', '&:hover': { textDecoration: 'underline' } }} onClick={() => onClaimSelect(row)}>
-          {row.fnolNumber || row.claimNumber || 'N/A'}
-        </Typography>
-      )
-    },
-    {
-      field: 'insured', headerName: 'Insured / Claimant', width: 210,
-      renderCell: ({ row }) => (
-        <Stack spacing={0.2}>
-          <Typography sx={{ fontWeight: 600, fontSize: 13, color: '#0F172A' }}>{row.insured?.name || '—'}</Typography>
-          {row.claimant?.name && row.claimant.name !== row.insured?.name && (
-            <Typography sx={{ fontSize: 11, color: '#2563EB', fontWeight: 500 }}>{row.claimant.name}</Typography>
+        <Stack spacing={0.4}>
+          <Typography
+            sx={{ fontWeight: 700, color: '#2563EB', fontSize: 12.5, fontFamily: 'monospace', cursor: 'pointer', letterSpacing: 0.3, lineHeight: 1, '&:hover': { textDecoration: 'underline', color: '#1D4ED8' } }}
+            onClick={() => onClaimSelect(row)}
+          >
+            {row.fnolNumber || row.claimNumber || 'N/A'}
+          </Typography>
+          {row.routing?.type === RoutingType.STP && (
+            <STPBadge eligible={true} showLabel={true} size="small" />
           )}
         </Stack>
       )
     },
     {
-      field: 'status', headerName: 'Status', width: 155,
+      field: 'insured', headerName: 'Insured / Claimant', flex: 1, minWidth: 170,
+      renderCell: ({ row }) => (
+        <Stack spacing={0.25}>
+          <Typography sx={{ fontWeight: 600, fontSize: 13, color: '#0F172A', lineHeight: 1.3 }}>
+            {row.insured?.name || '—'}
+          </Typography>
+          {row.claimant?.name && row.claimant.name !== row.insured?.name && (
+            <Typography sx={{ fontSize: 11, color: '#64748B', fontWeight: 500, lineHeight: 1.2 }}>
+              {row.claimant.name}
+            </Typography>
+          )}
+        </Stack>
+      )
+    },
+    {
+      field: 'status', headerName: 'Status', width: 142,
       renderCell: ({ value }) => <StatusChip status={value} />
     },
     {
-      field: 'type', headerName: 'Type / LOB', width: 140,
+      field: 'type', headerName: 'Type / LOB', width: 160,
       renderCell: ({ value }) => (
-        <Typography sx={{ fontSize: 13, color: '#334155' }}>
-          {isPC ? (plConfig.claimTypeLabels[value] || value) : (value === 'death' ? 'Life' : value === 'annuity' ? 'Annuity' : value || '—')}
+        <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: '#334155' }}>
+          {isPC ? (plConfig.claimTypeLabels[value] || value || '—') : (value === 'death' ? 'Life / Death' : value === 'annuity' ? 'Annuity' : value || '—')}
         </Typography>
       )
     },
     {
-      field: 'policy', headerName: 'Policy #', width: 150,
-      renderCell: ({ row }) => <Typography sx={{ fontSize: 13, color: '#475569', fontFamily: 'monospace', letterSpacing: 0.3 }}>{row.policy?.policyNumber || '—'}</Typography>
-    },
-    {
-      field: 'createdAt', headerName: 'Submitted', width: 110,
-      renderCell: ({ value }) => (
-        <Typography sx={{ fontSize: 13, color: '#475569' }}>
-          {value ? new Date(value).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : '—'}
+      field: 'policy', headerName: 'Policy #', width: 148,
+      renderCell: ({ row }) => (
+        <Typography sx={{ fontSize: 12, color: '#475569', fontFamily: 'monospace', letterSpacing: 0.3, fontWeight: 500 }}>
+          {row.policy?.policyNumber || '—'}
         </Typography>
       )
     },
     {
-      field: 'routing', headerName: 'STP', width: 70, sortable: false,
-      renderCell: ({ row }) => row.routing?.type === RoutingType.STP ? <STPBadge eligible={true} showLabel={false} size="small" /> : null
+      field: 'createdAt', headerName: 'Submitted', width: 108,
+      renderCell: ({ value }) => (
+        <Typography sx={{ fontSize: 12.5, fontWeight: 500, color: '#475569' }}>
+          {value ? new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+        </Typography>
+      )
     },
     {
-      field: 'sla', headerName: 'SLA', width: 155, sortable: false,
+      field: 'sla', headerName: 'SLA', width: 158, sortable: false,
       renderCell: ({ row }) => row.workflow?.sla?.dueDate
         ? <SLAIndicator slaDate={row.workflow.sla.dueDate} claimStatus={row.status} compact={true} />
-        : null
+        : <Typography sx={{ fontSize: 11, color: '#CBD5E1', fontStyle: 'italic' }}>—</Typography>
     },
     {
-      field: 'actions', headerName: 'Actions', width: 110, sortable: false,
+      field: 'actions', headerName: '', width: 112, sortable: false,
       renderCell: ({ row }) => (
-        <Stack direction="row" spacing={0.25}>
-          <Tooltip title="Approve">
-            <IconButton size="small" onClick={e => e.stopPropagation()} sx={{ color: '#16A34A', '&:hover': { backgroundColor: '#F0FDF4' } }}>
-              <CheckCircleOutlineIcon sx={{ fontSize: 18 }} />
+        <Stack direction="row" spacing={0.5} alignItems="center" onClick={e => e.stopPropagation()}>
+          <Tooltip title="Approve" placement="top">
+            <IconButton size="small" sx={{ width: 30, height: 30, color: '#16A34A', borderRadius: '8px', '&:hover': { backgroundColor: '#F0FDF4' } }}>
+              <CheckCircleOutlineIcon sx={{ fontSize: 17 }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Decline">
-            <IconButton size="small" onClick={e => e.stopPropagation()} sx={{ color: '#DC2626', '&:hover': { backgroundColor: '#FFF1F2' } }}>
-              <CancelOutlinedIcon sx={{ fontSize: 18 }} />
+          <Tooltip title="Decline" placement="top">
+            <IconButton size="small" sx={{ width: 30, height: 30, color: '#DC2626', borderRadius: '8px', '&:hover': { backgroundColor: '#FFF1F2' } }}>
+              <CancelOutlinedIcon sx={{ fontSize: 17 }} />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Transfer">
-            <IconButton size="small" onClick={e => e.stopPropagation()} sx={{ color: '#7C3AED', '&:hover': { backgroundColor: '#FAF5FF' } }}>
-              <CompareArrowsIcon sx={{ fontSize: 18 }} />
+          <Tooltip title="Transfer" placement="top">
+            <IconButton size="small" sx={{ width: 30, height: 30, color: '#0369A1', borderRadius: '8px', '&:hover': { backgroundColor: '#F0F9FF' } }}>
+              <CompareArrowsIcon sx={{ fontSize: 17 }} />
             </IconButton>
           </Tooltip>
         </Stack>
@@ -383,7 +428,7 @@ const Dashboard = ({ onClaimSelect }) => {
         {/* ── Metrics Row ── */}
         <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
           <MetricCard label="Open Claims"      value={metrics.openClaims}        icon={<AssignmentIcon sx={{ fontSize: 16 }} />}     color="#2563EB" />
-          <MetricCard label="New Today"         value={metrics.newToday}           icon={<AccessTimeIcon sx={{ fontSize: 16 }} />}     color="#7C3AED" />
+          <MetricCard label="New Today"         value={metrics.newToday}           icon={<AccessTimeIcon sx={{ fontSize: 16 }} />}     color="#0369A1" />
           <MetricCard label="New This Week"     value={metrics.newThisWeek}        icon={<TrendingUpIcon sx={{ fontSize: 16 }} />}     color="#0EA5E9" />
           <MetricCard label="Pending Review"    value={metrics.pendingReview}      sub={`${slaAtRiskCases?.length || 0} at SLA risk`} subUp={false} icon={<WarningAmberIcon sx={{ fontSize: 16 }} />} color="#F59E0B" />
           <MetricCard label="Claims Paid YTD"   value={metrics.claimsPaidYTD}      sub="+12% vs last year" subUp={true}               icon={<PaidIcon sx={{ fontSize: 16 }} />}          color="#10B981" />
@@ -461,10 +506,10 @@ const Dashboard = ({ onClaimSelect }) => {
         {(snowConnected || snowClaims.length > 0) && (
           <Paper elevation={0} sx={{ p: 2.5, borderRadius: 2, border: '1px solid #E2E8F0', backgroundColor: '#fff' }}>
             <Stack direction="row" alignItems="center" spacing={1.5} mb={2}>
-              <Box sx={{ width: 8, height: 28, borderRadius: 1, backgroundColor: '#7C3AED' }} />
+              <Box sx={{ width: 8, height: 28, borderRadius: 1, backgroundColor: '#0369A1' }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1E293B' }}>FNOL Records</Typography>
-              <Chip label={`${snowClaims.length} records`} size="small" sx={{ backgroundColor: '#FAF5FF', color: '#7C3AED', fontWeight: 700, border: '1px solid #DDD6FE', fontSize: 11 }} />
-              {snowLoading && <CircularProgress size={14} sx={{ color: '#7C3AED' }} />}
+              <Chip label={`${snowClaims.length} records`} size="small" sx={{ backgroundColor: '#F0F9FF', color: '#0369A1', fontWeight: 700, border: '1px solid #BAE6FD', fontSize: 11 }} />
+              {snowLoading && <CircularProgress size={14} sx={{ color: '#0369A1' }} />}
             </Stack>
             <Box sx={{ height: snowClaims.length === 0 ? 110 : Math.min(400, 56 + snowClaims.length * 52 + 52) }}>
               <DataGrid
@@ -475,82 +520,138 @@ const Dashboard = ({ onClaimSelect }) => {
                 disableRowSelectionOnClick
                 onRowClick={({ row }) => onClaimSelect(row)}
                 localeText={snowClaims.length === 0 ? { noRowsLabel: 'No FNOL records — check your ServiceNow connection.' } : undefined}
-                sx={gridSx('#FAF5FF')}
+                sx={gridSx()}
               />
             </Box>
           </Paper>
         )}
 
         {/* ── Claims Inventory ── */}
-        <Paper elevation={0} sx={{ p: 2.5, borderRadius: 2, border: '1px solid #E2E8F0', backgroundColor: '#fff' }}>
-          <Stack direction="row" alignItems="center" spacing={1.5} mb={2}>
-            <Box sx={{ width: 8, height: 28, borderRadius: 1, backgroundColor: '#2563EB' }} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1E293B' }}>Claims Inventory</Typography>
-            <Chip label={`${filteredClaims.length} claims`} size="small" sx={{ backgroundColor: '#EFF6FF', color: '#1D4ED8', fontWeight: 700, border: '1px solid #BFDBFE', fontSize: 11 }} />
+        <Paper elevation={0} sx={{ borderRadius: 2, border: '1px solid #E2E8F0', backgroundColor: '#fff', overflow: 'hidden' }}>
+
+          {/* Header */}
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ px: 2.5, pt: 2, pb: 1.5, borderBottom: '1px solid #F1F5F9' }}>
+            <Stack direction="row" alignItems="center" spacing={1.5}>
+              <Box sx={{ width: 34, height: 34, borderRadius: '10px', backgroundColor: '#1E293B', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <AssignmentIcon sx={{ fontSize: 17, color: '#94A3B8' }} />
+              </Box>
+              <Box>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography sx={{ fontWeight: 800, color: '#0F172A', fontSize: 15, lineHeight: 1.2 }}>Claims Inventory</Typography>
+                  <Box sx={{ px: 1.25, py: 0.3, borderRadius: '100px', backgroundColor: '#EFF6FF' }}>
+                    <Typography sx={{ fontSize: 11, fontWeight: 700, color: '#1D4ED8', lineHeight: 1 }}>
+                      {filteredClaims.length} {filteredClaims.length === 1 ? 'claim' : 'claims'}
+                    </Typography>
+                  </Box>
+                  {subsetFilter && (
+                    <Box
+                      onClick={() => setSubsetFilter(null)}
+                      sx={{ px: 1.25, py: 0.3, borderRadius: '100px', backgroundColor: '#ECFDF5', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 0.5, '&:hover': { backgroundColor: '#D1FAE5' } }}
+                    >
+                      <Typography sx={{ fontSize: 11, fontWeight: 700, color: '#059669', lineHeight: 1 }}>
+                        {workflowGroups.find(g => g.key === subsetFilter)?.label}
+                      </Typography>
+                      <Typography sx={{ fontSize: 12, color: '#059669', lineHeight: 1, mt: '-1px' }}>×</Typography>
+                    </Box>
+                  )}
+                </Stack>
+                <Typography sx={{ fontSize: 11, color: '#94A3B8', mt: 0.25 }}>Click any row to open the claim record</Typography>
+              </Box>
+            </Stack>
+            <Tooltip title="Refresh">
+              <IconButton size="small" onClick={() => { fetchClaims(); fetchSLAAtRiskCases(); }} sx={{ color: '#94A3B8', '&:hover': { color: '#2563EB', backgroundColor: '#EFF6FF' } }}>
+                <RefreshIcon sx={{ fontSize: 18 }} />
+              </IconButton>
+            </Tooltip>
           </Stack>
 
-          <Tabs
-            value={activeTab}
-            onChange={(_, v) => { setActiveTab(v); setPage(0); }}
-            sx={{
-              mb: 2, borderBottom: '2px solid #F1F5F9',
-              '& .MuiTab-root': { fontWeight: 600, fontSize: 13, textTransform: 'none', color: '#64748B', minHeight: 40, py: 1 },
-              '& .Mui-selected': { color: '#2563EB' },
-              '& .MuiTabs-indicator': { backgroundColor: '#2563EB', height: 3, borderRadius: '3px 3px 0 0' }
-            }}
-          >
-            <Tab label="All Open Claims" />
-            <Tab label="Closed Claims" />
-          </Tabs>
+          {/* Tabs + filter bar */}
+          <Box sx={{ backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+            <Stack direction="row" alignItems="center" sx={{ px: 2.5 }}>
+              <Tabs
+                value={activeTab}
+                onChange={(_, v) => { setActiveTab(v); setPage(0); }}
+                sx={{
+                  minHeight: 44,
+                  '& .MuiTab-root': { fontWeight: 600, fontSize: 12.5, textTransform: 'none', color: '#64748B', minHeight: 44, px: 2, py: 0 },
+                  '& .Mui-selected': { color: '#1D4ED8', fontWeight: 700 },
+                  '& .MuiTabs-indicator': { backgroundColor: '#2563EB', height: 2.5 },
+                  mr: 2,
+                }}
+              >
+                <Tab label="Open Claims" />
+                <Tab label="Closed / Denied" />
+              </Tabs>
+              <Box sx={{ width: '1px', height: 24, backgroundColor: '#E2E8F0', mr: 2 }} />
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ flex: 1, py: 1 }}>
+                <TextField
+                  size="small"
+                  placeholder="Search by claim #, policy, or name…"
+                  value={searchValue}
+                  onChange={e => setSearchValue(e.target.value)}
+                  InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon sx={{ fontSize: 15, color: '#94A3B8' }} /></InputAdornment> }}
+                  sx={{
+                    flex: '1 1 200px', minWidth: 190, maxWidth: 320,
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '8px', fontSize: 13, backgroundColor: '#fff', height: 34,
+                      '& fieldset': { borderColor: '#E2E8F0' },
+                      '&:hover fieldset': { borderColor: '#94A3B8' },
+                      '&.Mui-focused fieldset': { borderColor: '#2563EB' },
+                    },
+                  }}
+                />
+                <Select
+                  value={typeFilter}
+                  displayEmpty
+                  size="small"
+                  onChange={e => { setTypeFilter(e.target.value); setPage(0); }}
+                  renderValue={v => v ? (isPC ? (plConfig.claimTypeLabels[v] || v) : v) : 'Type'}
+                  sx={{ borderRadius: '8px', fontSize: 13, backgroundColor: '#fff', height: 34, minWidth: 120, '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E2E8F0' } }}
+                >
+                  <MenuItem value=""><em>All Types</em></MenuItem>
+                  {isPC ? [
+                    <MenuItem key="ac" value="auto_collision">Auto Collision</MenuItem>,
+                    <MenuItem key="ah" value="auto_comprehensive">Auto Comprehensive</MenuItem>,
+                    <MenuItem key="ho" value="homeowners">Homeowners</MenuItem>,
+                    <MenuItem key="cp" value="commercial_property">Commercial Property</MenuItem>,
+                    <MenuItem key="al" value="auto_liability">Auto Liability</MenuItem>,
+                    <MenuItem key="wc" value="workers_comp">Workers Comp</MenuItem>,
+                  ] : [
+                    <MenuItem key="de" value="death">Life / Death</MenuItem>,
+                    <MenuItem key="ma" value="maturity">Maturity</MenuItem>,
+                    <MenuItem key="su" value="surrender">Surrender</MenuItem>,
+                    <MenuItem key="an" value="annuity">Annuity</MenuItem>,
+                  ]}
+                </Select>
+                <Select
+                  value={amountRangeFilter}
+                  displayEmpty
+                  size="small"
+                  onChange={e => { setAmountRangeFilter(e.target.value); setPage(0); }}
+                  renderValue={v => v ? ({ under_50k: '< $50K', '50k_250k': '$50K–$250K', '250k_1m': '$250K–$1M', over_1m: '> $1M' }[v] || v) : 'Amount'}
+                  sx={{ borderRadius: '8px', fontSize: 13, backgroundColor: '#fff', height: 34, minWidth: 118, '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E2E8F0' } }}
+                >
+                  <MenuItem value=""><em>All Amounts</em></MenuItem>
+                  <MenuItem value="under_50k">Under $50K</MenuItem>
+                  <MenuItem value="50k_250k">$50K – $250K</MenuItem>
+                  <MenuItem value="250k_1m">$250K – $1M</MenuItem>
+                  <MenuItem value="over_1m">Over $1M</MenuItem>
+                </Select>
+                {(searchValue || typeFilter || amountRangeFilter) && (
+                  <Button size="small" onClick={() => { setSearchValue(''); setTypeFilter(''); setAmountRangeFilter(''); }}
+                    sx={{ fontSize: 12, fontWeight: 600, textTransform: 'none', color: '#64748B', minWidth: 0, px: 1, '&:hover': { color: '#DC2626' } }}>
+                    Clear
+                  </Button>
+                )}
+                <Box sx={{ flex: 1 }} />
+                <Typography sx={{ fontSize: 11, color: '#94A3B8', fontWeight: 500, whiteSpace: 'nowrap', pr: 0.5 }}>
+                  {filteredClaims.length} result{filteredClaims.length !== 1 ? 's' : ''}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
 
-          <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap mb={2}>
-            <TextField
-              size="small"
-              placeholder="Search claim, policy, or name..."
-              value={searchValue}
-              onChange={e => setSearchValue(e.target.value)}
-              InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" sx={{ color: '#94A3B8' }} /></InputAdornment> }}
-              sx={{
-                minWidth: 280,
-                '& .MuiOutlinedInput-root': { borderRadius: 2, fontSize: 13, '& fieldset': { borderColor: '#E2E8F0' }, '&:hover fieldset': { borderColor: '#94A3B8' }, '&.Mui-focused fieldset': { borderColor: '#2563EB' } }
-              }}
-            />
-            <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel sx={{ fontSize: 13 }}>Type</InputLabel>
-              <Select value={typeFilter} label="Type" onChange={e => { setTypeFilter(e.target.value); setPage(0); }} sx={{ borderRadius: 2, fontSize: 13 }}>
-                <MenuItem value="">All Types</MenuItem>
-                {isPC ? [
-                  <MenuItem key="ac" value="auto_collision">Auto Collision</MenuItem>,
-                  <MenuItem key="ah" value="auto_comprehensive">Auto Comprehensive</MenuItem>,
-                  <MenuItem key="ho" value="homeowners">Homeowners</MenuItem>,
-                  <MenuItem key="cp" value="commercial_property">Commercial Property</MenuItem>,
-                  <MenuItem key="al" value="auto_liability">Auto Liability</MenuItem>,
-                  <MenuItem key="wc" value="workers_comp">Workers Comp</MenuItem>,
-                ] : [
-                  <MenuItem key="de" value="death">Life / Death</MenuItem>,
-                  <MenuItem key="ma" value="maturity">Maturity</MenuItem>,
-                  <MenuItem key="su" value="surrender">Surrender</MenuItem>,
-                  <MenuItem key="an" value="annuity">Annuity</MenuItem>,
-                ]}
-              </Select>
-            </FormControl>
-            <FormControl size="small" sx={{ minWidth: 155 }}>
-              <InputLabel sx={{ fontSize: 13 }}>Amount Range</InputLabel>
-              <Select value={amountRangeFilter} label="Amount Range" onChange={e => { setAmountRangeFilter(e.target.value); setPage(0); }} sx={{ borderRadius: 2, fontSize: 13 }}>
-                <MenuItem value="">All Amounts</MenuItem>
-                <MenuItem value="under_50k">Under $50K</MenuItem>
-                <MenuItem value="50k_250k">$50K – $250K</MenuItem>
-                <MenuItem value="250k_1m">$250K – $1M</MenuItem>
-                <MenuItem value="over_1m">Over $1M</MenuItem>
-              </Select>
-            </FormControl>
-            {(searchValue || typeFilter || amountRangeFilter) && (
-              <Button size="small" startIcon={<FilterListIcon />} onClick={() => { setSearchValue(''); setTypeFilter(''); setAmountRangeFilter(''); }} sx={{ color: '#64748B', fontSize: 12, textTransform: 'none', '&:hover': { color: '#DC2626', backgroundColor: '#FFF1F2' } }}>
-                Clear filters
-              </Button>
-            )}
-          </Stack>
-
+          {/* Table — flush, no padding */}
           <Box sx={{ height: 560 }}>
             <DataGrid
               rows={claimRows}
@@ -560,7 +661,8 @@ const Dashboard = ({ onClaimSelect }) => {
               pageSizeOptions={[10, 25, 50]}
               disableRowSelectionOnClick
               onRowClick={({ row }) => onClaimSelect(row)}
-              sx={gridSx('#F8FAFC')}
+              localeText={{ noRowsLabel: 'No claims match your filters.' }}
+              sx={gridSx()}
             />
           </Box>
         </Paper>
