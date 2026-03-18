@@ -2,6 +2,7 @@
   "name": "claims-halstack",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Claims Portal built with React and DXC Halstack",
   "scripts": {
     "dev": "cd claims-portal && npm run dev",
@@ -11,7 +12,7 @@
     "postinstall": "cd claims-portal && npm install"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": "18.x",
     "npm": ">=9.0.0"
   }
 }
