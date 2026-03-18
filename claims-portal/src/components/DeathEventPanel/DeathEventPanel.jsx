@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -68,7 +69,7 @@ const DeathEventPanel = ({ claimData, onEdit }) => {
           {verificationScore !== undefined && (
             <DxcChip
               label={`${getVerificationLabel(verificationScore)} (${verificationScore}%)`}
-              icon="verified"
+              icon={iconEl("verified")}
               size="small"
             />
           )}
@@ -202,7 +203,7 @@ const DeathEventPanel = ({ claimData, onEdit }) => {
               label="Update Death Details"
               mode="secondary"
               size="small"
-              icon="edit"
+              icon={iconEl("edit")}
               onClick={onEdit}
             />
           </DxcFlex>

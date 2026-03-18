@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcFlex,
@@ -199,7 +200,7 @@ const AIInsightsPanel = ({ claimData, insights = [], anomalyData }) => {
               label="Read More"
               mode="text"
               size="small"
-              icon="arrow_forward"
+              icon={iconEl("arrow_forward")}
               onClick={() => setShowModal(true)}
               style={{
                 alignSelf: 'flex-start',

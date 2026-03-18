@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcFlex,
@@ -210,7 +211,7 @@ const ClaimSearch = ({ onSelectClaim, onClose }) => {
           {onClose && (
             <DxcButton
               mode="tertiary"
-              icon="close"
+              icon={iconEl("close")}
               onClick={onClose}
             />
           )}
@@ -320,7 +321,7 @@ const ClaimSearch = ({ onSelectClaim, onClose }) => {
               <DxcButton
                 label="Search"
                 mode="primary"
-                icon="search"
+                icon={iconEl("search")}
                 onClick={handleSearch}
                 disabled={isSearching}
               />
@@ -349,7 +350,7 @@ const ClaimSearch = ({ onSelectClaim, onClose }) => {
                     label="Export Results"
                     mode="secondary"
                     size="small"
-                    icon="download"
+                    icon={iconEl("download")}
                   />
                 )}
               </DxcFlex>

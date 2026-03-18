@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useMemo } from 'react';
 import {
   DxcHeading,
@@ -275,7 +276,7 @@ const RequirementsReceived = ({ onClaimSelect }) => {
         <DxcTabs>
           <DxcTabs.Tab
             label={`All (${counts.all})`}
-            icon="list"
+            icon={iconEl("list")}
             active={activeLevel === 0}
             onClick={() => setActiveLevel(0)}
           >
@@ -283,7 +284,7 @@ const RequirementsReceived = ({ onClaimSelect }) => {
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label={`Claim Level (${counts.claim})`}
-            icon="description"
+            icon={iconEl("description")}
             active={activeLevel === 1}
             onClick={() => setActiveLevel(1)}
           >
@@ -291,7 +292,7 @@ const RequirementsReceived = ({ onClaimSelect }) => {
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label={`Policy Level (${counts.policy})`}
-            icon="policy"
+            icon={iconEl("policy")}
             active={activeLevel === 2}
             onClick={() => setActiveLevel(2)}
           >
@@ -299,7 +300,7 @@ const RequirementsReceived = ({ onClaimSelect }) => {
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label={`Beneficiary Level (${counts.beneficiary})`}
-            icon="people"
+            icon={iconEl("people")}
             active={activeLevel === 3}
             onClick={() => setActiveLevel(3)}
           >
@@ -366,7 +367,7 @@ const RequirementsReceived = ({ onClaimSelect }) => {
                     <DxcButton
                       label="Mark Received"
                       mode="tertiary"
-                      icon="check"
+                      icon={iconEl("check")}
                       size="small"
                       onClick={() => {}}
                       disabled={req.status === 'received'}
@@ -374,14 +375,14 @@ const RequirementsReceived = ({ onClaimSelect }) => {
                     <DxcButton
                       label="Request"
                       mode="tertiary"
-                      icon="send"
+                      icon={iconEl("send")}
                       size="small"
                       onClick={() => {}}
                     />
                     <DxcButton
                       label="Waive"
                       mode="tertiary"
-                      icon="do_not_disturb"
+                      icon={iconEl("do_not_disturb")}
                       size="small"
                       onClick={() => setActionDialogReq(req)}
                     />

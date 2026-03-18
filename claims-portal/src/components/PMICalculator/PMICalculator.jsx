@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcFlex,
@@ -214,7 +215,7 @@ const PMICalculator = ({ claimData, onCalculate, onApply, onClose }) => {
               <DxcButton
                 label="Calculate Interest"
                 mode="primary"
-                icon="calculate"
+                icon={iconEl("calculate")}
                 onClick={calculatePMI}
                 disabled={isCalculating}
               />
@@ -222,7 +223,7 @@ const PMICalculator = ({ claimData, onCalculate, onApply, onClose }) => {
                 <DxcButton
                   label="Apply to Claim"
                   mode="secondary"
-                  icon="check"
+                  icon={iconEl("check")}
                   onClick={handleApply}
                 />
               )}

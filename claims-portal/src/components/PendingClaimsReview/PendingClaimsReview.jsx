@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useMemo } from 'react';
 import {
   DxcHeading,
@@ -283,7 +284,7 @@ const PendingClaimsReview = ({ onClaimSelect }) => {
             <DxcButton
               label="Back to Claims List"
               mode="tertiary"
-              icon="arrow_back"
+              icon={iconEl("arrow_back")}
               onClick={() => { setSelectedClaimId(null); }}
             />
           )}
@@ -401,7 +402,7 @@ const PendingClaimsReview = ({ onClaimSelect }) => {
             <DxcTabs>
               <DxcTabs.Tab
                 label="By Policy"
-                icon="policy"
+                icon={iconEl("policy")}
                 active={beneficiaryView === 0}
                 onClick={() => setBeneficiaryView(0)}
               >
@@ -409,7 +410,7 @@ const PendingClaimsReview = ({ onClaimSelect }) => {
               </DxcTabs.Tab>
               <DxcTabs.Tab
                 label="Aggregate Beneficiary View"
-                icon="people"
+                icon={iconEl("people")}
                 active={beneficiaryView === 1}
                 onClick={() => setBeneficiaryView(1)}
               >
@@ -599,13 +600,13 @@ const PendingClaimsReview = ({ onClaimSelect }) => {
                 <DxcFlex gap="var(--spacing-gap-s)">
                   <DxcButton
                     label="Open in Workbench"
-                    icon="open_in_new"
+                    icon={iconEl("open_in_new")}
                     onClick={() => onClaimSelect && onClaimSelect(selectedClaim)}
                   />
                   <DxcButton
                     label="View Requirements"
                     mode="secondary"
-                    icon="checklist"
+                    icon={iconEl("checklist")}
                     onClick={() => {}}
                   />
                 </DxcFlex>
@@ -613,13 +614,13 @@ const PendingClaimsReview = ({ onClaimSelect }) => {
                   <DxcButton
                     label="Approve Claim"
                     mode="primary"
-                    icon="check_circle"
+                    icon={iconEl("check_circle")}
                     onClick={() => {}}
                   />
                   <DxcButton
                     label="Hold"
                     mode="tertiary"
-                    icon="pause_circle"
+                    icon={iconEl("pause_circle")}
                     onClick={() => {}}
                   />
                 </DxcFlex>

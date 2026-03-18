@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcHeading,
@@ -461,7 +462,7 @@ const IntakeForms = () => {
             <DxcButton
               label="Sign Out"
               mode="tertiary"
-              icon="logout"
+              icon={iconEl("logout")}
               onClick={() => setIsAuthenticated(false)}
             />
           </DxcFlex>

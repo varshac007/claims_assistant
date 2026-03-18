@@ -5,6 +5,7 @@
  * Automatically triggers analysis when FNOL is loaded
  */
 
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcFlex,
@@ -145,7 +146,7 @@ const BeneficiaryAnalysisPanel = ({ fnolSysId, claimNumber }) => {
         <DxcButton
           label="View Full Beneficiary Comparison"
           mode="tertiary"
-          icon="visibility"
+          icon={iconEl("visibility")}
           onClick={() => {
             // TODO: Open detailed beneficiary comparison modal
             console.log('Open beneficiary comparison modal');
@@ -211,13 +212,13 @@ const BeneficiaryAnalysisPanel = ({ fnolSysId, claimNumber }) => {
                     <DxcButton
                       label="Retry Analysis"
                       mode="secondary"
-                      icon="refresh"
+                      icon={iconEl("refresh")}
                       onClick={triggerAnalysis}
                     />
                     <DxcButton
                       label="Fetch Data Only"
                       mode="tertiary"
-                      icon="download"
+                      icon={iconEl("download")}
                       onClick={fetchBeneficiaryData}
                     />
                   </DxcFlex>
@@ -245,7 +246,7 @@ const BeneficiaryAnalysisPanel = ({ fnolSysId, claimNumber }) => {
               <DxcButton
                 label="Trigger Analysis Now"
                 mode="secondary"
-                icon="play_arrow"
+                icon={iconEl("play_arrow")}
                 onClick={triggerAnalysis}
               />
             )}

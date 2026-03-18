@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -134,7 +135,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
         <DxcTabs iconPosition="left">
           <DxcTabs.Tab
             label="Overview"
-            icon="info"
+            icon={iconEl("info")}
             active={activeTab === 0}
             onClick={() => setActiveTab(0)}
           >
@@ -142,7 +143,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label="Coverage"
-            icon="shield"
+            icon={iconEl("shield")}
             active={activeTab === 1}
             onClick={() => setActiveTab(1)}
           >
@@ -150,7 +151,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label="Beneficiaries"
-            icon="people"
+            icon={iconEl("people")}
             active={activeTab === 2}
             onClick={() => setActiveTab(2)}
           >
@@ -158,7 +159,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
           </DxcTabs.Tab>
           <DxcTabs.Tab
             label="Billing"
-            icon="payment"
+            icon={iconEl("payment")}
             active={activeTab === 3}
             onClick={() => setActiveTab(3)}
           >
@@ -426,7 +427,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
             <DxcButton
               label="Edit Policy"
               mode="secondary"
-              icon="edit"
+              icon={iconEl("edit")}
               onClick={() => onEdit(policy)}
             />
           )}
@@ -434,7 +435,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
             <DxcButton
               label="Suspend Policy"
               mode="secondary"
-              icon="pause"
+              icon={iconEl("pause")}
               onClick={() => onSuspend(policy)}
             />
           )}
@@ -442,7 +443,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
             <DxcButton
               label="Associate to Claim"
               mode="primary"
-              icon="link"
+              icon={iconEl("link")}
               onClick={() => onAssociate(policy)}
             />
           )}
@@ -450,7 +451,7 @@ const PolicyDetailView = ({ policy, onEdit, onClose, onSuspend, onAssociate, onD
             <DxcButton
               label="Remove from Claim"
               mode="secondary"
-              icon="link_off"
+              icon={iconEl("link_off")}
               onClick={() => onDissociate(policy)}
             />
           )}

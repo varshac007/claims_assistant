@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { iconEl } from './utils/iconEl';
 import { createPortal } from 'react-dom';
 import { DxcApplicationLayout, DxcFlex, DxcTypography, DxcButton } from '@dxc-technology/halstack-react';
 import Dashboard from './components/Dashboard/Dashboard';
@@ -169,37 +170,37 @@ function AppContent() {
   const sidenavItems = [
     {
       label: "Dashboard",
-      icon: "dashboard",
+      icon: iconEl("dashboard"),
       selected: currentView === 'dashboard',
       onClick: () => handleNavigationClick('dashboard')
     },
     {
       label: "My Claims Workbench",
-      icon: "assignment_ind",
+      icon: iconEl("assignment_ind"),
       selected: currentView === 'handlerDashboard',
       onClick: () => handleNavigationClick('handlerDashboard')
     },
     ...( productLine !== 'pc' ? [{
       label: "New Claim FNOL Party Portal",
-      icon: "add_circle",
+      icon: iconEl("add_circle"),
       selected: currentView === 'intake',
       onClick: () => handleNavigationClick('intake')
     }] : []),
     {
       label: "Claim Notifications",
-      icon: "work",
+      icon: iconEl("work"),
       selected: currentView === 'fnolWorkspace',
       onClick: () => handleNavigationClick('fnolWorkspace')
     },
     {
       label: "Pending Claims Review",
-      icon: "pending_actions",
+      icon: iconEl("pending_actions"),
       selected: currentView === 'pendingReview',
       onClick: () => handleNavigationClick('pendingReview')
     },
     {
       label: "Requirements Received",
-      icon: "mail",
+      icon: iconEl("mail"),
       selected: currentView === 'requirementsReceived',
       onClick: () => handleNavigationClick('requirementsReceived')
     },

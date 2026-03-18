@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   DxcHeading,
@@ -174,7 +175,7 @@ const WorkNotes = ({ claimSysId, fnolNumber, isDemo = false, demoWorkNotes = [] 
               label="Refresh"
               mode="tertiary"
               size="small"
-              icon="refresh"
+              icon={iconEl("refresh")}
               onClick={(e) => {
                 e.stopPropagation();
                 fetchWorkNotes();
@@ -224,7 +225,7 @@ const WorkNotes = ({ claimSysId, fnolNumber, isDemo = false, demoWorkNotes = [] 
                     label={submitting ? 'Adding...' : 'Add Note'}
                     mode="primary"
                     size="small"
-                    icon="send"
+                    icon={iconEl("send")}
                     onClick={handleAddNote}
                     disabled={!newNoteText.trim() || submitting}
                   />

@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useEffect } from 'react';
 import {
   DxcFlex,
@@ -255,14 +256,14 @@ const RelatedPoliciesPanel = ({ claimData, onInitiateClaim, onViewPolicy }) => {
                       label="Initiate Death Claim"
                       mode="primary"
                       size="small"
-                      icon="add"
+                      icon={iconEl("add")}
                       onClick={() => onInitiateClaim && onInitiateClaim(policy)}
                     />
                     <DxcButton
                       label="View Policy Details"
                       mode="secondary"
                       size="small"
-                      icon="visibility"
+                      icon={iconEl("visibility")}
                       onClick={() => onViewPolicy && onViewPolicy(policy)}
                     />
                   </DxcFlex>
