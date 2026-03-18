@@ -3,6 +3,42 @@
    Using Official Bloom Design System
    ============================================================================ */
 
+/* Hide Halstack's built-in sidenav collapse button */
+button[title="Collapse"],
+button[title="Expand"] {
+  display: none !important;
+}
+
+/* Custom sidenav toggle button — sits flush at top of the sidebar */
+.custom-sidenav-toggle {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  z-index: 200;
+  height: 48px;
+  border: none;
+  border-bottom: 1px solid #E2E8F0;
+  border-radius: 0;
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, width 0.2s;
+  padding: 0;
+}
+.custom-sidenav-toggle:hover {
+  background: #EBF4FC;
+}
+.custom-sidenav-toggle svg {
+  font-size: 20px;
+  color: #1B75BB;
+}
+.custom-sidenav-toggle.expanded {
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+
 /* Remove DXC Footer - target the HTML footer element Halstack renders */
 html body footer {
   display: none !important;

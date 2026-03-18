@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { iconEl } from './utils/iconEl';
 import { createPortal } from 'react-dom';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { DxcApplicationLayout, DxcFlex, DxcTypography, DxcButton } from '@dxc-technology/halstack-react';
 import Dashboard from './components/Dashboard/Dashboard';
 import ClaimsWorkbench from './components/ClaimsWorkbench/ClaimsWorkbench';
@@ -208,6 +210,14 @@ function AppContent() {
 
   return (
     <>
+    <button
+      className={`custom-sidenav-toggle${sidenavExpanded ? ' expanded' : ''}`}
+      style={{ width: sidenavExpanded ? '240px' : '56px' }}
+      onClick={() => setSidenavExpanded(v => !v)}
+      title={sidenavExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+    >
+      {sidenavExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+    </button>
     <DxcApplicationLayout
       header={
         <DxcApplicationLayout.Header
