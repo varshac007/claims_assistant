@@ -6,7 +6,8 @@
 
 export const PRODUCT_LINES = {
   LA: 'la',
-  PC: 'pc'
+  PC: 'pc',
+  TRAVEL: 'travel'
 };
 
 export const productLineConfig = {
@@ -87,6 +88,50 @@ export const productLineConfig = {
       commercial_property: 'Commercial Property',
       auto_liability: 'Auto Liability',
       workers_comp: 'Workers Compensation'
+    },
+    dashboardSections: {
+      inventory: 'Department Inventory',
+      openClaims: 'Open Claims',
+      closedClaims: 'Closed Claims'
+    }
+  },
+
+  [PRODUCT_LINES.TRAVEL]: {
+    id: 'travel',
+    label: 'Travel',
+    shortLabel: 'Travel',
+    icon: 'flight',
+    color: '#0D7A5F',
+    terms: {
+      insured: 'Traveler',
+      claimant: 'Claimant',
+      dateOfLoss: 'Date of Incident',
+      causeOfLoss: 'Cause of Loss',
+      lossEvent: 'Travel Incident',
+      coverageVerification: 'Policy Coverage Verification',
+      coverageLimit: 'Coverage Limit',
+      primaryDocument: 'Travel Itinerary / Booking Confirmation',
+      stpLabel: 'STP',
+      stpFull: 'STP (Straight Through Processing)',
+      routingLabel: 'STP Routing',
+      fastTrackMetric: 'STP',
+      fastTrackPct: 'STP %',
+      claimsLabel: 'Travel Claims',
+      workbenchTitle: 'Travel Claims Workbench',
+      partyRoles: ['Insured Traveler', 'Co-Traveler', 'Emergency Contact', 'Third-Party Claimant'],
+      policyTypeLabel: 'Plan Type',
+      interestLabel: 'Pre-Judgment Interest',
+      reserveLabel: 'Reserve',
+      deductibleLabel: 'Deductible'
+    },
+    claimTypeLabels: {
+      trip_cancellation: 'Trip Cancellation',
+      trip_interruption: 'Trip Interruption',
+      medical_emergency: 'Medical Emergency',
+      baggage_loss: 'Baggage Loss',
+      baggage_delay: 'Baggage Delay',
+      flight_delay: 'Flight Delay',
+      travel_accident: 'Travel Accident'
     },
     dashboardSections: {
       inventory: 'Department Inventory',

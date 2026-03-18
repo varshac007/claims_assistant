@@ -13,6 +13,7 @@ import RequirementsReceived from './components/RequirementsReceived/Requirements
 import ClaimsHandlerDashboard from './components/ClaimsHandlerDashboard/ClaimsHandlerDashboard';
 import ManagerDashboard from './components/ManagerDashboard/ManagerDashboard';
 import ThemeSettings from './components/ThemeSettings/ThemeSettings';
+import TravelDashboard from './components/TravelDashboard/TravelDashboard';
 
 // Context Providers
 import { AppProvider, useApp } from './contexts/AppContext';
@@ -47,6 +48,7 @@ function AppContent() {
   const [sidenavExpanded, setSidenavExpanded] = useState(false); // Start minimized
   const [isThemeSettingsOpen, setIsThemeSettingsOpen] = useState(false);
   const [snowConnected, setSnowConnected] = useState(serviceNowService.isAuthenticated());
+  const [travelKey, setTravelKey] = useState(0);
   const [actionsMenuOpen, setActionsMenuOpen] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
   const actionsButtonRef = useRef(null);
@@ -147,6 +149,9 @@ function AppContent() {
   };
 
   const renderContent = () => {
+    if (productLine === 'travel') {
+      return <TravelDashboard key={travelKey} />;
+    }
     switch (currentView) {
       case 'dashboard':
         return user?.role === 'manager'
@@ -169,7 +174,14 @@ function AppContent() {
     }
   };
 
-  const sidenavItems = [
+  const sidenavItems = productLine === 'travel' ? [
+    {
+      label: "Travel Claims",
+      icon: iconEl("flight"),
+      selected: true,
+      onClick: () => setTravelKey(k => k + 1)
+    },
+  ] : [
     {
       label: "Dashboard",
       icon: iconEl("dashboard"),
@@ -210,14 +222,16 @@ function AppContent() {
 
   return (
     <>
-    <button
-      className={`custom-sidenav-toggle${sidenavExpanded ? ' expanded' : ''}`}
-      style={{ width: sidenavExpanded ? '240px' : '56px' }}
-      onClick={() => setSidenavExpanded(v => !v)}
-      title={sidenavExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
-    >
-      {sidenavExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-    </button>
+    {productLine !== 'travel' && (
+      <button
+        className={`custom-sidenav-toggle${sidenavExpanded ? ' expanded' : ''}`}
+        style={{ width: sidenavExpanded ? '240px' : '56px' }}
+        onClick={() => setSidenavExpanded(v => !v)}
+        title={sidenavExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+      >
+        {sidenavExpanded ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+      </button>
+    )}
     <DxcApplicationLayout
       header={
         <DxcApplicationLayout.Header
@@ -294,7 +308,8 @@ function AppContent() {
                         <div style={{ display: 'flex', gap: '8px', paddingBottom: '4px' }}>
                           {[
                             { id: 'la', label: 'L&A', icon: 'favorite', title: 'Life & Annuity' },
-                            { id: 'pc', label: 'P&C', icon: 'directions_car', title: 'Property and Casualty' }
+                            { id: 'pc', label: 'P&C', icon: 'directions_car', title: 'Property and Casualty' },
+                            { id: 'travel', label: 'Travel', icon: 'flight', title: 'Travel' }
                           ].map(pl => (
                             <button
                               key={pl.id}
@@ -580,13 +595,13 @@ function AppContent() {
           }
         />
       }
-      sidenav={
+      sidenav={productLine !== 'travel' ? (
         <DxcApplicationLayout.Sidenav
           navItems={sidenavItems}
           expanded={sidenavExpanded}
           onExpandedChange={setSidenavExpanded}
         />
-      }
+      ) : undefined}
     >
       <DxcApplicationLayout.Main>
         <div ref={topAnchorRef} style={{ height: 0, overflow: 'hidden' }} />

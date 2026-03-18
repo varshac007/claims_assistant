@@ -16,9 +16,14 @@ import { handleAPIError } from '../utils/errorHandler';
 import eventBus, { EventTypes } from '../sync/eventBus';
 import demoData from '../../data/demoData';
 import { getPCDemoData } from '../../data/demoDataPC';
+import { getTravelDemoData } from '../../data/demoDataTravel';
 
-const getActiveDemoData = () =>
-  localStorage.getItem('demoProductLine') === 'pc' ? getPCDemoData() : demoData;
+const getActiveDemoData = () => {
+  const line = localStorage.getItem('demoProductLine');
+  if (line === 'pc') return getPCDemoData();
+  if (line === 'travel') return getTravelDemoData();
+  return demoData;
+};
 
 const CMA_BASE_PATH = '/cma';
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
