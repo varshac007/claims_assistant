@@ -9,6 +9,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import eventBus from '../services/sync/eventBus';
+import { applyThemeVars, buildThemeVars, getThemeById } from '../theme/themeConfig';
 
 const AppContext = createContext(null);
 
@@ -23,6 +24,7 @@ export const AppProvider = ({ children }) => {
 
   // Theme State
   const [theme, setTheme] = useState('default');
+  const [activeThemeId, setActiveThemeId] = useState('bloom-blue');
 
   // Product Line State (demo toggle: 'la' | 'pc')
   const [productLine, setProductLine] = useState(
@@ -70,6 +72,20 @@ export const AppProvider = ({ children }) => {
       const savedTheme = localStorage.getItem('appTheme');
       if (savedTheme) {
         setTheme(savedTheme);
+      }
+
+      // Restore active theme (preset or custom)
+      const savedThemeId = localStorage.getItem('appThemeId');
+      const savedCustomVars = localStorage.getItem('appThemeCustomVars');
+      if (savedCustomVars) {
+        try {
+          applyThemeVars(JSON.parse(savedCustomVars));
+          setActiveThemeId('custom');
+        } catch (_) { /* ignore corrupt data */ }
+      } else if (savedThemeId) {
+        const preset = getThemeById(savedThemeId);
+        applyThemeVars(buildThemeVars(preset.primary, preset.accent));
+        setActiveThemeId(savedThemeId);
       }
 
     } catch (error) {
@@ -187,6 +203,25 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('appTheme', newTheme);
   }, []);
 
+  /** Apply a preset theme by ID */
+  const applyPresetTheme = useCallback((themeId) => {
+    const preset = getThemeById(themeId);
+    const vars = buildThemeVars(preset.primary, preset.accent);
+    applyThemeVars(vars);
+    setActiveThemeId(themeId);
+    localStorage.setItem('appThemeId', themeId);
+    localStorage.removeItem('appThemeCustomVars');
+  }, []);
+
+  /** Apply a fully custom theme from primary + accent hex colors */
+  const applyCustomTheme = useCallback((primary, accent) => {
+    const vars = buildThemeVars(primary, accent);
+    applyThemeVars(vars);
+    setActiveThemeId('custom');
+    localStorage.setItem('appThemeId', 'custom');
+    localStorage.setItem('appThemeCustomVars', JSON.stringify(vars));
+  }, []);
+
   /**
    * Subscribe to global error events
    */
@@ -227,6 +262,9 @@ export const AppProvider = ({ children }) => {
     // Theme
     theme,
     updateTheme,
+    activeThemeId,
+    applyPresetTheme,
+    applyCustomTheme,
 
     // Global Loading
     globalLoading,

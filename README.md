@@ -1,4 +1,4 @@
-442# Bloom Claims Assistant Portal
+# Bloom Claims Assistant Portal
 
 A modern React-based claims management portal for life and annuity insurance claims, built exclusively with DXC Halstack Design System components.
 
