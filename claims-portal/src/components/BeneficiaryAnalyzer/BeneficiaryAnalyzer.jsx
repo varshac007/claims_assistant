@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useEffect } from 'react';
 import {
   DxcHeading,
@@ -578,7 +579,7 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
                   mode="primary"
                   size="small"
                   onClick={handleApproveBeneficiaries}
-                  icon="check_circle"
+                  icon={iconEl("check_circle")}
                 />
               )}
             </DxcFlex>
@@ -1086,14 +1087,14 @@ const BeneficiaryAnalyzer = ({ claimId, claim, onApproveBeneficiaries, onCancel 
                                 label="Verify Address"
                                 mode="secondary"
                                 size="medium"
-                                icon="location_on"
+                                icon={iconEl("location_on")}
                                 onClick={(e) => { e.stopPropagation(); handleLexisNexisLookup(extractedBen.id, 'address'); }}
                               />
                               <DxcButton
                                 label="View Document"
                                 mode="tertiary"
                                 size="medium"
-                                icon="description"
+                                icon={iconEl("description")}
                                 onClick={(e) => { e.stopPropagation(); handleViewDocument(extractedBen.sourceDocument.id); }}
                               />
                             </DxcFlex>

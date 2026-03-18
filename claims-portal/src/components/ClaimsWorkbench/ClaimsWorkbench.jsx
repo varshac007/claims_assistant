@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useEffect } from 'react';
 import {
   DxcHeading,
@@ -16,6 +17,14 @@ import {
   DxcTextInput,
   DxcSelect
 } from '@dxc-technology/halstack-react';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import PolicyIcon from '@mui/icons-material/Policy';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import FolderIcon from '@mui/icons-material/Folder';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import ShieldIcon from '@mui/icons-material/Shield';
 import FastTrackBadge from '../shared/FastTrackBadge';
 import DocumentUpload from '../shared/DocumentUpload';
 import DocumentViewer from '../shared/DocumentViewer';
@@ -450,7 +459,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
               <DxcTabs iconPosition="left">
                 <DxcTabs.Tab
                   label="Dashboard"
-                  icon="dashboard"
+                  icon={<DashboardIcon />}
                   active={activeTab === 0}
                   onClick={() => setActiveTab(0)}
                 >
@@ -458,7 +467,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 </DxcTabs.Tab>
                 <DxcTabs.Tab
                   label="Financials"
-                  icon="payments"
+                  icon={<PaymentsIcon />}
                   active={activeTab === 1}
                   onClick={() => setActiveTab(1)}
                 >
@@ -466,7 +475,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 </DxcTabs.Tab>
                 <DxcTabs.Tab
                   label="Policy 360"
-                  icon="policy"
+                  icon={<PolicyIcon />}
                   active={activeTab === 2}
                   onClick={() => setActiveTab(2)}
                 >
@@ -474,7 +483,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 </DxcTabs.Tab>
                 <DxcTabs.Tab
                   label="Timeline"
-                  icon="timeline"
+                  icon={<TimelineIcon />}
                   active={activeTab === 3}
                   onClick={() => setActiveTab(3)}
                 >
@@ -482,7 +491,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 </DxcTabs.Tab>
                 <DxcTabs.Tab
                   label="Requirements"
-                  icon="checklist"
+                  icon={<ChecklistIcon />}
                   active={activeTab === 4}
                   onClick={() => setActiveTab(4)}
                 >
@@ -490,7 +499,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 </DxcTabs.Tab>
                 <DxcTabs.Tab
                   label="Documents"
-                  icon="folder"
+                  icon={<FolderIcon />}
                   active={activeTab === 5}
                   onClick={() => setActiveTab(5)}
                 >
@@ -499,7 +508,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 {claim.deathEvent && (
                 <DxcTabs.Tab
                   label="Beneficiary Analyzer"
-                  icon="psychology"
+                  icon={<PsychologyIcon />}
                   active={activeTab === 6}
                   onClick={() => setActiveTab(6)}
                 >
@@ -509,7 +518,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 {claim.deathEvent && (
                 <DxcTabs.Tab
                   label="Related Policies"
-                  icon="policy"
+                  icon={<PolicyIcon />}
                   active={activeTab === 7}
                   onClick={() => setActiveTab(7)}
                 >
@@ -518,7 +527,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                 )}
                 <DxcTabs.Tab
                   label="Claim Guardian"
-                  icon="shield"
+                  icon={<ShieldIcon />}
                   active={activeTab === 8}
                   onClick={() => setActiveTab(8)}
                 >
@@ -819,28 +828,28 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       <DxcButton
                         label="View Full Financials"
                         mode="secondary"
-                        icon="payments"
+                        icon={<PaymentsIcon />}
                         onClick={() => setActiveTab(1)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
                       <DxcButton
                         label="View Policy Details"
                         mode="secondary"
-                        icon="policy"
+                        icon={<PolicyIcon />}
                         onClick={() => setActiveTab(2)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
                       <DxcButton
                         label="Manage Requirements"
                         mode="secondary"
-                        icon="checklist"
+                        icon={iconEl("checklist")}
                         onClick={() => setActiveTab(4)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
                       <DxcButton
                         label="Upload Documents"
                         mode="secondary"
-                        icon="upload_file"
+                        icon={iconEl("upload_file")}
                         onClick={() => setActiveTab(5)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
@@ -848,7 +857,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       <DxcButton
                         label="Analyze Beneficiaries"
                         mode="primary"
-                        icon="psychology"
+                        icon={iconEl("psychology")}
                         onClick={() => setActiveTab(6)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
@@ -962,7 +971,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                           label="Calculate PMI"
                           mode="secondary"
                           size="small"
-                          icon="calculate"
+                          icon={iconEl("calculate")}
                           onClick={() => setShowPMICalculator(true)}
                           style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                         />
@@ -970,7 +979,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                           label="Tax Withholding"
                           mode="secondary"
                           size="small"
-                          icon="account_balance"
+                          icon={iconEl("account_balance")}
                           onClick={() => setShowTaxCalculator(true)}
                           style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                         />
@@ -978,7 +987,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                           label="View EOB"
                           mode="tertiary"
                           size="small"
-                          icon="description"
+                          icon={iconEl("description")}
                           style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                         />
                       </DxcFlex>
@@ -1076,7 +1085,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       <DxcButton
                         label="Schedule Payment"
                         mode="primary"
-                        icon="add"
+                        icon={iconEl("add")}
                         onClick={handleSchedulePayment}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
@@ -1224,7 +1233,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                         label="View Full Policy"
                         mode="secondary"
                         size="small"
-                        icon="open_in_new"
+                        icon={iconEl("open_in_new")}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />
                     </DxcFlex>
@@ -1297,7 +1306,7 @@ const ClaimsWorkbench = ({ claim, onBack }) => {
                       <DxcButton
                         label="Analyze Beneficiaries"
                         mode="primary"
-                        icon="psychology"
+                        icon={iconEl("psychology")}
                         onClick={() => setShowBeneficiaryAnalyzer(true)}
                         style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
                       />

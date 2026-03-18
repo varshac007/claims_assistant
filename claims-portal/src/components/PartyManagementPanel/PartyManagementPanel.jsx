@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -87,14 +88,14 @@ const PartyManagementPanel = ({ parties = [], onAddParty, onEditParty, onChangeI
               label="Add Party"
               mode="primary"
               size="small"
-              icon="person_add"
+              icon={iconEl("person_add")}
               onClick={onAddParty}
             />
             <DxcButton
               label="Change Insured"
               mode="secondary"
               size="small"
-              icon="swap_horiz"
+              icon={iconEl("swap_horiz")}
               onClick={onChangeInsured}
             />
           </DxcFlex>
@@ -259,7 +260,7 @@ const PartyManagementPanel = ({ parties = [], onAddParty, onEditParty, onChangeI
                         label="Edit"
                         mode="tertiary"
                         size="small"
-                        icon="edit"
+                        icon={iconEl("edit")}
                         onClick={(e) => {
                           e.stopPropagation();
                           onEditParty && onEditParty(party);
@@ -270,7 +271,7 @@ const PartyManagementPanel = ({ parties = [], onAddParty, onEditParty, onChangeI
                           label="CSLN Search"
                           mode="tertiary"
                           size="small"
-                          icon="search"
+                          icon={iconEl("search")}
                           onClick={(e) => {
                             e.stopPropagation();
                             onCSLNSearch(party);
@@ -299,7 +300,7 @@ const PartyManagementPanel = ({ parties = [], onAddParty, onEditParty, onChangeI
                 label="Add Party"
                 mode="primary"
                 size="small"
-                icon="person_add"
+                icon={iconEl("person_add")}
                 onClick={onAddParty}
               />
             </DxcFlex>

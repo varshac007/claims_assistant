@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -66,14 +67,14 @@ const PolicySummaryPanel = ({ policies = [], onViewPolicy, onAssociate, onDissoc
               label="Associate"
               mode="secondary"
               size="small"
-              icon="add_link"
+              icon={iconEl("add_link")}
               onClick={onAssociate}
             />
             <DxcButton
               label="Search"
               mode="secondary"
               size="small"
-              icon="search"
+              icon={iconEl("search")}
               onClick={onSearchPolicy}
             />
           </DxcFlex>
@@ -200,7 +201,7 @@ const PolicySummaryPanel = ({ policies = [], onViewPolicy, onAssociate, onDissoc
                         label="View Policy"
                         mode="tertiary"
                         size="small"
-                        icon="visibility"
+                        icon={iconEl("visibility")}
                         onClick={(e) => {
                           e.stopPropagation();
                           onViewPolicy && onViewPolicy(policy);
@@ -210,7 +211,7 @@ const PolicySummaryPanel = ({ policies = [], onViewPolicy, onAssociate, onDissoc
                         label="Dissociate"
                         mode="tertiary"
                         size="small"
-                        icon="link_off"
+                        icon={iconEl("link_off")}
                         onClick={(e) => {
                           e.stopPropagation();
                           onDissociate && onDissociate(policy);
@@ -238,7 +239,7 @@ const PolicySummaryPanel = ({ policies = [], onViewPolicy, onAssociate, onDissoc
                 label="Associate Policy"
                 mode="primary"
                 size="small"
-                icon="add"
+                icon={iconEl("add")}
                 onClick={onAssociate}
               />
             </DxcFlex>

@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -334,7 +335,7 @@ const PaymentQuickView = ({ payment, onEdit, onCancel, onResend, onView1099, onC
             <DxcButton
               label="Edit Payment"
               mode="secondary"
-              icon="edit"
+              icon={iconEl("edit")}
               onClick={() => onEdit(payment)}
             />
           )}
@@ -342,7 +343,7 @@ const PaymentQuickView = ({ payment, onEdit, onCancel, onResend, onView1099, onC
             <DxcButton
               label="Cancel Payment"
               mode="secondary"
-              icon="cancel"
+              icon={iconEl("cancel")}
               onClick={() => onCancel(payment)}
             />
           )}
@@ -350,7 +351,7 @@ const PaymentQuickView = ({ payment, onEdit, onCancel, onResend, onView1099, onC
             <DxcButton
               label="Resend Payment"
               mode="primary"
-              icon="send"
+              icon={iconEl("send")}
               onClick={() => onResend(payment)}
             />
           )}

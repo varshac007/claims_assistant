@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import { DxcFlex, DxcButton, DxcTypography } from '@dxc-technology/halstack-react';
 import './ClaimsHandlerDashboard.css';
@@ -222,7 +223,7 @@ const ClaimsHandlerDashboard = () => {
             label="New FNOL Entry"
             mode="primary"
             size="small"
-            icon="add_circle_outline"
+            icon={iconEl("add_circle_outline")}
             onClick={() => console.log('New FNOL')}
             style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
           />
@@ -230,7 +231,7 @@ const ClaimsHandlerDashboard = () => {
             label="Search Claims"
             mode="secondary"
             size="small"
-            icon="search"
+            icon={iconEl("search")}
             onClick={() => console.log('Search')}
             style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
           />
@@ -238,7 +239,7 @@ const ClaimsHandlerDashboard = () => {
             label="View All Cases"
             mode="secondary"
             size="small"
-            icon="view_list"
+            icon={iconEl("view_list")}
             onClick={() => console.log('View all')}
             style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
           />
@@ -246,7 +247,7 @@ const ClaimsHandlerDashboard = () => {
             label="Reports"
             mode="secondary"
             size="small"
-            icon="analytics"
+            icon={iconEl("analytics")}
             onClick={() => console.log('Reports')}
             style={{ minHeight: 44 }} /* BLOOM: Minimum button height */
           />

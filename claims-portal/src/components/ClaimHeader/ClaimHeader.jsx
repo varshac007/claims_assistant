@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import {
   DxcFlex,
   DxcContainer,
@@ -75,7 +76,7 @@ const ClaimHeader = ({
             {onBack && (
               <DxcButton
                 mode="tertiary"
-                icon="arrow_back"
+                icon={iconEl("arrow_back")}
                 onClick={onBack}
               />
             )}
@@ -113,7 +114,7 @@ const ClaimHeader = ({
                 label="Assign"
                 mode="tertiary"
                 size="small"
-                icon="person_add"
+                icon={iconEl("person_add")}
                 onClick={onAssign}
               />
             )}
@@ -122,7 +123,7 @@ const ClaimHeader = ({
                 label="Hold"
                 mode="secondary"
                 size="small"
-                icon="pause"
+                icon={iconEl("pause")}
                 onClick={onHold}
               />
             )}
@@ -131,7 +132,7 @@ const ClaimHeader = ({
                 label="Approve"
                 mode="primary"
                 size="small"
-                icon="check_circle"
+                icon={iconEl("check_circle")}
                 onClick={onApprove}
               />
             )}
@@ -140,7 +141,7 @@ const ClaimHeader = ({
                 label="Deny"
                 mode="secondary"
                 size="small"
-                icon="cancel"
+                icon={iconEl("cancel")}
                 onClick={onDeny}
               />
             )}

@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState } from 'react';
 import {
   DxcFlex,
@@ -261,7 +262,7 @@ const TaxWithholdingCalculator = ({ claimData, paymentData, onCalculate, onApply
               <DxcButton
                 label="Calculate Withholding"
                 mode="primary"
-                icon="calculate"
+                icon={iconEl("calculate")}
                 onClick={calculateTax}
                 disabled={isCalculating}
               />
@@ -269,7 +270,7 @@ const TaxWithholdingCalculator = ({ claimData, paymentData, onCalculate, onApply
                 <DxcButton
                   label="Apply to Payment"
                   mode="secondary"
-                  icon="check"
+                  icon={iconEl("check")}
                   onClick={handleApply}
                 />
               )}

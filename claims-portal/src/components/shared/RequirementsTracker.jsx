@@ -5,6 +5,7 @@
  * Supports document upload, waiver, and override actions.
  */
 
+import { iconEl } from '../../utils/iconEl';
 import { useMemo } from 'react';
 import {
   DxcFlex,
@@ -161,7 +162,7 @@ const RequirementItem = ({ requirement, onUpload, onWaive, onOverride, compact =
                 <DxcButton
                   label="Upload Document"
                   mode="secondary"
-                  icon="upload_file"
+                  icon={iconEl("upload_file")}
                   size="small"
                   onClick={() => onUpload(requirement)}
                 />

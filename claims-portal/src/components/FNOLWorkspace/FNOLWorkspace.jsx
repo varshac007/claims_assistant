@@ -1,3 +1,4 @@
+import { iconEl } from '../../utils/iconEl';
 import { useState, useMemo } from 'react';
 import {
   DxcHeading,
@@ -230,7 +231,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
           <DxcTabs iconPosition="left">
             <DxcTabs.Tab
               label="1. Policy Match"
-              icon="search"
+              icon={iconEl("search")}
               active={activeStage === 0}
               onClick={() => setActiveStage(0)}
             >
@@ -238,7 +239,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
             </DxcTabs.Tab>
             <DxcTabs.Tab
               label="2. Related Policy Search"
-              icon="policy"
+              icon={iconEl("policy")}
               active={activeStage === 1}
               onClick={() => setActiveStage(1)}
             >
@@ -246,7 +247,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
             </DxcTabs.Tab>
             <DxcTabs.Tab
               label="3. Claimant Analyzer"
-              icon="people"
+              icon={iconEl("people")}
               active={activeStage === 2}
               onClick={() => setActiveStage(2)}
             >
@@ -254,7 +255,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
             </DxcTabs.Tab>
             <DxcTabs.Tab
               label="4. Claim Packet"
-              icon="description"
+              icon={iconEl("description")}
               active={activeStage === 3}
               onClick={() => setActiveStage(3)}
             >
@@ -315,7 +316,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                 <DxcFlex gap="var(--spacing-gap-s)">
                   <DxcButton
                     label="Search for Policy"
-                    icon="search"
+                    icon={iconEl("search")}
                     onClick={handlePolicySearch}
                     disabled={!insuredName && !policySearchValue}
                   />
@@ -386,7 +387,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                   <DxcFlex direction="column" gap="var(--spacing-gap-s)" alignItems="center">
                     <DxcButton
                       label="Search Related Policies"
-                      icon="search"
+                      icon={iconEl("search")}
                       onClick={handleRelatedPolicySearch}
                     />
                   </DxcFlex>
@@ -447,14 +448,14 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                               <DxcButton
                                 label="Remove Association"
                                 mode="tertiary"
-                                icon="link_off"
+                                icon={iconEl("link_off")}
                                 onClick={() => handleDisassociatePolicy(policy.id)}
                               />
                             ) : (
                               <DxcButton
                                 label="Tie to Claim"
                                 mode="secondary"
-                                icon="link"
+                                icon={iconEl("link")}
                                 onClick={() => handleAssociatePolicy(policy.id)}
                               />
                             )}
@@ -487,7 +488,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                       <DxcButton
                         label="Search"
                         mode="secondary"
-                        icon="search"
+                        icon={iconEl("search")}
                         onClick={() => {}}
                         disabled={!manualSearchValue}
                       />
@@ -652,7 +653,7 @@ const FNOLWorkspace = ({ onClaimSelect }) => {
                   />
                   <DxcButton
                     label="Generate & Send Packet"
-                    icon="send"
+                    icon={iconEl("send")}
                     onClick={handleGeneratePacket}
                   />
                 </DxcFlex>
