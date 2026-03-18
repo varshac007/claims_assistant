@@ -211,7 +211,8 @@ function AppContent() {
   return (
     <>
     <button
-      className="custom-sidenav-toggle"
+      className={`custom-sidenav-toggle${sidenavExpanded ? ' expanded' : ''}`}
+      style={{ width: sidenavExpanded ? '240px' : '56px' }}
       onClick={() => setSidenavExpanded(v => !v)}
       title={sidenavExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
     >
