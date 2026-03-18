@@ -39,7 +39,6 @@ root.style.setProperty('--color-primary-700', '#0F4470');
 root.style.setProperty('--color-primary-800', '#0A3358');
 root.style.setProperty('--color-primary-900', '#061E33');
 
-// Mount the React app into the #root div defined in index.html
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={muiTheme}>

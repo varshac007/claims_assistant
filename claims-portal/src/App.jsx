@@ -585,9 +585,6 @@ function AppContent() {
     <ThemeSettings
       isOpen={isThemeSettingsOpen}
       onClose={() => setIsThemeSettingsOpen(false)}
-      onThemeChange={(colors) => {
-        // Theme applied successfully
-      }}
     />
     </>
   );
